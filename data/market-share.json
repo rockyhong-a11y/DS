@@ -1,0 +1,138 @@
+{
+  "updated": "2025 Q1",
+  "source": "Counterpoint Research / Canalys / IDC (추정치)",
+  "regions": [
+    {
+      "id": "global",
+      "name": "전 세계 (Global)",
+      "flag": "🌍",
+      "data": [
+        {"brand":"Samsung","brandKo":"삼성","share":19.5,"color":"#1428A0"},
+        {"brand":"Apple","brandKo":"애플","share":18.2,"color":"#555555"},
+        {"brand":"Xiaomi","brandKo":"샤오미","share":12.8,"color":"#FF6900"},
+        {"brand":"OPPO","brandKo":"오포","share":9.1,"color":"#1A1A1A"},
+        {"brand":"vivo","brandKo":"비보","share":8.7,"color":"#415FFF"},
+        {"brand":"Transsion","brandKo":"트랜지션","share":8.2,"color":"#00B0FF"},
+        {"brand":"Others","brandKo":"기타","share":23.5,"color":"#666666"}
+      ]
+    },
+    {
+      "id": "korea",
+      "name": "대한민국 (South Korea)",
+      "flag": "🇰🇷",
+      "data": [
+        {"brand":"Samsung","brandKo":"삼성","share":60.3,"color":"#1428A0"},
+        {"brand":"Apple","brandKo":"애플","share":36.1,"color":"#555555"},
+        {"brand":"Others","brandKo":"기타","share":3.6,"color":"#666666"}
+      ]
+    },
+    {
+      "id": "usa",
+      "name": "미국 (USA)",
+      "flag": "🇺🇸",
+      "data": [
+        {"brand":"Apple","brandKo":"애플","share":55.1,"color":"#555555"},
+        {"brand":"Samsung","brandKo":"삼성","share":25.4,"color":"#1428A0"},
+        {"brand":"Motorola","brandKo":"모토로라","share":8.2,"color":"#E1001A"},
+        {"brand":"Google","brandKo":"구글","share":4.1,"color":"#34A853"},
+        {"brand":"Others","brandKo":"기타","share":7.2,"color":"#666666"}
+      ]
+    },
+    {
+      "id": "china",
+      "name": "중국 (China)",
+      "flag": "🇨🇳",
+      "data": [
+        {"brand":"vivo","brandKo":"비보","share":19.2,"color":"#415FFF"},
+        {"brand":"OPPO","brandKo":"오포","share":17.8,"color":"#1A1A1A"},
+        {"brand":"Huawei","brandKo":"화웨이","share":16.5,"color":"#CF0A2C"},
+        {"brand":"Apple","brandKo":"애플","share":14.9,"color":"#555555"},
+        {"brand":"Xiaomi","brandKo":"샤오미","share":13.8,"color":"#FF6900"},
+        {"brand":"Others","brandKo":"기타","share":17.8,"color":"#666666"}
+      ]
+    },
+    {
+      "id": "india",
+      "name": "인도 (India)",
+      "flag": "🇮🇳",
+      "data": [
+        {"brand":"Samsung","brandKo":"삼성","share":18.4,"color":"#1428A0"},
+        {"brand":"vivo","brandKo":"비보","share":17.2,"color":"#415FFF"},
+        {"brand":"Xiaomi","brandKo":"샤오미","share":15.9,"color":"#FF6900"},
+        {"brand":"OPPO","brandKo":"오포","share":13.8,"color":"#1A1A1A"},
+        {"brand":"realme","brandKo":"리얼미","share":12.1,"color":"#FFA500"},
+        {"brand":"Others","brandKo":"기타","share":22.6,"color":"#666666"}
+      ]
+    },
+    {
+      "id": "europe",
+      "name": "유럽 (Europe)",
+      "flag": "🇪🇺",
+      "data": [
+        {"brand":"Samsung","brandKo":"삼성","share":33.8,"color":"#1428A0"},
+        {"brand":"Apple","brandKo":"애플","share":27.5,"color":"#555555"},
+        {"brand":"Xiaomi","brandKo":"샤오미","share":12.2,"color":"#FF6900"},
+        {"brand":"OPPO","brandKo":"오포","share":6.4,"color":"#1A1A1A"},
+        {"brand":"Others","brandKo":"기타","share":20.1,"color":"#666666"}
+      ]
+    },
+    {
+      "id": "japan",
+      "name": "일본 (Japan)",
+      "flag": "🇯🇵",
+      "data": [
+        {"brand":"Apple","brandKo":"애플","share":47.8,"color":"#555555"},
+        {"brand":"Samsung","brandKo":"삼성","share":20.1,"color":"#1428A0"},
+        {"brand":"Sharp","brandKo":"샤프","share":8.4,"color":"#E60012"},
+        {"brand":"Fujitsu","brandKo":"후지쯔","share":6.2,"color":"#E50012"},
+        {"brand":"Sony","brandKo":"소니","share":5.1,"color":"#000000"},
+        {"brand":"Others","brandKo":"기타","share":12.4,"color":"#666666"}
+      ]
+    },
+    {
+      "id": "brazil",
+      "name": "브라질 (Brazil)",
+      "flag": "🇧🇷",
+      "data": [
+        {"brand":"Samsung","brandKo":"삼성","share":36.8,"color":"#1428A0"},
+        {"brand":"Motorola","brandKo":"모토로라","share":30.5,"color":"#E1001A"},
+        {"brand":"Apple","brandKo":"애플","share":14.2,"color":"#555555"},
+        {"brand":"Xiaomi","brandKo":"샤오미","share":8.1,"color":"#FF6900"},
+        {"brand":"Others","brandKo":"기타","share":10.4,"color":"#666666"}
+      ]
+    },
+    {
+      "id": "uk",
+      "name": "영국 (UK)",
+      "flag": "🇬🇧",
+      "data": [
+        {"brand":"Apple","brandKo":"애플","share":52.3,"color":"#555555"},
+        {"brand":"Samsung","brandKo":"삼성","share":28.1,"color":"#1428A0"},
+        {"brand":"Xiaomi","brandKo":"샤오미","share":5.8,"color":"#FF6900"},
+        {"brand":"Others","brandKo":"기타","share":13.8,"color":"#666666"}
+      ]
+    },
+    {
+      "id": "germany",
+      "name": "독일 (Germany)",
+      "flag": "🇩🇪",
+      "data": [
+        {"brand":"Apple","brandKo":"애플","share":33.2,"color":"#555555"},
+        {"brand":"Samsung","brandKo":"삼성","share":29.5,"color":"#1428A0"},
+        {"brand":"Xiaomi","brandKo":"샤오미","share":14.8,"color":"#FF6900"},
+        {"brand":"Others","brandKo":"기타","share":22.5,"color":"#666666"}
+      ]
+    },
+    {
+      "id": "australia",
+      "name": "호주 (Australia)",
+      "flag": "🇦🇺",
+      "data": [
+        {"brand":"Apple","brandKo":"애플","share":56.2,"color":"#555555"},
+        {"brand":"Samsung","brandKo":"삼성","share":26.8,"color":"#1428A0"},
+        {"brand":"Oppo","brandKo":"오포","share":6.4,"color":"#1A1A1A"},
+        {"brand":"Others","brandKo":"기타","share":10.6,"color":"#666666"}
+      ]
+    }
+  ]
+}

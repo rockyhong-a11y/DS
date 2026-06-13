@@ -7,120 +7,141 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#0d0d1a;--bg2:#13132a;--bg3:#1a1a35;--bg4:#22224a;
-  --accent:#7c83fd;--accent2:#a78bfa;--text:#e0e0f0;--muted:#8888aa;
-  --border:#2a2a50;--card:#161630;--success:#34d399;--warn:#fbbf24
+  --bg:#0d0d1a;--bg2:#12122a;--bg3:#1a1a35;--bg4:#22224a;
+  --acc:#7c83fd;--acc2:#a78bfa;--text:#e0e0f0;--muted:#8888aa;
+  --border:#2a2a50;--card:#161630;--ok:#34d399;--warn:#fbbf24;--err:#f87171
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+a{color:var(--acc)}
 
-/* HEADER */
-header{background:linear-gradient(135deg,#1a1a35,#0f0f25);padding:22px 20px 18px;text-align:center;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
-header h1{font-size:1.7rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:3px}
-header p{color:var(--muted);font-size:.8rem}
+header{background:linear-gradient(135deg,#1a1a35,#0f0f25);padding:14px 20px 10px;text-align:center;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
+header h1{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block}
+header p{color:var(--muted);font-size:.72rem;margin-top:2px}
+nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg2);border-bottom:1px solid var(--border)}
+.tb{padding:8px 20px;border:1px solid var(--border);border-radius:30px;cursor:pointer;font-size:.85rem;font-weight:500;transition:.2s;background:transparent;color:var(--muted)}
+.tb.on{background:var(--acc);color:#fff;border-color:var(--acc);box-shadow:0 0 14px rgba(124,131,253,.4)}
+.tb:hover:not(.on){border-color:var(--acc);color:var(--acc)}
 
-/* TABS */
-nav{display:flex;justify-content:center;gap:8px;padding:12px 16px;background:var(--bg2);border-bottom:1px solid var(--border)}
-.tab-btn{padding:9px 22px;border:1px solid var(--border);border-radius:30px;cursor:pointer;font-size:.9rem;font-weight:500;transition:.25s all;background:transparent;color:var(--muted)}
-.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 0 18px rgba(124,131,253,.35)}
-.tab-btn:hover:not(.active){border-color:var(--accent);color:var(--accent)}
+.page{display:none}.page.on{display:block}
 
-/* SEARCH SECTION */
-.search-box{padding:18px 20px 12px;background:var(--bg2)}
-.search-row{display:flex;gap:8px;max-width:860px;margin:0 auto 12px}
-.search-row input{flex:1;padding:11px 18px;border-radius:10px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:.95rem;transition:.2s border-color}
-.search-row input:focus{outline:none;border-color:var(--accent)}
-.search-row input::placeholder{color:var(--muted)}
-.search-row button{padding:11px 22px;background:var(--accent);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:600;transition:.2s}
-.search-row button:hover{background:#6a71f0}
-.filter-row{display:flex;gap:8px;max-width:860px;margin:0 auto;flex-wrap:wrap}
-.filter-row select{padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:.85rem;cursor:pointer;flex-shrink:0}
-.filter-row select:focus{outline:none;border-color:var(--accent)}
-.stats{text-align:center;padding:8px;color:var(--muted);font-size:.82rem}
+.sbar{padding:14px 16px 10px;background:var(--bg2);position:sticky;top:72px;z-index:100;border-bottom:1px solid var(--border)}
+.sr{display:flex;gap:8px;max-width:900px;margin:0 auto 10px}
+.sr input{flex:1;padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:.9rem}
+.sr input:focus{outline:none;border-color:var(--acc)}
+.sr input::placeholder{color:var(--muted)}
+.sr button{padding:10px 20px;background:var(--acc);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:.85rem;font-weight:600}
+.frow{display:flex;gap:6px;max-width:900px;margin:0 auto;flex-wrap:wrap}
+.frow select{padding:6px 11px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:.8rem;cursor:pointer}
+.frow select:focus{outline:none;border-color:var(--acc)}
+.stats{text-align:center;padding:6px;color:var(--muted);font-size:.78rem}
+.no-res{text-align:center;color:var(--muted);padding:60px 20px;grid-column:1/-1}
 
-/* DEVICE GRID */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;padding:16px 20px;max-width:1440px;margin:0 auto}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:.25s all;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;inset:0;border-radius:14px;background:linear-gradient(135deg,transparent,rgba(124,131,253,.04));opacity:0;transition:.25s}
-.card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 10px 30px rgba(124,131,253,.2)}
-.card:hover::before{opacity:1}
-.brand-tag{display:inline-block;padding:2px 10px;background:rgba(124,131,253,.15);border:1px solid rgba(124,131,253,.3);border-radius:20px;font-size:.72rem;color:var(--accent);margin-bottom:9px;font-weight:600;letter-spacing:.3px}
-.card h3{font-size:1rem;font-weight:700;margin-bottom:4px;color:#fff}
-.card .year-tag{color:var(--muted);font-size:.8rem;margin-bottom:12px}
-.spec-rows{list-style:none;font-size:.82rem}
-.spec-rows li{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
-.spec-rows li:last-child{border:none}
-.spec-rows li .k{color:var(--muted)}
-.spec-rows li .v{color:var(--text);text-align:right;max-width:60%;font-size:.8rem}
-.badge-ux{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.75rem;font-weight:600;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:14px;padding:14px 16px;max-width:1440px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:15px;cursor:pointer;transition:.2s all}
+.card:hover{border-color:var(--acc);transform:translateY(-3px);box-shadow:0 8px 24px rgba(124,131,253,.2)}
+.btag{display:inline-block;padding:2px 9px;background:rgba(124,131,253,.12);border:1px solid rgba(124,131,253,.25);border-radius:20px;font-size:.7rem;color:var(--acc);margin-bottom:7px;font-weight:600}
+.card h3{font-size:.97rem;font-weight:700;margin-bottom:2px;color:#fff}
+.card .yr{color:var(--muted);font-size:.75rem;margin-bottom:10px}
+.srows{list-style:none;font-size:.8rem}
+.srows li{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.srows li:last-child{border:none}
+.srows .k{color:var(--muted)}
+.srows .v{color:var(--text);text-align:right;max-width:58%}
+.ux-badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:.72rem;font-weight:600;color:#fff}
+.brow{margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
+.brow .bl{font-size:.72rem;color:var(--muted);margin-bottom:4px}
+.bbar{height:6px;background:var(--bg4);border-radius:4px;overflow:hidden;margin-bottom:3px}
+.bbar .bf{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:4px;transition:.6s width}
 
-/* NO RESULTS */
-.no-result{text-align:center;padding:60px 20px;color:var(--muted);font-size:1rem}
-
-/* MODAL */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:500;align-items:center;justify-content:center;padding:12px;backdrop-filter:blur(4px)}
 .overlay.on{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--border);border-radius:18px;max-width:580px;width:100%;max-height:92vh;overflow-y:auto;padding:28px}
-.modal::-webkit-scrollbar{width:5px}
-.modal::-webkit-scrollbar-track{background:var(--bg3)}
-.modal::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-.modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
-.modal-head .info h2{font-size:1.3rem;color:#fff;margin-bottom:2px}
-.modal-head .info p{color:var(--muted);font-size:.82rem}
-.modal-close{background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s}
-.modal-close:hover{color:#fff;border-color:var(--accent)}
-.msec{background:var(--bg3);border-radius:10px;padding:15px;margin-bottom:12px}
-.msec-title{color:var(--accent);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
-.mtable{width:100%;border-collapse:collapse;font-size:.85rem}
-.mtable tr{border-bottom:1px solid var(--border)}
-.mtable tr:last-child{border:none}
-.mtable td{padding:8px 4px}
-.mtable td:first-child{color:var(--muted);width:42%}
-.gsm-link{display:block;text-align:center;margin-top:16px;padding:10px;background:rgba(124,131,253,.1);border:1px solid rgba(124,131,253,.3);border-radius:8px;color:var(--accent);font-size:.85rem;transition:.2s}
-.gsm-link:hover{background:rgba(124,131,253,.2);text-decoration:none}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:16px;max-width:600px;width:100%;max-height:93vh;overflow-y:auto;padding:24px}
+.mhead{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.mhead .mi h2{font-size:1.1rem;color:#fff;margin-bottom:2px}
+.mhead .mi p{color:var(--muted);font-size:.78rem}
+.mcls{background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s}
+.mcls:hover{color:#fff;border-color:var(--acc)}
+.msec{background:var(--bg3);border-radius:10px;padding:13px;margin-bottom:10px}
+.mst{color:var(--acc);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px}
+.mt{width:100%;border-collapse:collapse;font-size:.83rem}
+.mt tr{border-bottom:1px solid var(--border)}
+.mt tr:last-child{border:none}
+.mt td{padding:7px 3px}
+.mt td:first-child{color:var(--muted);width:40%}
+.gsm-btn{display:block;text-align:center;margin-top:10px;padding:10px;background:rgba(124,131,253,.1);border:1px solid rgba(124,131,253,.3);border-radius:8px;color:var(--acc);font-size:.82rem;cursor:pointer;transition:.2s;text-decoration:none}
+.gsm-btn:hover{background:rgba(124,131,253,.22);text-decoration:none}
 
-/* CONVERTER */
-#convTab{display:none;padding:20px;max-width:960px;margin:0 auto}
-.conv-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:18px}
-.conv-card h2{font-size:1.2rem;color:var(--accent);margin-bottom:4px}
-.conv-card>p{color:var(--muted);font-size:.85rem;margin-bottom:20px}
-.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:.25s;margin-bottom:20px}
-.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(124,131,253,.05)}
-.upload-zone .ico{font-size:2.5rem;margin-bottom:8px}
-.upload-zone .main{color:var(--text);font-size:.9rem;margin-bottom:4px}
-.upload-zone .sub{color:var(--muted);font-size:.78rem}
-.conv-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.cg{display:flex;flex-direction:column;gap:6px}
-.cg label{color:var(--muted);font-size:.8rem;font-weight:600}
-.cg select,.cg .res-pair input{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:9px 12px;font-size:.85rem;width:100%}
-.cg select:focus,.cg .res-pair input:focus{outline:none;border-color:var(--accent)}
-.res-pair{display:flex;gap:6px;align-items:center}
-.res-pair span{color:var(--muted);font-size:.9rem}
-.fit-toggle{display:flex;gap:8px;margin-bottom:16px}
-.fit-btn{flex:1;padding:9px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;font-size:.85rem;transition:.2s}
-.fit-btn.active{background:rgba(124,131,253,.2);border-color:var(--accent);color:var(--accent)}
-.convert-btn{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;transition:.2s}
-.convert-btn:hover{background:#6a71f0}
-.conv-result{display:none;margin-top:20px}
-.result-wrap{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
-.result-frame{flex:1;min-width:200px;text-align:center}
-.result-frame .frame-label{color:var(--muted);font-size:.8rem;margin-bottom:8px;font-weight:600}
-.result-frame .frame-name{color:#fff;font-size:.9rem;margin-bottom:4px;font-weight:700}
-.result-frame canvas{max-width:100%;border-radius:10px;border:1px solid var(--border);display:block;margin:0 auto}
-.result-frame .res-info{color:var(--muted);font-size:.75rem;margin-top:6px}
-.arrow-sep{display:flex;align-items:center;padding:20px 10px;color:var(--accent);font-size:1.8rem;align-self:center}
-.download-btn{display:block;margin-top:10px;padding:7px 16px;background:rgba(124,131,253,.15);border:1px solid rgba(124,131,253,.3);border-radius:8px;color:var(--accent);font-size:.8rem;cursor:pointer;width:100%;text-align:center;transition:.2s}
-.download-btn:hover{background:rgba(124,131,253,.3)}
-.conv-info-box{background:var(--bg3);border-radius:8px;padding:12px;margin-top:16px;font-size:.82rem;color:var(--muted);line-height:1.6}
-.conv-info-box strong{color:var(--text)}
+#gsmWrap{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:600;align-items:center;justify-content:center;padding:12px;backdrop-filter:blur(6px)}
+#gsmWrap.on{display:flex}
+#gsmInner{background:var(--bg2);border:1px solid var(--border);border-radius:16px;max-width:680px;width:100%;max-height:93vh;overflow-y:auto;padding:24px}
+.gsec{margin-bottom:12px}
+.gsec h4{color:var(--acc);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.gsec table{width:100%;font-size:.82rem}
+.gsec td{padding:5px 3px;border-bottom:1px solid rgba(255,255,255,.03)}
+.gsec td:first-child{color:var(--muted);width:42%}
+.spin{display:inline-block;width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.conv-wrap{padding:16px;max-width:960px;margin:0 auto}
+.ccard{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:22px;margin-bottom:16px}
+.ccard h2{font-size:1.1rem;color:var(--acc);margin-bottom:3px}
+.ccard>p{color:var(--muted);font-size:.82rem;margin-bottom:18px}
+.upzone{border:2px dashed var(--border);border-radius:12px;padding:36px 16px;text-align:center;cursor:pointer;transition:.2s}
+.upzone:hover,.upzone.drag{border-color:var(--acc);background:rgba(124,131,253,.05)}
+.upzone .ui{font-size:2.2rem;margin-bottom:6px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+.cg label{display:block;color:var(--muted);font-size:.76rem;font-weight:600;margin-bottom:5px}
+.cg select,.cg input{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:8px 11px;font-size:.83rem;width:100%}
+.rpair{display:flex;gap:6px;align-items:center}
+.rpair span{color:var(--muted)}
+.ftog{display:flex;gap:8px;margin-bottom:14px}
+.fb{flex:1;padding:8px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;font-size:.8rem;transition:.2s}
+.fb.on{background:rgba(124,131,253,.18);border-color:var(--acc);color:var(--acc)}
+.cvbtn{width:100%;padding:13px;background:var(--acc);color:#fff;border:none;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;transition:.2s}
+.cvbtn:hover{background:#6a71f0}
+.rswrap{display:none;margin-top:18px}
+.rsrow{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.rsframe{flex:1;min-width:200px;text-align:center}
+.rsframe .flab{color:var(--muted);font-size:.75rem;margin-bottom:4px;font-weight:600}
+.rsframe .fnm{color:#fff;font-size:.85rem;margin-bottom:5px;font-weight:700}
+.rsframe canvas{max-width:100%;border-radius:8px;border:1px solid var(--border)}
+.rsframe .ri{color:var(--muted);font-size:.72rem;margin-top:5px}
+.rsarrow{display:flex;align-items:center;color:var(--acc);font-size:1.6rem;align-self:center}
+.dlbtn{display:block;margin-top:8px;padding:6px 14px;background:rgba(124,131,253,.14);border:1px solid rgba(124,131,253,.3);border-radius:8px;color:var(--acc);font-size:.78rem;cursor:pointer;width:100%;text-align:center;transition:.2s}
+.dlbtn:hover{background:rgba(124,131,253,.28)}
+.cvinf{background:var(--bg3);border-radius:8px;padding:11px;margin-top:14px;font-size:.8rem;color:var(--muted);line-height:1.65}
+.cvinf strong{color:var(--text)}
+
+.ms-wrap{padding:16px;max-width:900px;margin:0 auto}
+.ms-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:22px;margin-bottom:14px}
+.ms-card h2{font-size:1.1rem;color:var(--acc);margin-bottom:3px}
+.ms-card>p{color:var(--muted);font-size:.8rem;margin-bottom:18px}
+.rtabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.rtab{padding:6px 14px;border:1px solid var(--border);border-radius:20px;cursor:pointer;font-size:.8rem;background:transparent;color:var(--muted);transition:.2s}
+.rtab.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.rtab:hover:not(.on){border-color:var(--acc);color:var(--acc)}
+.ms-title{font-size:1rem;font-weight:700;color:#fff;margin-bottom:4px}
+.ms-sub{font-size:.77rem;color:var(--muted);margin-bottom:16px}
+.ms-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ms-brand{width:88px;text-align:right;font-size:.8rem;color:var(--text);flex-shrink:0}
+.ms-bar-wrap{flex:1;background:var(--bg4);border-radius:5px;height:22px;overflow:hidden}
+.ms-bar-fill{height:100%;border-radius:5px;transition:.6s width;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;min-width:24px}
+.ms-bar-pct{font-size:.74rem;font-weight:700;color:#fff;white-space:nowrap}
+.ms-pct-out{font-size:.77rem;color:var(--muted);width:38px;text-align:right;flex-shrink:0}
+.ms-src{font-size:.72rem;color:var(--muted);margin-top:12px;text-align:right}
+#pieCanvas{display:block;margin:0 auto 12px;max-width:260px}
+.pie-leg{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px}
+.pl-i{display:flex;align-items:center;gap:4px;font-size:.77rem;color:var(--muted)}
+.pl-d{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 
 @media(max-width:600px){
-  .conv-grid{grid-template-columns:1fr}
-  .result-wrap{flex-direction:column}
-  .arrow-sep{transform:rotate(90deg);align-self:center;padding:0;margin:10px auto}
-  header h1{font-size:1.3rem}
-  .grid{grid-template-columns:1fr}
+  .cgrid{grid-template-columns:1fr}
+  .rsrow{flex-direction:column}
+  .rsarrow{transform:rotate(90deg);align-self:center}
+  header h1{font-size:1.2rem}
+  .ms-brand{width:70px;font-size:.75rem}
 }
 </style>
 </head>
@@ -128,618 +149,432 @@ nav{display:flex;justify-content:center;gap:8px;padding:12px 16px;background:var
 
 <header>
   <h1>📱 단말기 정보 검색</h1>
-  <p>스마트폰 스펙 검색 · 게임 스크린샷 해상도 변환 · 출처 참조: GSMArena</p>
+  <p>2018년 이후 주요 스마트폰 · 벤치마크 · 시장 점유율 · GSMArena 연동</p>
 </header>
 
 <nav>
-  <button class="tab-btn active" onclick="showTab('search',this)">🔍 단말기 검색</button>
-  <button class="tab-btn" onclick="showTab('conv',this)">🖼️ 해상도 변환</button>
+  <button class="tb on" onclick="goTab('search',this)">🔍 단말기 검색</button>
+  <button class="tb" onclick="goTab('conv',this)">🖼️ 해상도 변환</button>
+  <button class="tb" onclick="goTab('ms',this)">📊 시장 점유율</button>
 </nav>
 
-<!-- ===== SEARCH TAB ===== -->
-<div id="searchTab">
-  <div class="search-box">
-    <div class="search-row">
-      <input type="text" id="q" placeholder="단말기 이름, 브랜드, 칩셋, UX 검색..." oninput="doFilter()">
-      <button onclick="doFilter()">검색</button>
+<!-- SEARCH TAB -->
+<div id="pg-search" class="page on">
+  <div class="sbar">
+    <div class="sr">
+      <input type="text" id="q" placeholder="브랜드·모델명·칩셋·UX 검색 (한글/영문 모두 가능)" oninput="debSearch()">
+      <button onclick="doSearch()">검색</button>
     </div>
-    <div class="filter-row">
-      <select id="fBrand" onchange="doFilter()">
-        <option value="">모든 브랜드</option>
-        <option>Samsung</option><option>Apple</option><option>Google</option>
-        <option>OnePlus</option><option>Xiaomi</option><option>Sony</option>
-        <option>Motorola</option><option>ASUS</option><option>LG</option>
-      </select>
-      <select id="fOS" onchange="doFilter()">
+    <div class="frow">
+      <select id="fBrand" onchange="doSearch()"><option value="">모든 브랜드</option></select>
+      <select id="fOS" onchange="doSearch()">
         <option value="">모든 OS</option>
         <option value="Android">Android</option>
         <option value="iOS">iOS</option>
       </select>
-      <select id="fYear" onchange="doFilter()">
+      <select id="fYear" onchange="doSearch()">
         <option value="">모든 연도</option>
         <option>2024</option><option>2023</option><option>2022</option>
-        <option>2021</option><option>2020</option>
+        <option>2021</option><option>2020</option><option>2019</option><option>2018</option>
       </select>
-      <select id="fSort" onchange="doFilter()">
+      <select id="fSort" onchange="doSearch()">
         <option value="year">최신순</option>
         <option value="name">이름순</option>
         <option value="display">화면 크기순</option>
         <option value="ppi">픽셀밀도순</option>
+        <option value="antutu">AnTuTu 점수순</option>
       </select>
     </div>
   </div>
-  <div class="stats" id="stats"></div>
+  <div class="stats" id="stats">로딩 중...</div>
   <div class="grid" id="grid"></div>
 </div>
 
-<!-- ===== CONVERTER TAB ===== -->
-<div id="convTab">
-  <div class="conv-card">
+<!-- CONVERTER TAB -->
+<div id="pg-conv" class="page">
+<div class="conv-wrap">
+  <div class="ccard">
     <h2>🖼️ 게임 스크린샷 해상도 변환기</h2>
-    <p>특정 단말기의 게임 스크린샷을 다른 단말기의 화면 해상도로 변환해 미리볼 수 있습니다.</p>
-
-    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('imgInput').click()">
-      <div class="ico">📤</div>
-      <div class="main">클릭하거나 이미지를 드래그하여 업로드</div>
-      <div class="sub">PNG · JPG · WEBP · GIF 지원</div>
+    <p>특정 단말기의 게임 스크린샷이 다른 단말기 해상도에서 어떻게 보이는지 확인합니다.</p>
+    <div class="upzone" id="upzone" onclick="document.getElementById('fimg').click()">
+      <div class="ui">📤</div>
+      <div style="color:var(--text);font-size:.88rem">클릭하거나 드래그하여 스크린샷 업로드</div>
+      <div style="color:var(--muted);font-size:.75rem;margin-top:3px">PNG · JPG · WEBP · GIF 지원</div>
     </div>
-    <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="onUpload(event)">
-
-    <div class="conv-grid">
-      <div class="cg">
-        <label>원본 단말기 선택</label>
-        <select id="srcDev" onchange="onSrcDevChange()">
-          <option value="manual">직접 입력</option>
-        </select>
-      </div>
-      <div class="cg">
-        <label>대상 단말기 선택</label>
-        <select id="dstDev" onchange="onDstDevChange()">
-        </select>
-      </div>
-      <div class="cg">
-        <label>원본 해상도 (픽셀)</label>
-        <div class="res-pair">
-          <input type="number" id="srcW" placeholder="너비" value="1080">
-          <span>×</span>
-          <input type="number" id="srcH" placeholder="높이" value="2400">
-        </div>
-      </div>
-      <div class="cg">
-        <label>대상 해상도 (픽셀)</label>
-        <div class="res-pair">
-          <input type="number" id="dstW" placeholder="너비" value="1440">
-          <span>×</span>
-          <input type="number" id="dstH" placeholder="높이" value="3088">
-        </div>
-      </div>
+    <input type="file" id="fimg" accept="image/*" style="display:none" onchange="onUp(event)">
+    <div class="cgrid">
+      <div class="cg"><label>원본 단말기</label><select id="cSrc" onchange="onSrcCh()"><option value="manual">직접 입력</option></select></div>
+      <div class="cg"><label>대상 단말기</label><select id="cDst" onchange="onDstCh()"></select></div>
+      <div class="cg"><label>원본 해상도</label><div class="rpair"><input type="number" id="sw" value="1080"><span>×</span><input type="number" id="sh" value="2400"></div></div>
+      <div class="cg"><label>대상 해상도</label><div class="rpair"><input type="number" id="dw" value="1440"><span>×</span><input type="number" id="dh" value="3088"></div></div>
     </div>
-
-    <div style="margin-bottom:14px">
-      <div style="color:var(--muted);font-size:.8rem;margin-bottom:6px;font-weight:600">변환 방식</div>
-      <div class="fit-toggle">
-        <button class="fit-btn active" id="fitBtn" onclick="setFit('fit',this)">📐 맞춤 (Fit) — 비율 유지, 여백 표시</button>
-        <button class="fit-btn" id="fillBtn" onclick="setFit('fill',this)">✂️ 채움 (Fill) — 화면 가득, 잘림 허용</button>
-      </div>
+    <div class="ftog">
+      <button class="fb on" onclick="setFit('fit',this)">📐 맞춤 (Fit) — 비율 유지</button>
+      <button class="fb" onclick="setFit('fill',this)">✂️ 채움 (Fill) — 화면 가득</button>
     </div>
-
-    <button class="convert-btn" onclick="doConvert()">🔄 해상도 변환 미리보기</button>
-
-    <div class="conv-result" id="convResult">
-      <div class="result-wrap">
-        <div class="result-frame" id="srcFrame">
-          <div class="frame-label">원본</div>
-          <div class="frame-name" id="srcFrameName">—</div>
-          <canvas id="srcCanvas"></canvas>
-          <div class="res-info" id="srcResInfo"></div>
-        </div>
-        <div class="arrow-sep">→</div>
-        <div class="result-frame" id="dstFrame">
-          <div class="frame-label">변환 결과</div>
-          <div class="frame-name" id="dstFrameName">—</div>
-          <canvas id="dstCanvas"></canvas>
-          <div class="res-info" id="dstResInfo"></div>
-          <button class="download-btn" onclick="downloadResult()">⬇️ 변환 이미지 저장</button>
-        </div>
+    <button class="cvbtn" onclick="doConv()">🔄 해상도 변환 미리보기</button>
+    <div class="rswrap" id="rswrap">
+      <div class="rsrow">
+        <div class="rsframe"><div class="flab">원본</div><div class="fnm" id="fnSrc"></div><canvas id="cSrcC"></canvas><div class="ri" id="riSrc"></div></div>
+        <div class="rsarrow">→</div>
+        <div class="rsframe"><div class="flab">변환 결과</div><div class="fnm" id="fnDst"></div><canvas id="cDstC"></canvas><div class="ri" id="riDst"></div><button class="dlbtn" onclick="dlConv()">⬇️ 변환 이미지 저장</button></div>
       </div>
-      <div class="conv-info-box" id="convInfoBox"></div>
+      <div class="cvinf" id="cvinf"></div>
     </div>
   </div>
 </div>
+</div>
 
-<!-- ===== MODAL ===== -->
-<div class="overlay" id="overlay" onclick="closeOverlay(event)">
-  <div class="modal" id="modal">
-    <div class="modal-head">
-      <div class="info">
-        <h2 id="mTitle"></h2>
-        <p id="mSub"></p>
+<!-- MARKET SHARE TAB -->
+<div id="pg-ms" class="page">
+<div class="ms-wrap">
+  <div class="ms-card">
+    <h2>📊 국가별 스마트폰 시장 점유율</h2>
+    <p id="ms-meta">로딩 중...</p>
+    <div class="rtabs" id="rtabs"></div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1;min-width:240px">
+        <div class="ms-title" id="msTitle"></div>
+        <div class="ms-sub" id="msSub"></div>
+        <div id="msBars"></div>
+        <div class="ms-src" id="msSrc">※ 데이터는 추정치이며 실제 수치와 다를 수 있습니다.</div>
       </div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div style="min-width:240px;max-width:300px;flex-shrink:0">
+        <canvas id="pieCanvas" width="260" height="260"></canvas>
+        <div class="pie-leg" id="pieLeg"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Device Modal -->
+<div class="overlay" id="overlay" onclick="maybeClose(event)">
+  <div class="modal">
+    <div class="mhead">
+      <div class="mi"><h2 id="mName"></h2><p id="mSub2"></p></div>
+      <button class="mcls" onclick="closeModal()">✕</button>
     </div>
     <div id="mBody"></div>
   </div>
 </div>
 
+<!-- GSMArena Modal -->
+<div id="gsmWrap" onclick="maybeCloseGsm(event)">
+  <div id="gsmInner">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h2 id="gsmTitle" style="font-size:1.05rem;color:var(--acc)"></h2>
+      <button class="mcls" onclick="closeGsm()">✕</button>
+    </div>
+    <div id="gsmBody"></div>
+  </div>
+</div>
+
 <script>
-// ========== DEVICE DATABASE ==========
-const DB = [
-  // Samsung 2024
-  {id:1,brand:'Samsung',name:'Galaxy S24 Ultra',year:2024,
-   chip:'Snapdragon 8 Gen 3 for Galaxy',ram:'12GB',storage:'256GB/512GB/1TB',
-   disp:{inch:6.8,w:1440,h:3088,type:'Dynamic AMOLED 2X',ppi:500,hz:'1-120Hz'},
-   os:'Android 14',ux:'One UI 6.1',bat:'5000mAh',cam:'200+12+10+50MP',wt:'232g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:2,brand:'Samsung',name:'Galaxy S24+',year:2024,
-   chip:'Snapdragon 8 Gen 3 for Galaxy',ram:'12GB',storage:'256GB/512GB',
-   disp:{inch:6.7,w:1080,h:2340,type:'Dynamic AMOLED 2X',ppi:505,hz:'1-120Hz'},
-   os:'Android 14',ux:'One UI 6.1',bat:'4900mAh',cam:'50+12+10MP',wt:'196g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:3,brand:'Samsung',name:'Galaxy S24',year:2024,
-   chip:'Snapdragon 8 Gen 3 for Galaxy',ram:'8GB',storage:'128GB/256GB',
-   disp:{inch:6.2,w:1080,h:2340,type:'Dynamic AMOLED 2X',ppi:416,hz:'1-120Hz'},
-   os:'Android 14',ux:'One UI 6.1',bat:'4000mAh',cam:'50+12+10MP',wt:'167g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:4,brand:'Samsung',name:'Galaxy Z Fold 6',year:2024,
-   chip:'Snapdragon 8 Gen 3 for Galaxy',ram:'12GB',storage:'256GB/512GB/1TB',
-   disp:{inch:7.6,w:1856,h:2160,type:'Dynamic AMOLED 2X (내부) / 6.3" AMOLED (외부)',ppi:374,hz:'1-120Hz'},
-   os:'Android 14',ux:'One UI 6.1.1',bat:'4400mAh',cam:'50+12+10MP',wt:'239g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:5,brand:'Samsung',name:'Galaxy Z Flip 6',year:2024,
-   chip:'Snapdragon 8 Gen 3 for Galaxy',ram:'12GB',storage:'256GB/512GB',
-   disp:{inch:6.7,w:1080,h:2640,type:'Dynamic AMOLED 2X',ppi:426,hz:'1-120Hz'},
-   os:'Android 14',ux:'One UI 6.1.1',bat:'4000mAh',cam:'50+12MP',wt:'187g',net:'5G',usb:'USB 3.2 Gen 2'},
-  // Samsung 2023
-  {id:6,brand:'Samsung',name:'Galaxy S23 Ultra',year:2023,
-   chip:'Snapdragon 8 Gen 2 for Galaxy',ram:'8GB/12GB',storage:'256GB/512GB/1TB',
-   disp:{inch:6.8,w:1440,h:3088,type:'Dynamic AMOLED 2X',ppi:500,hz:'1-120Hz'},
-   os:'Android 13',ux:'One UI 5.1',bat:'5000mAh',cam:'200+12+10+10MP',wt:'234g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:7,brand:'Samsung',name:'Galaxy S23+',year:2023,
-   chip:'Snapdragon 8 Gen 2 for Galaxy',ram:'8GB',storage:'256GB/512GB',
-   disp:{inch:6.6,w:1080,h:2340,type:'Dynamic AMOLED 2X',ppi:393,hz:'48-120Hz'},
-   os:'Android 13',ux:'One UI 5.1',bat:'4700mAh',cam:'50+12+10MP',wt:'195g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:8,brand:'Samsung',name:'Galaxy S23',year:2023,
-   chip:'Snapdragon 8 Gen 2 for Galaxy',ram:'8GB',storage:'128GB/256GB',
-   disp:{inch:6.1,w:1080,h:2340,type:'Dynamic AMOLED 2X',ppi:425,hz:'48-120Hz'},
-   os:'Android 13',ux:'One UI 5.1',bat:'3900mAh',cam:'50+12+10MP',wt:'168g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:9,brand:'Samsung',name:'Galaxy Z Fold 5',year:2023,
-   chip:'Snapdragon 8 Gen 2 for Galaxy',ram:'12GB',storage:'256GB/512GB/1TB',
-   disp:{inch:7.6,w:1812,h:2176,type:'Dynamic AMOLED 2X (내부) / 6.2" AMOLED (외부)',ppi:374,hz:'1-120Hz'},
-   os:'Android 13',ux:'One UI 5.1.1',bat:'4400mAh',cam:'50+12+10MP',wt:'253g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:10,brand:'Samsung',name:'Galaxy Z Flip 5',year:2023,
-   chip:'Snapdragon 8 Gen 2 for Galaxy',ram:'8GB',storage:'256GB/512GB',
-   disp:{inch:6.7,w:1080,h:2640,type:'Dynamic AMOLED 2X',ppi:426,hz:'1-120Hz'},
-   os:'Android 13',ux:'One UI 5.1.1',bat:'3700mAh',cam:'12+12MP',wt:'187g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:11,brand:'Samsung',name:'Galaxy A54 5G',year:2023,
-   chip:'Exynos 1380',ram:'6GB/8GB',storage:'128GB/256GB',
-   disp:{inch:6.4,w:1080,h:2340,type:'Super AMOLED',ppi:403,hz:'120Hz'},
-   os:'Android 13',ux:'One UI 5.1',bat:'5000mAh',cam:'50+12+5MP',wt:'202g',net:'5G',usb:'USB 2.0'},
-  // Samsung 2022
-  {id:12,brand:'Samsung',name:'Galaxy S22 Ultra',year:2022,
-   chip:'Exynos 2200 / Snapdragon 8 Gen 1',ram:'8GB/12GB',storage:'128GB~1TB',
-   disp:{inch:6.8,w:1440,h:3088,type:'Dynamic AMOLED 2X',ppi:500,hz:'1-120Hz'},
-   os:'Android 12',ux:'One UI 4.1',bat:'5000mAh',cam:'108+12+10+10MP',wt:'228g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:13,brand:'Samsung',name:'Galaxy S21 FE 5G',year:2022,
-   chip:'Snapdragon 888 / Exynos 2100',ram:'6GB/8GB',storage:'128GB/256GB',
-   disp:{inch:6.4,w:1080,h:2340,type:'Dynamic AMOLED 2X',ppi:403,hz:'120Hz'},
-   os:'Android 12',ux:'One UI 4.1',bat:'4500mAh',cam:'12+8+32MP',wt:'177g',net:'5G',usb:'USB 2.0'},
-  // Apple 2024
-  {id:14,brand:'Apple',name:'iPhone 16 Pro Max',year:2024,
-   chip:'Apple A18 Pro',ram:'8GB',storage:'256GB/512GB/1TB',
-   disp:{inch:6.9,w:1320,h:2868,type:'Super Retina XDR OLED',ppi:460,hz:'1-120Hz ProMotion'},
-   os:'iOS 18',ux:'iOS',bat:'4685mAh',cam:'48+12+48MP',wt:'227g',net:'5G',usb:'USB 3 (USB-C)'},
-  {id:15,brand:'Apple',name:'iPhone 16 Pro',year:2024,
-   chip:'Apple A18 Pro',ram:'8GB',storage:'128GB~1TB',
-   disp:{inch:6.3,w:1206,h:2622,type:'Super Retina XDR OLED',ppi:460,hz:'1-120Hz ProMotion'},
-   os:'iOS 18',ux:'iOS',bat:'3582mAh',cam:'48+12+48MP',wt:'199g',net:'5G',usb:'USB 3 (USB-C)'},
-  {id:16,brand:'Apple',name:'iPhone 16 Plus',year:2024,
-   chip:'Apple A18',ram:'8GB',storage:'128GB~512GB',
-   disp:{inch:6.7,w:1290,h:2796,type:'Super Retina XDR OLED',ppi:460,hz:'60Hz'},
-   os:'iOS 18',ux:'iOS',bat:'4674mAh',cam:'48+12MP',wt:'203g',net:'5G',usb:'USB 2 (USB-C)'},
-  {id:17,brand:'Apple',name:'iPhone 16',year:2024,
-   chip:'Apple A18',ram:'8GB',storage:'128GB~512GB',
-   disp:{inch:6.1,w:1179,h:2556,type:'Super Retina XDR OLED',ppi:460,hz:'60Hz'},
-   os:'iOS 18',ux:'iOS',bat:'3561mAh',cam:'48+12MP',wt:'170g',net:'5G',usb:'USB 2 (USB-C)'},
-  // Apple 2023
-  {id:18,brand:'Apple',name:'iPhone 15 Pro Max',year:2023,
-   chip:'Apple A17 Pro',ram:'8GB',storage:'256GB~1TB',
-   disp:{inch:6.7,w:1290,h:2796,type:'Super Retina XDR OLED',ppi:460,hz:'1-120Hz ProMotion'},
-   os:'iOS 17',ux:'iOS',bat:'4422mAh',cam:'48+12+12MP',wt:'221g',net:'5G',usb:'USB 3 (USB-C)'},
-  {id:19,brand:'Apple',name:'iPhone 15 Pro',year:2023,
-   chip:'Apple A17 Pro',ram:'8GB',storage:'128GB~1TB',
-   disp:{inch:6.1,w:1179,h:2556,type:'Super Retina XDR OLED',ppi:460,hz:'1-120Hz ProMotion'},
-   os:'iOS 17',ux:'iOS',bat:'3274mAh',cam:'48+12+12MP',wt:'187g',net:'5G',usb:'USB 3 (USB-C)'},
-  {id:20,brand:'Apple',name:'iPhone 15 Plus',year:2023,
-   chip:'Apple A16 Bionic',ram:'6GB',storage:'128GB~512GB',
-   disp:{inch:6.7,w:1284,h:2778,type:'Super Retina XDR OLED',ppi:460,hz:'60Hz'},
-   os:'iOS 17',ux:'iOS',bat:'4383mAh',cam:'48+12MP',wt:'201g',net:'5G',usb:'USB 2 (USB-C)'},
-  {id:21,brand:'Apple',name:'iPhone 15',year:2023,
-   chip:'Apple A16 Bionic',ram:'6GB',storage:'128GB~512GB',
-   disp:{inch:6.1,w:1179,h:2556,type:'Super Retina XDR OLED',ppi:460,hz:'60Hz'},
-   os:'iOS 17',ux:'iOS',bat:'3349mAh',cam:'48+12MP',wt:'171g',net:'5G',usb:'USB 2 (USB-C)'},
-  // Apple 2022
-  {id:22,brand:'Apple',name:'iPhone 14 Pro Max',year:2022,
-   chip:'Apple A16 Bionic',ram:'6GB',storage:'128GB~1TB',
-   disp:{inch:6.7,w:1290,h:2796,type:'Super Retina XDR OLED',ppi:460,hz:'1-120Hz ProMotion'},
-   os:'iOS 16',ux:'iOS',bat:'4323mAh',cam:'48+12+12MP',wt:'240g',net:'5G',usb:'Lightning'},
-  {id:23,brand:'Apple',name:'iPhone 14 Pro',year:2022,
-   chip:'Apple A16 Bionic',ram:'6GB',storage:'128GB~1TB',
-   disp:{inch:6.1,w:1179,h:2556,type:'Super Retina XDR OLED',ppi:460,hz:'1-120Hz ProMotion'},
-   os:'iOS 16',ux:'iOS',bat:'3200mAh',cam:'48+12+12MP',wt:'206g',net:'5G',usb:'Lightning'},
-  {id:24,brand:'Apple',name:'iPhone 14',year:2022,
-   chip:'Apple A15 Bionic',ram:'6GB',storage:'128GB~512GB',
-   disp:{inch:6.1,w:1170,h:2532,type:'Super Retina XDR OLED',ppi:460,hz:'60Hz'},
-   os:'iOS 16',ux:'iOS',bat:'3279mAh',cam:'12+12MP',wt:'172g',net:'5G',usb:'Lightning'},
-  {id:25,brand:'Apple',name:'iPhone SE (2022)',year:2022,
-   chip:'Apple A15 Bionic',ram:'4GB',storage:'64GB~256GB',
-   disp:{inch:4.7,w:750,h:1334,type:'Retina IPS LCD',ppi:326,hz:'60Hz'},
-   os:'iOS 15',ux:'iOS',bat:'2018mAh',cam:'12MP',wt:'144g',net:'5G',usb:'Lightning'},
-  // Google 2024
-  {id:26,brand:'Google',name:'Pixel 9 Pro XL',year:2024,
-   chip:'Google Tensor G4',ram:'16GB',storage:'128GB~1TB',
-   disp:{inch:6.8,w:1344,h:2992,type:'LTPO OLED',ppi:486,hz:'1-120Hz'},
-   os:'Android 14',ux:'Stock Android',bat:'5060mAh',cam:'50+48+48MP',wt:'221g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:27,brand:'Google',name:'Pixel 9 Pro',year:2024,
-   chip:'Google Tensor G4',ram:'16GB',storage:'128GB~1TB',
-   disp:{inch:6.3,w:1280,h:2856,type:'LTPO OLED',ppi:495,hz:'1-120Hz'},
-   os:'Android 14',ux:'Stock Android',bat:'4700mAh',cam:'50+48+48MP',wt:'199g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:28,brand:'Google',name:'Pixel 9',year:2024,
-   chip:'Google Tensor G4',ram:'12GB',storage:'128GB/256GB',
-   disp:{inch:6.3,w:1080,h:2424,type:'OLED',ppi:422,hz:'60-120Hz'},
-   os:'Android 14',ux:'Stock Android',bat:'4700mAh',cam:'50+10.5MP',wt:'198g',net:'5G',usb:'USB 3.2 Gen 2'},
-  // Google 2023
-  {id:29,brand:'Google',name:'Pixel 8 Pro',year:2023,
-   chip:'Google Tensor G3',ram:'12GB',storage:'128GB~1TB',
-   disp:{inch:6.7,w:1344,h:2992,type:'LTPO OLED',ppi:489,hz:'1-120Hz'},
-   os:'Android 14',ux:'Stock Android',bat:'5050mAh',cam:'50+48+48MP',wt:'213g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:30,brand:'Google',name:'Pixel 8',year:2023,
-   chip:'Google Tensor G3',ram:'8GB',storage:'128GB/256GB',
-   disp:{inch:6.2,w:1080,h:2400,type:'OLED',ppi:428,hz:'60-120Hz'},
-   os:'Android 14',ux:'Stock Android',bat:'4575mAh',cam:'50+12MP',wt:'187g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:31,brand:'Google',name:'Pixel 7 Pro',year:2022,
-   chip:'Google Tensor G2',ram:'12GB',storage:'128GB~512GB',
-   disp:{inch:6.7,w:1440,h:3120,type:'LTPO OLED',ppi:512,hz:'1-120Hz'},
-   os:'Android 13',ux:'Stock Android',bat:'5000mAh',cam:'50+48+12MP',wt:'212g',net:'5G',usb:'USB 3.2 Gen 2'},
-  // OnePlus
-  {id:32,brand:'OnePlus',name:'OnePlus 12',year:2024,
-   chip:'Snapdragon 8 Gen 3',ram:'12GB/16GB',storage:'256GB/512GB',
-   disp:{inch:6.82,w:1440,h:3168,type:'LTPO AMOLED',ppi:510,hz:'1-120Hz'},
-   os:'Android 14',ux:'OxygenOS 14',bat:'5400mAh',cam:'50+48+64MP',wt:'220g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:33,brand:'OnePlus',name:'OnePlus 11',year:2023,
-   chip:'Snapdragon 8 Gen 2',ram:'8GB/12GB/16GB',storage:'128GB/256GB',
-   disp:{inch:6.7,w:1440,h:3216,type:'LTPO3 AMOLED',ppi:525,hz:'1-120Hz'},
-   os:'Android 13',ux:'OxygenOS 13',bat:'5000mAh',cam:'50+48+32MP',wt:'205g',net:'5G',usb:'USB 3.1 Gen 1'},
-  {id:34,brand:'OnePlus',name:'OnePlus Open',year:2023,
-   chip:'Snapdragon 8 Gen 2',ram:'16GB',storage:'512GB',
-   disp:{inch:7.82,w:2268,h:2440,type:'LTPO3 AMOLED (내부) / 6.31" AMOLED (외부)',ppi:426,hz:'1-120Hz'},
-   os:'Android 13',ux:'OxygenOS 13.2',bat:'4805mAh',cam:'48+48+64MP',wt:'245g',net:'5G',usb:'USB 3.1 Gen 1'},
-  // Xiaomi
-  {id:35,brand:'Xiaomi',name:'Xiaomi 14 Ultra',year:2024,
-   chip:'Snapdragon 8 Gen 3',ram:'16GB',storage:'256GB~1TB',
-   disp:{inch:6.73,w:1440,h:3200,type:'LTPO AMOLED',ppi:522,hz:'1-120Hz'},
-   os:'Android 14',ux:'HyperOS',bat:'5000mAh',cam:'50+50+50MP+ToF',wt:'229g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:36,brand:'Xiaomi',name:'Xiaomi 14 Pro',year:2024,
-   chip:'Snapdragon 8 Gen 3',ram:'12GB/16GB',storage:'256GB~1TB',
-   disp:{inch:6.73,w:1440,h:3200,type:'LTPO AMOLED',ppi:522,hz:'1-120Hz'},
-   os:'Android 14',ux:'HyperOS',bat:'4880mAh',cam:'50+50+50MP',wt:'223g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:37,brand:'Xiaomi',name:'Xiaomi 14',year:2024,
-   chip:'Snapdragon 8 Gen 3',ram:'12GB/16GB',storage:'256GB~1TB',
-   disp:{inch:6.36,w:1200,h:2670,type:'LTPO AMOLED',ppi:460,hz:'1-120Hz'},
-   os:'Android 14',ux:'HyperOS',bat:'4610mAh',cam:'50+50+50MP',wt:'193g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:38,brand:'Xiaomi',name:'Redmi Note 13 Pro+ 5G',year:2023,
-   chip:'Dimensity 7200-Ultra',ram:'8GB/12GB',storage:'256GB/512GB',
-   disp:{inch:6.67,w:1220,h:2712,type:'AMOLED',ppi:446,hz:'120Hz'},
-   os:'Android 13',ux:'MIUI 14',bat:'5000mAh',cam:'200+8+2MP',wt:'204g',net:'5G',usb:'USB 2.0'},
-  {id:39,brand:'Xiaomi',name:'POCO F5 Pro',year:2023,
-   chip:'Snapdragon 8 Gen 2',ram:'12GB',storage:'256GB/512GB',
-   disp:{inch:6.67,w:1440,h:3200,type:'LTPO AMOLED',ppi:526,hz:'1-120Hz'},
-   os:'Android 13',ux:'MIUI 14',bat:'5160mAh',cam:'64+8+2MP',wt:'204g',net:'5G',usb:'USB 2.0'},
-  // Sony
-  {id:40,brand:'Sony',name:'Xperia 1 VI',year:2024,
-   chip:'Snapdragon 8 Gen 3',ram:'12GB',storage:'256GB/512GB',
-   disp:{inch:6.5,w:1080,h:2340,type:'OLED',ppi:396,hz:'1-120Hz'},
-   os:'Android 14',ux:'Stock Android',bat:'5000mAh',cam:'52+48+12MP',wt:'192g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:41,brand:'Sony',name:'Xperia 5 V',year:2023,
-   chip:'Snapdragon 8 Gen 2',ram:'8GB',storage:'128GB/256GB',
-   disp:{inch:6.1,w:1080,h:2520,type:'OLED',ppi:449,hz:'120Hz'},
-   os:'Android 13',ux:'Stock Android',bat:'5000mAh',cam:'48+12MP',wt:'182g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:42,brand:'Sony',name:'Xperia 1 V',year:2023,
-   chip:'Snapdragon 8 Gen 2',ram:'12GB',storage:'256GB/512GB',
-   disp:{inch:6.5,w:1644,h:3840,type:'4K OLED',ppi:643,hz:'120Hz'},
-   os:'Android 13',ux:'Stock Android',bat:'5000mAh',cam:'52+12+52MP',wt:'187g',net:'5G',usb:'USB 3.2 Gen 2'},
-  // Motorola
-  {id:43,brand:'Motorola',name:'Edge 50 Ultra',year:2024,
-   chip:'Snapdragon 8s Gen 3',ram:'12GB',storage:'512GB',
-   disp:{inch:6.7,w:1220,h:2712,type:'pOLED',ppi:446,hz:'144Hz'},
-   os:'Android 14',ux:'My UX',bat:'4500mAh',cam:'50+64+13MP',wt:'206g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:44,brand:'Motorola',name:'Edge 40 Pro',year:2023,
-   chip:'Snapdragon 8 Gen 2',ram:'12GB',storage:'256GB',
-   disp:{inch:6.67,w:1080,h:2400,type:'pOLED',ppi:394,hz:'165Hz'},
-   os:'Android 13',ux:'My UX',bat:'4600mAh',cam:'50+50+12MP',wt:'199g',net:'5G',usb:'USB 3.1 Gen 1'},
-  // ASUS
-  {id:45,brand:'ASUS',name:'ROG Phone 8 Pro',year:2024,
-   chip:'Snapdragon 8 Gen 3',ram:'24GB',storage:'1TB',
-   disp:{inch:6.78,w:1080,h:2400,type:'AMOLED',ppi:388,hz:'165Hz'},
-   os:'Android 14',ux:'ROG UI',bat:'5500mAh',cam:'50+13+32MP',wt:'225g',net:'5G',usb:'USB 3.2 Gen 2'},
-  {id:46,brand:'ASUS',name:'Zenfone 11 Ultra',year:2024,
-   chip:'Snapdragon 8 Gen 3',ram:'12GB/16GB',storage:'256GB/512GB',
-   disp:{inch:6.78,w:1080,h:2400,type:'AMOLED',ppi:388,hz:'144Hz'},
-   os:'Android 14',ux:'ZenUI',bat:'5800mAh',cam:'50+13+32MP',wt:'224g',net:'5G',usb:'USB 3.2 Gen 2'},
-  // LG (discontinued)
-  {id:47,brand:'LG',name:'LG V60 ThinQ 5G',year:2020,
-   chip:'Snapdragon 865',ram:'8GB',storage:'128GB',
-   disp:{inch:6.8,w:1080,h:2460,type:'OLED',ppi:395,hz:'60Hz'},
-   os:'Android 10',ux:'LG UX 9.0',bat:'5000mAh',cam:'64+13+ToF',wt:'213g',net:'5G',usb:'USB 3.1 Gen 1'},
-  {id:48,brand:'LG',name:'LG Wing 5G',year:2020,
-   chip:'Snapdragon 765G',ram:'8GB',storage:'128GB/256GB',
-   disp:{inch:6.8,w:1080,h:2460,type:'P-OLED (회전형)',ppi:395,hz:'60Hz'},
-   os:'Android 10',ux:'LG UX 9.5',bat:'4000mAh',cam:'64+13+12MP',wt:'260g',net:'5G',usb:'USB 2.0'},
-  {id:49,brand:'LG',name:'LG Velvet 5G',year:2020,
-   chip:'Snapdragon 765G / Dimensity 1000C',ram:'6GB/8GB',storage:'128GB',
-   disp:{inch:6.8,w:1080,h:2460,type:'P-OLED',ppi:395,hz:'60Hz'},
-   os:'Android 10',ux:'LG UX 10.0',bat:'4300mAh',cam:'48+8+5MP',wt:'180g',net:'5G',usb:'USB 2.0'},
-];
+let cache=[], fitMode='fit', upImg=null, msData=null, stTimer=null;
+const MAX_AT=2200000;
+const UXC={'One UI':'#1428A0','iOS':'#555','Stock Android':'#34A853','OxygenOS':'#F05100',
+  'HyperOS':'#FF6900','MIUI':'#FF4A00','My UX':'#EA3735','ROG UI':'#9C1AFF',
+  'ZenUI':'#00BBFF','LG UX':'#A50034','ColorOS':'#1A7FFF','OriginOS':'#4B6BFF',
+  'EMUI':'#CF0A2C','realme UI':'#FFA500'};
+function uxC(ux){for(const[k,v]of Object.entries(UXC))if(ux.includes(k))return v;return'#7c83fd'}
 
-// UX badge colors
-const uxColors={
-  'One UI':'#1428A0','iOS':'#555555','Stock Android':'#34A853',
-  'OxygenOS':'#F05100','HyperOS':'#FF6900','MIUI':'#FF4A00',
-  'My UX':'#EA3735','ROG UI':'#9C1AFF','ZenUI':'#00BBFF',
-  'LG UX':'#A50034'
-};
-function uxColor(ux){
-  for(const k in uxColors) if(ux.includes(k)) return uxColors[k];
-  return '#7c83fd';
+// TABS
+function goTab(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  btn.classList.add('on');
+  if(id==='ms'&&!msData)loadMS();
 }
 
-// ===== FILTER & RENDER =====
-let filtered=[...DB];
-function doFilter(){
-  const q=document.getElementById('q').value.toLowerCase();
-  const b=document.getElementById('fBrand').value;
-  const o=document.getElementById('fOS').value;
-  const y=document.getElementById('fYear').value;
-  const s=document.getElementById('fSort').value;
-  filtered=DB.filter(d=>{
-    if(b&&d.brand!==b) return false;
-    if(o&&!d.os.includes(o)) return false;
-    if(y&&d.year!==+y) return false;
-    if(q&&!`${d.brand} ${d.name} ${d.chip} ${d.ux} ${d.os}`.toLowerCase().includes(q)) return false;
-    return true;
+// SEARCH
+async function loadBrands(){
+  const BKO={Samsung:'삼성',Apple:'애플',Google:'구글',Xiaomi:'샤오미',OnePlus:'원플러스',
+    Huawei:'화웨이',Sony:'소니',Motorola:'모토로라',ASUS:'에이수스',LG:'LG',Nokia:'노키아',
+    OPPO:'오포',vivo:'비보',realme:'리얼미',Fairphone:'페어폰'};
+  try{
+    const b=await(await fetch('/api/brands')).json();
+    const sel=document.getElementById('fBrand');
+    b.forEach(br=>{const o=new Option((BKO[br]?BKO[br]+' ':'')+`(${br})`,br);sel.appendChild(o)});
+  }catch(e){}
+}
+
+function debSearch(){clearTimeout(stTimer);stTimer=setTimeout(doSearch,320)}
+
+async function doSearch(){
+  const p=new URLSearchParams({
+    q:document.getElementById('q').value.trim(),
+    brand:document.getElementById('fBrand').value,
+    os:document.getElementById('fOS').value,
+    year:document.getElementById('fYear').value,
+    sort:document.getElementById('fSort').value,
+    limit:120
   });
-  if(s==='year') filtered.sort((a,b)=>b.year-a.year);
-  else if(s==='name') filtered.sort((a,b)=>a.name.localeCompare(b.name));
-  else if(s==='display') filtered.sort((a,b)=>b.disp.inch-a.disp.inch);
-  else if(s==='ppi') filtered.sort((a,b)=>b.disp.ppi-a.disp.ppi);
-  render();
+  try{
+    const data=await(await fetch('/api/search?'+p)).json();
+    cache=data.devices;
+    document.getElementById('stats').textContent=`총 ${data.total}개 단말기 검색됨`;
+    renderGrid(data.devices);
+  }catch(e){document.getElementById('stats').textContent='서버 연결 오류'}
 }
 
-function render(){
+function renderGrid(devs){
   const g=document.getElementById('grid');
-  document.getElementById('stats').textContent=`총 ${filtered.length}개 단말기 (전체 ${DB.length}개)`;
-  if(!filtered.length){
-    g.innerHTML='<div class="no-result" style="grid-column:1/-1">😔 검색 결과가 없습니다.<br>다른 키워드로 시도해보세요.</div>';
-    return;
-  }
-  g.innerHTML=filtered.map(d=>`
-    <div class="card" onclick="openModal(${d.id})">
-      <span class="brand-tag">${d.brand}</span>
+  if(!devs.length){g.innerHTML='<div class="no-res">😔 검색 결과가 없습니다.<br>다른 키워드를 시도해보세요.</div>';return}
+  g.innerHTML=devs.map(d=>{
+    const pct=d.bench?.antutu?Math.min(100,d.bench.antutu/MAX_AT*100):0;
+    return`<div class="card" onclick="openModal(${d.id})">
+      <span class="btag">${d.brandKo?d.brandKo+' ':''} (${d.brand})</span>
       <h3>${d.name}</h3>
-      <div class="year-tag">${d.year}년 출시</div>
-      <ul class="spec-rows">
+      <div class="yr">${d.year}년 출시 · ${d.net}</div>
+      <ul class="srows">
         <li><span class="k">프로세서</span><span class="v">${d.chip}</span></li>
         <li><span class="k">메모리</span><span class="v">${d.ram}</span></li>
-        <li><span class="k">화면 크기</span><span class="v">${d.disp.inch}" · ${d.disp.ppi}ppi</span></li>
-        <li><span class="k">해상도</span><span class="v">${d.disp.w}×${d.disp.h}</span></li>
-        <li><span class="k">운영체제</span><span class="v">${d.os}</span></li>
-        <li><span class="k">UX</span><span class="v"><span class="badge-ux" style="background:${uxColor(d.ux)}">${d.ux}</span></span></li>
+        <li><span class="k">디스플레이</span><span class="v">${d.disp.inch}" ${d.disp.w}×${d.disp.h}</span></li>
+        <li><span class="k">OS</span><span class="v">${d.os}</span></li>
+        <li><span class="k">UX</span><span class="v"><span class="ux-badge" style="background:${uxC(d.ux)}">${d.ux}</span></span></li>
       </ul>
-    </div>
-  `).join('');
+      ${d.bench?.antutu?`<div class="brow">
+        <div class="bl">AnTuTu · <strong style="color:var(--text)">${(d.bench.antutu/1000).toFixed(0)}K</strong>
+        ${d.bench.gb6s?` · GB6 단일 <strong style="color:var(--text)">${d.bench.gb6s}</strong>`:''}</div>
+        <div class="bbar"><div class="bf" style="width:${pct}%"></div></div>
+      </div>`:''}
+    </div>`;
+  }).join('');
 }
 
-// ===== MODAL =====
-function openModal(id){
-  const d=DB.find(x=>x.id===id);
-  if(!d) return;
-  document.getElementById('mTitle').textContent=`${d.brand} ${d.name}`;
-  document.getElementById('mSub').textContent=`${d.year}년 출시 · ${d.net}`;
+// MODAL
+async function openModal(id){
+  let d=cache.find(x=>x.id===id);
+  if(!d){try{d=await(await fetch('/api/device/'+id)).json()}catch(e){return}}
+  document.getElementById('mName').textContent=`${d.brandKo?d.brandKo+' ('+d.brand+')':d.brand} ${d.name}`;
+  document.getElementById('mSub2').textContent=`${d.year}년 출시 · ${d.net}`;
+  const at=d.bench?.antutu,gs=d.bench?.gb6s,gm=d.bench?.gb6m;
+  const pct=at?Math.min(100,at/MAX_AT*100):0;
   document.getElementById('mBody').innerHTML=`
-    <div class="msec">
-      <div class="msec-title">⚡ 프로세서 & 메모리</div>
-      <table class="mtable">
+    <div class="msec"><div class="mst">⚡ 프로세서 & 메모리</div>
+      <table class="mt">
         <tr><td>칩셋</td><td>${d.chip}</td></tr>
         <tr><td>RAM</td><td>${d.ram}</td></tr>
         <tr><td>저장 공간</td><td>${d.storage}</td></tr>
-      </table>
+      </table></div>
+    <div class="msec"><div class="mst">🏆 벤치마크 (참고치)</div>
+      ${at?`<table class="mt">
+        <tr><td>AnTuTu v10</td><td><strong>${at.toLocaleString()}</strong>
+          <div class="bbar" style="margin-top:4px"><div class="bf" style="width:${pct}%"></div></div></td></tr>
+        ${gs?`<tr><td>Geekbench 6 단일</td><td>${gs.toLocaleString()}</td></tr>`:''}
+        ${gm?`<tr><td>Geekbench 6 멀티</td><td>${gm.toLocaleString()}</td></tr>`:''}
+      </table>`:'<p style="color:var(--muted);font-size:.8rem">벤치마크 데이터 없음</p>'}
     </div>
-    <div class="msec">
-      <div class="msec-title">🖥️ 디스플레이</div>
-      <table class="mtable">
+    <div class="msec"><div class="mst">🖥️ 디스플레이</div>
+      <table class="mt">
         <tr><td>화면 크기</td><td>${d.disp.inch}"</td></tr>
         <tr><td>해상도</td><td>${d.disp.w} × ${d.disp.h} px</td></tr>
         <tr><td>패널 타입</td><td>${d.disp.type}</td></tr>
         <tr><td>픽셀 밀도</td><td>${d.disp.ppi} PPI</td></tr>
         <tr><td>주사율</td><td>${d.disp.hz}</td></tr>
-      </table>
-    </div>
-    <div class="msec">
-      <div class="msec-title">📱 소프트웨어</div>
-      <table class="mtable">
+      </table></div>
+    <div class="msec"><div class="mst">📱 소프트웨어</div>
+      <table class="mt">
         <tr><td>운영체제</td><td>${d.os}</td></tr>
-        <tr><td>UX/UI</td><td><span class="badge-ux" style="background:${uxColor(d.ux)}">${d.ux}</span></td></tr>
-      </table>
-    </div>
-    <div class="msec">
-      <div class="msec-title">📷 기타 사양</div>
-      <table class="mtable">
+        <tr><td>UX/UI</td><td><span class="ux-badge" style="background:${uxC(d.ux)}">${d.ux}</span></td></tr>
+      </table></div>
+    <div class="msec"><div class="mst">📋 기타 사양</div>
+      <table class="mt">
         <tr><td>배터리</td><td>${d.bat}</td></tr>
         <tr><td>카메라</td><td>${d.cam}</td></tr>
         <tr><td>무게</td><td>${d.wt}</td></tr>
         <tr><td>네트워크</td><td>${d.net}</td></tr>
         <tr><td>연결 단자</td><td>${d.usb}</td></tr>
-      </table>
-    </div>
-    <a class="gsm-link" href="https://www.gsmarena.com/search.php3?sQuickSearch=${encodeURIComponent(d.brand+' '+d.name)}" target="_blank" rel="noopener">
-      📊 GSMArena에서 전체 스펙 보기 →
-    </a>
+      </table></div>
+    ${d.gsm?`<button class="gsm-btn" onclick="openGsm('${d.gsm}','${d.name.replace(/'/g,"\\'")}')">
+      📊 GSMArena 상세 정보 불러오기 →</button>`:''}
+    <a class="gsm-btn" href="https://www.gsmarena.com/search.php3?sQuickSearch=${encodeURIComponent(d.brand+' '+d.name)}" target="_blank" rel="noopener" style="margin-top:6px">
+      🔗 GSMArena 검색 (새 탭) →</a>
   `;
   document.getElementById('overlay').classList.add('on');
 }
-function closeOverlay(e){if(e.target===document.getElementById('overlay')) closeModal();}
-function closeModal(){document.getElementById('overlay').classList.remove('on');}
-document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModal();});
+function closeModal(){document.getElementById('overlay').classList.remove('on')}
+function maybeClose(e){if(e.target===document.getElementById('overlay'))closeModal()}
 
-// ===== TABS =====
-function showTab(tab, btn){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('searchTab').style.display=tab==='search'?'block':'none';
-  document.getElementById('convTab').style.display=tab==='conv'?'block':'none';
+// GSMArena live detail
+async function openGsm(slug,name){
+  document.getElementById('gsmTitle').textContent=name+' — GSMArena 상세';
+  document.getElementById('gsmBody').innerHTML='<div style="text-align:center;padding:40px"><div class="spin"></div><p style="margin-top:12px;color:var(--muted)">GSMArena에서 데이터 불러오는 중...</p></div>';
+  document.getElementById('gsmWrap').classList.add('on');
+  try{
+    const data=await(await fetch('/api/gsmarena/'+slug)).json();
+    if(!data.ok||!data.sections?.length){
+      document.getElementById('gsmBody').innerHTML=`
+        <div style="text-align:center;color:var(--muted);padding:30px">
+          <p style="font-size:2rem;margin-bottom:8px">⚠️</p>
+          <p>GSMArena에서 직접 불러올 수 없습니다<br>(Cloudflare 보호 또는 네트워크 제한).</p>
+          <a href="https://www.gsmarena.com/${slug}.php" target="_blank" rel="noopener" class="gsm-btn" style="display:inline-block;margin-top:14px">
+            🌐 GSMArena 페이지 직접 열기 →</a></div>`;
+      return;
+    }
+    let html='';
+    if(data.img)html+=`<img src="${data.img}" style="max-width:100px;display:block;margin:0 auto 12px;border-radius:8px" onerror="this.style.display='none'">`;
+    data.sections.forEach(s=>{
+      html+=`<div class="gsec"><h4>${s.title||'스펙'}</h4><table>`;
+      s.rows.forEach(r=>html+=`<tr><td>${r.key}</td><td>${r.val}</td></tr>`);
+      html+='</table></div>';
+    });
+    html+=`<a href="https://www.gsmarena.com/${slug}.php" target="_blank" rel="noopener" class="gsm-btn" style="margin-top:10px">🌐 GSMArena 원본 페이지 →</a>`;
+    document.getElementById('gsmBody').innerHTML=html;
+  }catch(e){
+    document.getElementById('gsmBody').innerHTML=`<div style="text-align:center;color:var(--muted);padding:30px">오류: ${e.message}</div>`;
+  }
 }
+function closeGsm(){document.getElementById('gsmWrap').classList.remove('on')}
+function maybeCloseGsm(e){if(e.target===document.getElementById('gsmWrap'))closeGsm()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeGsm()}});
 
-// ===== CONVERTER =====
-let uploadedImg=null;
-let fitMode='fit';
-
-function setFit(mode,btn){
-  fitMode=mode;
-  document.querySelectorAll('.fit-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+// CONVERTER
+function setFit(m,btn){
+  fitMode=m;
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
 }
-
-function populateSelects(){
-  const src=document.getElementById('srcDev');
-  const dst=document.getElementById('dstDev');
-  src.innerHTML='<option value="manual">직접 입력</option>';
-  dst.innerHTML='';
-  DB.forEach(d=>{
-    const label=`${d.brand} ${d.name} (${d.disp.w}×${d.disp.h})`;
-    src.appendChild(new Option(label,d.id));
-    dst.appendChild(new Option(label,d.id));
-  });
-}
-
-function onSrcDevChange(){
-  const v=document.getElementById('srcDev').value;
-  if(v==='manual') return;
-  const d=DB.find(x=>x.id===+v);
-  if(d){document.getElementById('srcW').value=d.disp.w; document.getElementById('srcH').value=d.disp.h;}
-}
-function onDstDevChange(){
-  const d=DB.find(x=>x.id===+document.getElementById('dstDev').value);
-  if(d){document.getElementById('dstW').value=d.disp.w; document.getElementById('dstH').value=d.disp.h;}
-}
-
-function onUpload(e){
-  const file=e.target.files[0];
-  if(!file) return;
-  const r=new FileReader();
-  r.onload=ev=>{
+function onUp(e){
+  const f=e.target.files[0];if(!f)return;
+  new Promise(res=>{const r=new FileReader();r.onload=ev=>res(ev.target.result);r.readAsDataURL(f)})
+  .then(src=>{
     const img=new Image();
     img.onload=()=>{
-      uploadedImg=img;
-      const zone=document.getElementById('uploadZone');
-      zone.innerHTML=`<div style="color:var(--success);font-size:1.5rem;margin-bottom:8px">✓ 업로드 완료</div>
-        <div class="main">${file.name}</div>
-        <div class="sub">${img.width} × ${img.height} px · ${(file.size/1024).toFixed(0)} KB</div>`;
-      document.getElementById('srcW').value=img.width;
-      document.getElementById('srcH').value=img.height;
-      document.getElementById('srcDev').value='manual';
+      upImg=img;
+      document.getElementById('upzone').innerHTML=`
+        <div style="color:var(--ok);font-size:1.2rem;margin-bottom:5px">✓ 업로드 완료</div>
+        <div style="color:var(--text);font-size:.85rem">${f.name}</div>
+        <div style="color:var(--muted);font-size:.75rem;margin-top:3px">${img.width}×${img.height}px · ${(f.size/1024).toFixed(0)}KB</div>`;
+      document.getElementById('sw').value=img.width;
+      document.getElementById('sh').value=img.height;
+      document.getElementById('cSrc').value='manual';
     };
-    img.src=ev.target.result;
-  };
-  r.readAsDataURL(file);
+    img.src=src;
+  });
 }
-
-// drag & drop
-const zone=document.getElementById('uploadZone');
-zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag');});
-zone.addEventListener('dragleave',()=>zone.classList.remove('drag'));
-zone.addEventListener('drop',e=>{
-  e.preventDefault(); zone.classList.remove('drag');
+const uz=document.getElementById('upzone');
+uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('drag')});
+uz.addEventListener('dragleave',()=>uz.classList.remove('drag'));
+uz.addEventListener('drop',e=>{
+  e.preventDefault();uz.classList.remove('drag');
   const f=e.dataTransfer.files[0];
-  if(f&&f.type.startsWith('image/')){
-    const dt=new DataTransfer(); dt.items.add(f);
-    document.getElementById('imgInput').files=dt.files;
-    onUpload({target:{files:[f]}});
-  }
+  if(f&&f.type.startsWith('image/')){const dt=new DataTransfer();dt.items.add(f);document.getElementById('fimg').files=dt.files;onUp({target:{files:[f]}})}
 });
-
-const MAX_DISPLAY=360;
-
-function doConvert(){
-  if(!uploadedImg){alert('먼저 스크린샷 이미지를 업로드해주세요!'); return;}
-  const sw=+document.getElementById('srcW').value||uploadedImg.width;
-  const sh=+document.getElementById('srcH').value||uploadedImg.height;
-  const dw=+document.getElementById('dstW').value;
-  const dh=+document.getElementById('dstH').value;
-  if(!dw||!dh){alert('대상 해상도를 입력해주세요!'); return;}
-
-  // src canvas
-  const sc=document.getElementById('srcCanvas');
-  const sCtx=sc.getContext('2d');
-  const sScale=Math.min(MAX_DISPLAY/sw, MAX_DISPLAY*2/sh);
-  sc.width=Math.round(sw*sScale); sc.height=Math.round(sh*sScale);
-  sCtx.drawImage(uploadedImg,0,0,sc.width,sc.height);
-
-  // dst canvas
-  const dc=document.getElementById('dstCanvas');
-  const dCtx=dc.getContext('2d');
-  const dScale=Math.min(MAX_DISPLAY/dw, MAX_DISPLAY*2/dh);
-  dc.width=Math.round(dw*dScale); dc.height=Math.round(dh*dScale);
-
-  dCtx.fillStyle='#000';
-  dCtx.fillRect(0,0,dc.width,dc.height);
-
-  const imgAsp=sw/sh, dstAsp=dw/dh;
-  let px,py,pw,ph;
-  if(fitMode==='fit'){
-    if(imgAsp>dstAsp){pw=dc.width;ph=dc.width/imgAsp;px=0;py=(dc.height-ph)/2;}
-    else{ph=dc.height;pw=dc.height*imgAsp;px=(dc.width-pw)/2;py=0;}
-  } else {
-    if(imgAsp>dstAsp){ph=dc.height;pw=dc.height*imgAsp;px=(dc.width-pw)/2;py=0;}
-    else{pw=dc.width;ph=dc.width/imgAsp;px=0;py=(dc.height-ph)/2;}
-  }
-  dCtx.drawImage(uploadedImg,px,py,pw,ph);
-
-  // Labels
-  const srcV=document.getElementById('srcDev').value;
-  const dstV=document.getElementById('dstDev').value;
-  const srcName=srcV==='manual'?'원본':(DB.find(x=>x.id===+srcV)?.name||'원본');
-  const dstDev=DB.find(x=>x.id===+dstV);
-  const dstName=dstDev?.name||'변환 결과';
-  document.getElementById('srcFrameName').textContent=srcName;
-  document.getElementById('dstFrameName').textContent=dstName;
-  document.getElementById('srcResInfo').textContent=`${sw} × ${sh} px`;
-  document.getElementById('dstResInfo').textContent=`${dw} × ${dh} px`;
-
-  // Info box
-  const scaleX=(dw/sw*100).toFixed(1), scaleY=(dh/sh*100).toFixed(1);
-  const pxRatio=(dw*dh)/(sw*sh);
-  const ppiSrc=document.getElementById('srcDev').value!=='manual'?
-    (DB.find(x=>x.id===+document.getElementById('srcDev').value)?.disp.ppi||'?'):'?';
-  const ppiDst=dstDev?.disp.ppi||'?';
-  document.getElementById('convInfoBox').innerHTML=`
-    <strong>변환 정보</strong><br>
-    • 원본 → 대상 해상도 비율: 가로 ${scaleX}% / 세로 ${scaleY}%<br>
-    • 픽셀 수 변화: ${(sw*sh).toLocaleString()} → ${(dw*dh).toLocaleString()} px (${(pxRatio).toFixed(2)}x)<br>
-    ${ppiSrc!=='?'?`• PPI: ${ppiSrc} → ${ppiDst} (픽셀 밀도 변화)<br>`:''}
-    • 변환 방식: <strong>${fitMode==='fit'?'맞춤 (Fit) — 비율 유지, 여백 표시':'채움 (Fill) — 화면 가득, 잘림 허용'}</strong>
-  `;
-
-  document.getElementById('convResult').style.display='block';
-  document.getElementById('convResult').scrollIntoView({behavior:'smooth'});
+function onSrcCh(){
+  const v=document.getElementById('cSrc').value;if(v==='manual')return;
+  const d=cache.find(x=>x.id===+v);
+  if(d){document.getElementById('sw').value=d.disp.w;document.getElementById('sh').value=d.disp.h}
 }
-
-function downloadResult(){
-  const dc=document.getElementById('dstCanvas');
+function onDstCh(){
+  const d=cache.find(x=>x.id===+document.getElementById('cDst').value);
+  if(d){document.getElementById('dw').value=d.disp.w;document.getElementById('dh').value=d.disp.h}
+}
+function doConv(){
+  if(!upImg){alert('먼저 스크린샷 이미지를 업로드하세요!');return}
+  const sw=+document.getElementById('sw').value||upImg.width;
+  const sh=+document.getElementById('sh').value||upImg.height;
+  const dw=+document.getElementById('dw').value;
+  const dh=+document.getElementById('dh').value;
+  if(!dw||!dh){alert('대상 해상도를 입력하세요!');return}
+  const M=360;
+  const sc=document.getElementById('cSrcC'),sCtx=sc.getContext('2d');
+  const ss=Math.min(M/sw,M*2/sh);sc.width=Math.round(sw*ss);sc.height=Math.round(sh*ss);
+  sCtx.drawImage(upImg,0,0,sc.width,sc.height);
+  const dc=document.getElementById('cDstC'),dCtx=dc.getContext('2d');
+  const ds=Math.min(M/dw,M*2/dh);dc.width=Math.round(dw*ds);dc.height=Math.round(dh*ds);
+  dCtx.fillStyle='#000';dCtx.fillRect(0,0,dc.width,dc.height);
+  const iA=sw/sh,dA=dw/dh;let px,py,pw,ph;
+  if(fitMode==='fit'){if(iA>dA){pw=dc.width;ph=pw/iA;px=0;py=(dc.height-ph)/2}else{ph=dc.height;pw=ph*iA;px=(dc.width-pw)/2;py=0}}
+  else{if(iA>dA){ph=dc.height;pw=ph*iA;px=(dc.width-pw)/2;py=0}else{pw=dc.width;ph=pw/iA;px=0;py=(dc.height-ph)/2}}
+  dCtx.drawImage(upImg,px,py,pw,ph);
+  const srcD=cache.find(x=>x.id===+document.getElementById('cSrc').value);
+  const dstD=cache.find(x=>x.id===+document.getElementById('cDst').value);
+  document.getElementById('fnSrc').textContent=srcD?srcD.name:'원본';
+  document.getElementById('fnDst').textContent=dstD?dstD.name:'변환 결과';
+  document.getElementById('riSrc').textContent=`${sw}×${sh}px`;
+  document.getElementById('riDst').textContent=`${dw}×${dh}px`;
+  document.getElementById('cvinf').innerHTML=`<strong>변환 정보</strong><br>
+    · 가로 배율 ${(dw/sw*100).toFixed(1)}% / 세로 배율 ${(dh/sh*100).toFixed(1)}%<br>
+    · 픽셀 수: ${(sw*sh).toLocaleString()} → ${(dw*dh).toLocaleString()} (×${(dw*dh/(sw*sh)).toFixed(2)})<br>
+    ${srcD?.disp?.ppi&&dstD?.disp?.ppi?`· PPI: ${srcD.disp.ppi} → ${dstD.disp.ppi}<br>`:''}
+    · 방식: <strong>${fitMode==='fit'?'맞춤 (비율 유지)':'채움 (화면 가득)'}</strong>`;
+  document.getElementById('rswrap').style.display='block';
+  document.getElementById('rswrap').scrollIntoView({behavior:'smooth'});
+}
+function dlConv(){
   const a=document.createElement('a');
-  a.download=`converted_${document.getElementById('dstW').value}x${document.getElementById('dstH').value}.png`;
-  a.href=dc.toDataURL('image/png');
-  a.click();
+  a.download=`conv_${document.getElementById('dw').value}x${document.getElementById('dh').value}.png`;
+  a.href=document.getElementById('cDstC').toDataURL();a.click();
 }
 
-// ===== INIT =====
-populateSelects();
-onDstDevChange();
-doFilter();
+// MARKET SHARE
+async function loadMS(){
+  try{
+    msData=await(await fetch('/api/market-share')).json();
+    document.getElementById('ms-meta').textContent=`최신 분기: ${msData.updated} · 출처: ${msData.source}`;
+    const tabs=document.getElementById('rtabs');
+    msData.regions.forEach((rg,i)=>{
+      const b=document.createElement('button');
+      b.className='rtab'+(i===0?' on':'');
+      b.textContent=`${rg.flag} ${rg.name}`;
+      b.onclick=()=>{document.querySelectorAll('.rtab').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderMS(rg)};
+      tabs.appendChild(b);
+    });
+    renderMS(msData.regions[0]);
+  }catch(e){document.getElementById('ms-meta').textContent='시장 점유율 데이터 로딩 오류'}
+}
+function renderMS(rg){
+  document.getElementById('msTitle').textContent=`${rg.flag} ${rg.name}`;
+  document.getElementById('msSub').textContent=`${msData.updated} 기준 · 출처: ${msData.source}`;
+  document.getElementById('msBars').innerHTML=rg.data.map(item=>`
+    <div class="ms-bar-row">
+      <div class="ms-brand">${item.brandKo||item.brand}</div>
+      <div class="ms-bar-wrap">
+        <div class="ms-bar-fill" style="width:${item.share}%;background:${item.color}">
+          ${item.share>=8?`<span class="ms-bar-pct">${item.share}%</span>`:''}
+        </div>
+      </div>
+      <div class="ms-pct-out">${item.share<8?item.share+'%':''}</div>
+    </div>`).join('');
+  drawPie(rg.data);
+}
+function drawPie(data){
+  const cv=document.getElementById('pieCanvas'),ctx=cv.getContext('2d');
+  const cx=130,cy=130,r=110;
+  ctx.clearRect(0,0,260,260);
+  const tot=data.reduce((s,d)=>s+d.share,0);
+  let ang=-Math.PI/2;
+  data.forEach(item=>{
+    const sl=item.share/tot*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,ang,ang+sl);
+    ctx.closePath();ctx.fillStyle=item.color;ctx.fill();
+    ang+=sl;
+  });
+  ctx.beginPath();ctx.arc(cx,cy,52,0,Math.PI*2);ctx.fillStyle='#161630';ctx.fill();
+  document.getElementById('pieLeg').innerHTML=data.map(item=>`
+    <div class="pl-i"><div class="pl-d" style="background:${item.color}"></div>
+    <span>${item.brandKo||item.brand} ${item.share}%</span></div>`).join('');
+}
+
+// INIT
+function populateConv(devs){
+  ['cSrc','cDst'].forEach((id,i)=>{
+    const sel=document.getElementById(id);
+    if(i===0)sel.innerHTML='<option value="manual">직접 입력</option>';
+    else sel.innerHTML='';
+    devs.forEach(d=>sel.appendChild(new Option(`${d.brandKo||d.brand} ${d.name} (${d.disp.w}×${d.disp.h})`,d.id)));
+  });
+}
+(async()=>{
+  await loadBrands();
+  await doSearch();
+  populateConv(cache);
+  const s24u=cache.find(d=>d.name.includes('S24 Ultra'));
+  if(s24u){document.getElementById('dw').value=s24u.disp.w;document.getElementById('dh').value=s24u.disp.h}
+})();
 </script>
 </body>
 </html>
