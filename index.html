@@ -6,16 +6,10 @@
 <title>📱 단말기 정보 검색</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0d0d1a;--bg2:#12122a;--bg3:#1a1a35;--bg4:#22224a;
-  --acc:#7c83fd;--acc2:#a78bfa;--text:#e0e0f0;--muted:#8888aa;
-  --border:#2a2a50;--card:#161630;--ok:#34d399;--warn:#fbbf24;--err:#f87171
-}
+:root{--bg:#0d0d1a;--bg2:#12122a;--bg3:#1a1a35;--bg4:#22224a;--acc:#7c83fd;--acc2:#a78bfa;--text:#e0e0f0;--muted:#8888aa;--border:#2a2a50;--card:#161630;--ok:#34d399}
 html{scroll-behavior:smooth}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-a{color:var(--acc)}
-
 header{background:linear-gradient(135deg,#1a1a35,#0f0f25);padding:14px 20px 10px;text-align:center;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
 header h1{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block}
 header p{color:var(--muted);font-size:.72rem;margin-top:2px}
@@ -23,9 +17,7 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
 .tb{padding:8px 20px;border:1px solid var(--border);border-radius:30px;cursor:pointer;font-size:.85rem;font-weight:500;transition:.2s;background:transparent;color:var(--muted)}
 .tb.on{background:var(--acc);color:#fff;border-color:var(--acc);box-shadow:0 0 14px rgba(124,131,253,.4)}
 .tb:hover:not(.on){border-color:var(--acc);color:var(--acc)}
-
 .page{display:none}.page.on{display:block}
-
 .sbar{padding:14px 16px 10px;background:var(--bg2);position:sticky;top:72px;z-index:100;border-bottom:1px solid var(--border)}
 .sr{display:flex;gap:8px;max-width:900px;margin:0 auto 10px}
 .sr input{flex:1;padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:.9rem}
@@ -37,7 +29,6 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
 .frow select:focus{outline:none;border-color:var(--acc)}
 .stats{text-align:center;padding:6px;color:var(--muted);font-size:.78rem}
 .no-res{text-align:center;color:var(--muted);padding:60px 20px;grid-column:1/-1}
-
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:14px;padding:14px 16px;max-width:1440px;margin:0 auto}
 .card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:15px;cursor:pointer;transition:.2s all}
 .card:hover{border-color:var(--acc);transform:translateY(-3px);box-shadow:0 8px 24px rgba(124,131,253,.2)}
@@ -53,8 +44,7 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
 .brow{margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
 .brow .bl{font-size:.72rem;color:var(--muted);margin-bottom:4px}
 .bbar{height:6px;background:var(--bg4);border-radius:4px;overflow:hidden;margin-bottom:3px}
-.bbar .bf{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:4px;transition:.6s width}
-
+.bbar .bf{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:4px}
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:500;align-items:center;justify-content:center;padding:12px;backdrop-filter:blur(4px)}
 .overlay.on{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--border);border-radius:16px;max-width:600px;width:100%;max-height:93vh;overflow-y:auto;padding:24px}
@@ -72,7 +62,6 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
 .mt td:first-child{color:var(--muted);width:40%}
 .gsm-btn{display:block;text-align:center;margin-top:10px;padding:10px;background:rgba(124,131,253,.1);border:1px solid rgba(124,131,253,.3);border-radius:8px;color:var(--acc);font-size:.82rem;cursor:pointer;transition:.2s;text-decoration:none}
 .gsm-btn:hover{background:rgba(124,131,253,.22);text-decoration:none}
-
 #gsmWrap{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:600;align-items:center;justify-content:center;padding:12px;backdrop-filter:blur(6px)}
 #gsmWrap.on{display:flex}
 #gsmInner{background:var(--bg2);border:1px solid var(--border);border-radius:16px;max-width:680px;width:100%;max-height:93vh;overflow-y:auto;padding:24px}
@@ -83,14 +72,12 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
 .gsec td:first-child{color:var(--muted);width:42%}
 .spin{display:inline-block;width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .conv-wrap{padding:16px;max-width:960px;margin:0 auto}
 .ccard{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:22px;margin-bottom:16px}
 .ccard h2{font-size:1.1rem;color:var(--acc);margin-bottom:3px}
 .ccard>p{color:var(--muted);font-size:.82rem;margin-bottom:18px}
 .upzone{border:2px dashed var(--border);border-radius:12px;padding:36px 16px;text-align:center;cursor:pointer;transition:.2s}
 .upzone:hover,.upzone.drag{border-color:var(--acc);background:rgba(124,131,253,.05)}
-.upzone .ui{font-size:2.2rem;margin-bottom:6px}
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
 .cg label{display:block;color:var(--muted);font-size:.76rem;font-weight:600;margin-bottom:5px}
 .cg select,.cg input{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:8px 11px;font-size:.83rem;width:100%}
@@ -109,11 +96,9 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
 .rsframe canvas{max-width:100%;border-radius:8px;border:1px solid var(--border)}
 .rsframe .ri{color:var(--muted);font-size:.72rem;margin-top:5px}
 .rsarrow{display:flex;align-items:center;color:var(--acc);font-size:1.6rem;align-self:center}
-.dlbtn{display:block;margin-top:8px;padding:6px 14px;background:rgba(124,131,253,.14);border:1px solid rgba(124,131,253,.3);border-radius:8px;color:var(--acc);font-size:.78rem;cursor:pointer;width:100%;text-align:center;transition:.2s}
-.dlbtn:hover{background:rgba(124,131,253,.28)}
+.dlbtn{display:block;margin-top:8px;padding:6px 14px;background:rgba(124,131,253,.14);border:1px solid rgba(124,131,253,.3);border-radius:8px;color:var(--acc);font-size:.78rem;cursor:pointer;width:100%;text-align:center}
 .cvinf{background:var(--bg3);border-radius:8px;padding:11px;margin-top:14px;font-size:.8rem;color:var(--muted);line-height:1.65}
 .cvinf strong{color:var(--text)}
-
 .ms-wrap{padding:16px;max-width:900px;margin:0 auto}
 .ms-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:22px;margin-bottom:14px}
 .ms-card h2{font-size:1.1rem;color:var(--acc);margin-bottom:3px}
@@ -135,131 +120,91 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
 .pie-leg{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px}
 .pl-i{display:flex;align-items:center;gap:4px;font-size:.77rem;color:var(--muted)}
 .pl-d{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-
-@media(max-width:600px){
-  .cgrid{grid-template-columns:1fr}
-  .rsrow{flex-direction:column}
-  .rsarrow{transform:rotate(90deg);align-self:center}
-  header h1{font-size:1.2rem}
-  .ms-brand{width:70px;font-size:.75rem}
-}
+@media(max-width:600px){.cgrid{grid-template-columns:1fr}.rsrow{flex-direction:column}.rsarrow{transform:rotate(90deg);align-self:center}header h1{font-size:1.2rem}.ms-brand{width:70px;font-size:.75rem}}
 </style>
 </head>
 <body>
-
 <header>
   <h1>📱 단말기 정보 검색</h1>
   <p>2018년 이후 주요 스마트폰 · 벤치마크 · 시장 점유율 · GSMArena 연동</p>
 </header>
-
 <nav>
   <button class="tb on" onclick="goTab('search',this)">🔍 단말기 검색</button>
   <button class="tb" onclick="goTab('conv',this)">🖼️ 해상도 변환</button>
   <button class="tb" onclick="goTab('ms',this)">📊 시장 점유율</button>
 </nav>
-
-<!-- SEARCH TAB -->
 <div id="pg-search" class="page on">
   <div class="sbar">
     <div class="sr">
-      <input type="text" id="q" placeholder="브랜드·모델명·칩셋·UX 검색 (한글/영문 모두 가능)" oninput="debSearch()">
+      <input type="text" id="q" placeholder="브랜드·모델명·칩셋·UX 검색 (한글/영문 가능)" oninput="debSearch()">
       <button onclick="doSearch()">검색</button>
     </div>
     <div class="frow">
       <select id="fBrand" onchange="doSearch()"><option value="">모든 브랜드</option></select>
-      <select id="fOS" onchange="doSearch()">
-        <option value="">모든 OS</option>
-        <option value="Android">Android</option>
-        <option value="iOS">iOS</option>
-      </select>
-      <select id="fYear" onchange="doSearch()">
-        <option value="">모든 연도</option>
-        <option>2024</option><option>2023</option><option>2022</option>
-        <option>2021</option><option>2020</option><option>2019</option><option>2018</option>
-      </select>
-      <select id="fSort" onchange="doSearch()">
-        <option value="year">최신순</option>
-        <option value="name">이름순</option>
-        <option value="display">화면 크기순</option>
-        <option value="ppi">픽셀밀도순</option>
-        <option value="antutu">AnTuTu 점수순</option>
-      </select>
+      <select id="fOS" onchange="doSearch()"><option value="">모든 OS</option><option value="Android">Android</option><option value="iOS">iOS</option></select>
+      <select id="fYear" onchange="doSearch()"><option value="">모든 연도</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option></select>
+      <select id="fSort" onchange="doSearch()"><option value="year">최신순</option><option value="name">이름순</option><option value="display">화면크기순</option><option value="ppi">픽셀밀도순</option><option value="antutu">AnTuTu순</option></select>
     </div>
   </div>
-  <div class="stats" id="stats">로딩 중...</div>
+  <div class="stats" id="stats"></div>
   <div class="grid" id="grid"></div>
 </div>
-
-<!-- CONVERTER TAB -->
 <div id="pg-conv" class="page">
-<div class="conv-wrap">
-  <div class="ccard">
-    <h2>🖼️ 게임 스크린샷 해상도 변환기</h2>
-    <p>특정 단말기의 게임 스크린샷이 다른 단말기 해상도에서 어떻게 보이는지 확인합니다.</p>
-    <div class="upzone" id="upzone" onclick="document.getElementById('fimg').click()">
-      <div class="ui">📤</div>
-      <div style="color:var(--text);font-size:.88rem">클릭하거나 드래그하여 스크린샷 업로드</div>
-      <div style="color:var(--muted);font-size:.75rem;margin-top:3px">PNG · JPG · WEBP · GIF 지원</div>
-    </div>
-    <input type="file" id="fimg" accept="image/*" style="display:none" onchange="onUp(event)">
-    <div class="cgrid">
-      <div class="cg"><label>원본 단말기</label><select id="cSrc" onchange="onSrcCh()"><option value="manual">직접 입력</option></select></div>
-      <div class="cg"><label>대상 단말기</label><select id="cDst" onchange="onDstCh()"></select></div>
-      <div class="cg"><label>원본 해상도</label><div class="rpair"><input type="number" id="sw" value="1080"><span>×</span><input type="number" id="sh" value="2400"></div></div>
-      <div class="cg"><label>대상 해상도</label><div class="rpair"><input type="number" id="dw" value="1440"><span>×</span><input type="number" id="dh" value="3088"></div></div>
-    </div>
-    <div class="ftog">
-      <button class="fb on" onclick="setFit('fit',this)">📐 맞춤 (Fit) — 비율 유지</button>
-      <button class="fb" onclick="setFit('fill',this)">✂️ 채움 (Fill) — 화면 가득</button>
-    </div>
-    <button class="cvbtn" onclick="doConv()">🔄 해상도 변환 미리보기</button>
-    <div class="rswrap" id="rswrap">
-      <div class="rsrow">
-        <div class="rsframe"><div class="flab">원본</div><div class="fnm" id="fnSrc"></div><canvas id="cSrcC"></canvas><div class="ri" id="riSrc"></div></div>
-        <div class="rsarrow">→</div>
-        <div class="rsframe"><div class="flab">변환 결과</div><div class="fnm" id="fnDst"></div><canvas id="cDstC"></canvas><div class="ri" id="riDst"></div><button class="dlbtn" onclick="dlConv()">⬇️ 변환 이미지 저장</button></div>
-      </div>
-      <div class="cvinf" id="cvinf"></div>
-    </div>
+<div class="conv-wrap"><div class="ccard">
+  <h2>🖼️ 게임 스크린샷 해상도 변환기</h2>
+  <p>특정 단말기의 게임 스크린샷이 다른 단말기 해상도에서 어떻게 보이는지 확인합니다.</p>
+  <div class="upzone" id="upzone" onclick="document.getElementById('fimg').click()">
+    <div style="font-size:2.2rem;margin-bottom:6px">📤</div>
+    <div style="color:var(--text);font-size:.88rem">클릭하거나 드래그하여 스크린샷 업로드</div>
+    <div style="color:var(--muted);font-size:.75rem;margin-top:3px">PNG · JPG · WEBP · GIF 지원</div>
   </div>
+  <input type="file" id="fimg" accept="image/*" style="display:none" onchange="onUp(event)">
+  <div class="cgrid">
+    <div class="cg"><label>원본 단말기</label><select id="cSrc" onchange="onSrcCh()"><option value="manual">직접 입력</option></select></div>
+    <div class="cg"><label>대상 단말기</label><select id="cDst" onchange="onDstCh()"></select></div>
+    <div class="cg"><label>원본 해상도</label><div class="rpair"><input type="number" id="sw" value="1080"><span>×</span><input type="number" id="sh" value="2400"></div></div>
+    <div class="cg"><label>대상 해상도</label><div class="rpair"><input type="number" id="dw" value="1440"><span>×</span><input type="number" id="dh" value="3088"></div></div>
+  </div>
+  <div class="ftog">
+    <button class="fb on" onclick="setFit('fit',this)">📐 맞춤 (Fit) — 비율 유지</button>
+    <button class="fb" onclick="setFit('fill',this)">✂️ 채움 (Fill) — 화면 가득</button>
+  </div>
+  <button class="cvbtn" onclick="doConv()">🔄 해상도 변환 미리보기</button>
+  <div class="rswrap" id="rswrap">
+    <div class="rsrow">
+      <div class="rsframe"><div class="flab">원본</div><div class="fnm" id="fnSrc"></div><canvas id="cSrcC"></canvas><div class="ri" id="riSrc"></div></div>
+      <div class="rsarrow">→</div>
+      <div class="rsframe"><div class="flab">변환 결과</div><div class="fnm" id="fnDst"></div><canvas id="cDstC"></canvas><div class="ri" id="riDst"></div><button class="dlbtn" onclick="dlConv()">⬇️ 변환 이미지 저장</button></div>
+    </div>
+    <div class="cvinf" id="cvinf"></div>
+  </div>
+</div></div>
 </div>
-</div>
-
-<!-- MARKET SHARE TAB -->
 <div id="pg-ms" class="page">
-<div class="ms-wrap">
-  <div class="ms-card">
-    <h2>📊 국가별 스마트폰 시장 점유율</h2>
-    <p id="ms-meta">로딩 중...</p>
-    <div class="rtabs" id="rtabs"></div>
-    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
-      <div style="flex:1;min-width:240px">
-        <div class="ms-title" id="msTitle"></div>
-        <div class="ms-sub" id="msSub"></div>
-        <div id="msBars"></div>
-        <div class="ms-src" id="msSrc">※ 데이터는 추정치이며 실제 수치와 다를 수 있습니다.</div>
-      </div>
-      <div style="min-width:240px;max-width:300px;flex-shrink:0">
-        <canvas id="pieCanvas" width="260" height="260"></canvas>
-        <div class="pie-leg" id="pieLeg"></div>
-      </div>
+<div class="ms-wrap"><div class="ms-card">
+  <h2>📊 국가별 스마트폰 시장 점유율</h2>
+  <p id="ms-meta"></p>
+  <div class="rtabs" id="rtabs"></div>
+  <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+    <div style="flex:1;min-width:240px">
+      <div class="ms-title" id="msTitle"></div>
+      <div class="ms-sub" id="msSub"></div>
+      <div id="msBars"></div>
+      <div class="ms-src">※ 데이터는 추정치이며 실제 수치와 다를 수 있습니다.</div>
+    </div>
+    <div style="min-width:240px;max-width:300px;flex-shrink:0">
+      <canvas id="pieCanvas" width="260" height="260"></canvas>
+      <div class="pie-leg" id="pieLeg"></div>
     </div>
   </div>
+</div></div>
 </div>
-</div>
-
-<!-- Device Modal -->
 <div class="overlay" id="overlay" onclick="maybeClose(event)">
   <div class="modal">
-    <div class="mhead">
-      <div class="mi"><h2 id="mName"></h2><p id="mSub2"></p></div>
-      <button class="mcls" onclick="closeModal()">✕</button>
-    </div>
+    <div class="mhead"><div class="mi"><h2 id="mName"></h2><p id="mSub2"></p></div><button class="mcls" onclick="closeModal()">✕</button></div>
     <div id="mBody"></div>
   </div>
 </div>
-
-<!-- GSMArena Modal -->
 <div id="gsmWrap" onclick="maybeCloseGsm(event)">
   <div id="gsmInner">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
@@ -269,54 +214,75 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
     <div id="gsmBody"></div>
   </div>
 </div>
-
 <script>
-let cache=[], fitMode='fit', upImg=null, msData=null, stTimer=null;
+const DEVICES=[{"id":1,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S24 Ultra","year":2024,"chip":"Snapdragon 8 Gen 3 for Galaxy","ram":"12GB","storage":"256GB/512GB/1TB","disp":{"inch":6.8,"w":1440,"h":3088,"type":"Dynamic AMOLED 2X","ppi":500,"hz":"1-120Hz"},"os":"Android 14","ux":"One UI 6.1","bat":"5000mAh","cam":"200+12+10+50MP","wt":"232g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s24_ultra-12244","bench":{"antutu":2100000,"gb6s":2200,"gb6m":6800}},{"id":2,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S24+","year":2024,"chip":"Snapdragon 8 Gen 3 for Galaxy","ram":"12GB","storage":"256GB/512GB","disp":{"inch":6.7,"w":1080,"h":2340,"type":"Dynamic AMOLED 2X","ppi":505,"hz":"1-120Hz"},"os":"Android 14","ux":"One UI 6.1","bat":"4900mAh","cam":"50+12+10MP","wt":"196g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s24+-12245","bench":{"antutu":2050000,"gb6s":2150,"gb6m":6700}},{"id":3,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S24","year":2024,"chip":"Snapdragon 8 Gen 3 for Galaxy","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.2,"w":1080,"h":2340,"type":"Dynamic AMOLED 2X","ppi":416,"hz":"1-120Hz"},"os":"Android 14","ux":"One UI 6.1","bat":"4000mAh","cam":"50+12+10MP","wt":"167g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s24-12246","bench":{"antutu":2000000,"gb6s":2100,"gb6m":6500}},{"id":4,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Z Fold 6","year":2024,"chip":"Snapdragon 8 Gen 3 for Galaxy","ram":"12GB","storage":"256GB/512GB/1TB","disp":{"inch":7.6,"w":1856,"h":2160,"type":"Dynamic AMOLED 2X","ppi":374,"hz":"1-120Hz"},"os":"Android 14","ux":"One UI 6.1.1","bat":"4400mAh","cam":"50+12+10MP","wt":"239g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_z_fold6-12263","bench":{"antutu":2000000,"gb6s":2100,"gb6m":6600}},{"id":5,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Z Flip 6","year":2024,"chip":"Snapdragon 8 Gen 3 for Galaxy","ram":"12GB","storage":"256GB/512GB","disp":{"inch":6.7,"w":1080,"h":2640,"type":"Dynamic AMOLED 2X","ppi":426,"hz":"1-120Hz"},"os":"Android 14","ux":"One UI 6.1.1","bat":"4000mAh","cam":"50+12MP","wt":"187g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_z_flip6-12264","bench":{"antutu":1950000,"gb6s":2100,"gb6m":6400}},{"id":6,"brand":"Samsung","brandKo":"삼성","name":"Galaxy A55 5G","year":2024,"chip":"Exynos 1480","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.6,"w":1080,"h":2340,"type":"Super AMOLED","ppi":390,"hz":"120Hz"},"os":"Android 14","ux":"One UI 6.1","bat":"5000mAh","cam":"50+12+5MP","wt":"213g","net":"5G","usb":"USB 2.0","gsm":"samsung_galaxy_a55-12338","bench":{"antutu":600000,"gb6s":1050,"gb6m":3200}},{"id":7,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S23 Ultra","year":2023,"chip":"Snapdragon 8 Gen 2 for Galaxy","ram":"8GB/12GB","storage":"256GB/512GB/1TB","disp":{"inch":6.8,"w":1440,"h":3088,"type":"Dynamic AMOLED 2X","ppi":500,"hz":"1-120Hz"},"os":"Android 13","ux":"One UI 5.1","bat":"5000mAh","cam":"200+12+10+10MP","wt":"234g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s23_ultra-11826","bench":{"antutu":1550000,"gb6s":2000,"gb6m":5500}},{"id":8,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S23+","year":2023,"chip":"Snapdragon 8 Gen 2 for Galaxy","ram":"8GB","storage":"256GB/512GB","disp":{"inch":6.6,"w":1080,"h":2340,"type":"Dynamic AMOLED 2X","ppi":393,"hz":"48-120Hz"},"os":"Android 13","ux":"One UI 5.1","bat":"4700mAh","cam":"50+12+10MP","wt":"195g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s23+-11827","bench":{"antutu":1520000,"gb6s":1950,"gb6m":5400}},{"id":9,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S23","year":2023,"chip":"Snapdragon 8 Gen 2 for Galaxy","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.1,"w":1080,"h":2340,"type":"Dynamic AMOLED 2X","ppi":425,"hz":"48-120Hz"},"os":"Android 13","ux":"One UI 5.1","bat":"3900mAh","cam":"50+12+10MP","wt":"168g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s23-11882","bench":{"antutu":1500000,"gb6s":1950,"gb6m":5300}},{"id":10,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Z Fold 5","year":2023,"chip":"Snapdragon 8 Gen 2 for Galaxy","ram":"12GB","storage":"256GB/512GB/1TB","disp":{"inch":7.6,"w":1812,"h":2176,"type":"Dynamic AMOLED 2X","ppi":374,"hz":"1-120Hz"},"os":"Android 13","ux":"One UI 5.1.1","bat":"4400mAh","cam":"50+12+10MP","wt":"253g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_z_fold5-12011","bench":{"antutu":1530000,"gb6s":1960,"gb6m":5400}},{"id":11,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Z Flip 5","year":2023,"chip":"Snapdragon 8 Gen 2 for Galaxy","ram":"8GB","storage":"256GB/512GB","disp":{"inch":6.7,"w":1080,"h":2640,"type":"Dynamic AMOLED 2X","ppi":426,"hz":"1-120Hz"},"os":"Android 13","ux":"One UI 5.1.1","bat":"3700mAh","cam":"12+12MP","wt":"187g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_z_flip5-12005","bench":{"antutu":1510000,"gb6s":1940,"gb6m":5300}},{"id":12,"brand":"Samsung","brandKo":"삼성","name":"Galaxy A54 5G","year":2023,"chip":"Exynos 1380","ram":"6GB/8GB","storage":"128GB/256GB","disp":{"inch":6.4,"w":1080,"h":2340,"type":"Super AMOLED","ppi":403,"hz":"120Hz"},"os":"Android 13","ux":"One UI 5.1","bat":"5000mAh","cam":"50+12+5MP","wt":"202g","net":"5G","usb":"USB 2.0","gsm":"samsung_galaxy_a54-11929","bench":{"antutu":500000,"gb6s":960,"gb6m":3000}},{"id":13,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S23 FE","year":2023,"chip":"Snapdragon 8 Gen 1 / Exynos 2200","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.4,"w":1080,"h":2340,"type":"Dynamic AMOLED 2X","ppi":403,"hz":"120Hz"},"os":"Android 13","ux":"One UI 5.1","bat":"4500mAh","cam":"50+8+10MP","wt":"209g","net":"5G","usb":"USB 2.0","gsm":"samsung_galaxy_s23_fe-12020","bench":{"antutu":970000,"gb6s":1280,"gb6m":3700}},{"id":14,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S22 Ultra","year":2022,"chip":"Exynos 2200 / Snapdragon 8 Gen 1","ram":"8GB/12GB","storage":"128GB~1TB","disp":{"inch":6.8,"w":1440,"h":3088,"type":"Dynamic AMOLED 2X","ppi":500,"hz":"1-120Hz"},"os":"Android 12","ux":"One UI 4.1","bat":"5000mAh","cam":"108+12+10+10MP","wt":"228g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s22_ultra-11305","bench":{"antutu":1020000,"gb6s":1250,"gb6m":3800}},{"id":15,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S22+","year":2022,"chip":"Exynos 2200 / Snapdragon 8 Gen 1","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.6,"w":1080,"h":2340,"type":"Dynamic AMOLED 2X","ppi":393,"hz":"48-120Hz"},"os":"Android 12","ux":"One UI 4.1","bat":"4500mAh","cam":"50+12+10MP","wt":"195g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s22+-11306","bench":{"antutu":1000000,"gb6s":1240,"gb6m":3750}},{"id":16,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S22","year":2022,"chip":"Exynos 2200 / Snapdragon 8 Gen 1","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.1,"w":1080,"h":2340,"type":"Dynamic AMOLED 2X","ppi":425,"hz":"48-120Hz"},"os":"Android 12","ux":"One UI 4.1","bat":"3700mAh","cam":"50+12+10MP","wt":"167g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s22-11309","bench":{"antutu":990000,"gb6s":1230,"gb6m":3700}},{"id":17,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Z Fold 4","year":2022,"chip":"Snapdragon 8+ Gen 1","ram":"12GB","storage":"256GB/512GB/1TB","disp":{"inch":7.6,"w":1812,"h":2176,"type":"Dynamic AMOLED 2X","ppi":374,"hz":"1-120Hz"},"os":"Android 12","ux":"One UI 4.1.1","bat":"4400mAh","cam":"50+12+10MP","wt":"263g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_z_fold4-11591","bench":{"antutu":1080000,"gb6s":1320,"gb6m":3950}},{"id":18,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Z Flip 4","year":2022,"chip":"Snapdragon 8+ Gen 1","ram":"8GB","storage":"128GB/256GB/512GB","disp":{"inch":6.7,"w":1080,"h":2640,"type":"Dynamic AMOLED 2X","ppi":426,"hz":"120Hz"},"os":"Android 12","ux":"One UI 4.1.1","bat":"3700mAh","cam":"12+12MP","wt":"187g","net":"5G","usb":"USB 2.0","gsm":"samsung_galaxy_z_flip4-11592","bench":{"antutu":1060000,"gb6s":1310,"gb6m":3900}},{"id":19,"brand":"Samsung","brandKo":"삼성","name":"Galaxy A53 5G","year":2022,"chip":"Exynos 1280","ram":"4GB/6GB/8GB","storage":"128GB/256GB","disp":{"inch":6.5,"w":1080,"h":2400,"type":"Super AMOLED","ppi":405,"hz":"120Hz"},"os":"Android 12","ux":"One UI 4.1","bat":"5000mAh","cam":"64+12+5+5MP","wt":"189g","net":"5G","usb":"USB 2.0","gsm":"samsung_galaxy_a53_5g-11268","bench":{"antutu":430000,"gb6s":830,"gb6m":2600}},{"id":20,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S21 Ultra 5G","year":2021,"chip":"Exynos 2100 / Snapdragon 888","ram":"12GB/16GB","storage":"128GB~512GB","disp":{"inch":6.8,"w":1440,"h":3200,"type":"Dynamic AMOLED 2X","ppi":515,"hz":"10-120Hz"},"os":"Android 11","ux":"One UI 3.1","bat":"5000mAh","cam":"108+12+10+10MP","wt":"227g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s21_ultra_5g-10597","bench":{"antutu":890000,"gb6s":1080,"gb6m":3350}},{"id":21,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S21+ 5G","year":2021,"chip":"Exynos 2100 / Snapdragon 888","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.7,"w":1080,"h":2400,"type":"Dynamic AMOLED 2X","ppi":394,"hz":"48-120Hz"},"os":"Android 11","ux":"One UI 3.1","bat":"4800mAh","cam":"12+12+64MP","wt":"200g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s21+_5g-10601","bench":{"antutu":870000,"gb6s":1060,"gb6m":3280}},{"id":22,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S21 5G","year":2021,"chip":"Exynos 2100 / Snapdragon 888","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.2,"w":1080,"h":2400,"type":"Dynamic AMOLED 2X","ppi":421,"hz":"48-120Hz"},"os":"Android 11","ux":"One UI 3.1","bat":"4000mAh","cam":"12+12+64MP","wt":"169g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s21_5g-10600","bench":{"antutu":860000,"gb6s":1050,"gb6m":3250}},{"id":23,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S21 FE 5G","year":2022,"chip":"Snapdragon 888 / Exynos 2100","ram":"6GB/8GB","storage":"128GB/256GB","disp":{"inch":6.4,"w":1080,"h":2340,"type":"Dynamic AMOLED 2X","ppi":403,"hz":"120Hz"},"os":"Android 12","ux":"One UI 4.1","bat":"4500mAh","cam":"12+12+8+32MP","wt":"177g","net":"5G","usb":"USB 2.0","gsm":"samsung_galaxy_s21_fe_5g-11085","bench":{"antutu":830000,"gb6s":1040,"gb6m":3200}},{"id":24,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Z Fold 3 5G","year":2021,"chip":"Snapdragon 888","ram":"12GB","storage":"256GB/512GB","disp":{"inch":7.6,"w":1768,"h":2208,"type":"Dynamic AMOLED 2X","ppi":374,"hz":"120Hz"},"os":"Android 11","ux":"One UI 3.1.1","bat":"4400mAh","cam":"12+12+12MP","wt":"271g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_z_fold3_5g-10804","bench":{"antutu":840000,"gb6s":1050,"gb6m":3250}},{"id":25,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Z Flip 3 5G","year":2021,"chip":"Snapdragon 888","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.7,"w":1080,"h":2640,"type":"Dynamic AMOLED 2X","ppi":425,"hz":"120Hz"},"os":"Android 11","ux":"One UI 3.1.1","bat":"3300mAh","cam":"12+12MP","wt":"183g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_z_flip3_5g-10795","bench":{"antutu":830000,"gb6s":1040,"gb6m":3200}},{"id":26,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Note 20 Ultra 5G","year":2020,"chip":"Exynos 990 / Snapdragon 865+","ram":"12GB","storage":"128GB/256GB","disp":{"inch":6.9,"w":1440,"h":3088,"type":"Dynamic AMOLED 2X","ppi":496,"hz":"120Hz"},"os":"Android 10","ux":"One UI 2.5","bat":"4500mAh","cam":"108+12+12MP","wt":"208g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_note20_ultra_5g-10367","bench":{"antutu":640000,"gb6s":990,"gb6m":3100}},{"id":27,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Note 20 5G","year":2020,"chip":"Exynos 990 / Snapdragon 865+","ram":"8GB","storage":"256GB","disp":{"inch":6.7,"w":1080,"h":2400,"type":"AMOLED+","ppi":393,"hz":"60Hz"},"os":"Android 10","ux":"One UI 2.5","bat":"4300mAh","cam":"64+12+12MP","wt":"192g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_note20_5g-10368","bench":{"antutu":610000,"gb6s":960,"gb6m":3000}},{"id":28,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S20 Ultra 5G","year":2020,"chip":"Exynos 990 / Snapdragon 865","ram":"12GB","storage":"128GB/256GB","disp":{"inch":6.9,"w":1440,"h":3200,"type":"Dynamic AMOLED 2X","ppi":511,"hz":"120Hz"},"os":"Android 10","ux":"One UI 2.1","bat":"5000mAh","cam":"108+48+12+ToF","wt":"220g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_s20_ultra_5g-10042","bench":{"antutu":600000,"gb6s":950,"gb6m":2950}},{"id":29,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Z Fold 2 5G","year":2020,"chip":"Snapdragon 865+","ram":"12GB","storage":"256GB","disp":{"inch":7.6,"w":1768,"h":2208,"type":"Dynamic AMOLED 2X","ppi":373,"hz":"120Hz"},"os":"Android 10","ux":"One UI 2.5","bat":"4500mAh","cam":"12+12+12MP","wt":"282g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"samsung_galaxy_z_fold2_5g-10428","bench":{"antutu":620000,"gb6s":970,"gb6m":3050}},{"id":30,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Note 10+","year":2019,"chip":"Exynos 9825 / Snapdragon 855","ram":"12GB","storage":"256GB/512GB","disp":{"inch":6.8,"w":1440,"h":3040,"type":"Dynamic AMOLED","ppi":498,"hz":"60Hz"},"os":"Android 9","ux":"One UI 1.5","bat":"4300mAh","cam":"12+16+12+ToF","wt":"196g","net":"LTE","usb":"USB 3.1","gsm":"samsung_galaxy_note10+-9736","bench":{"antutu":510000,"gb6s":840,"gb6m":2750}},{"id":31,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S10+","year":2019,"chip":"Exynos 9820 / Snapdragon 855","ram":"8GB/12GB","storage":"128GB~1TB","disp":{"inch":6.4,"w":1440,"h":3040,"type":"Dynamic AMOLED","ppi":522,"hz":"60Hz"},"os":"Android 9","ux":"One UI 1.1","bat":"4100mAh","cam":"12+12+16MP","wt":"175g","net":"LTE","usb":"USB 3.1","gsm":"samsung_galaxy_s10+-9536","bench":{"antutu":490000,"gb6s":820,"gb6m":2700}},{"id":32,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S10","year":2019,"chip":"Exynos 9820 / Snapdragon 855","ram":"8GB","storage":"128GB/512GB","disp":{"inch":6.1,"w":1440,"h":3040,"type":"Dynamic AMOLED","ppi":550,"hz":"60Hz"},"os":"Android 9","ux":"One UI 1.1","bat":"3400mAh","cam":"12+12+16MP","wt":"157g","net":"LTE","usb":"USB 3.1","gsm":"samsung_galaxy_s10-9535","bench":{"antutu":480000,"gb6s":810,"gb6m":2680}},{"id":33,"brand":"Samsung","brandKo":"삼성","name":"Galaxy Note 9","year":2018,"chip":"Exynos 9810 / Snapdragon 845","ram":"6GB/8GB","storage":"128GB/512GB","disp":{"inch":6.4,"w":1440,"h":2960,"type":"Super AMOLED","ppi":516,"hz":"60Hz"},"os":"Android 8.1","ux":"Samsung Experience 9.5","bat":"4000mAh","cam":"12+12MP","wt":"201g","net":"LTE","usb":"USB 3.1","gsm":"samsung_galaxy_note9-9128","bench":{"antutu":280000,"gb6s":680,"gb6m":2200}},{"id":34,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S9+","year":2018,"chip":"Exynos 9810 / Snapdragon 845","ram":"6GB","storage":"64GB/256GB","disp":{"inch":6.2,"w":1440,"h":2960,"type":"Super AMOLED","ppi":529,"hz":"60Hz"},"os":"Android 8.0","ux":"Samsung Experience 9.0","bat":"3500mAh","cam":"12+12MP","wt":"189g","net":"LTE","usb":"USB 3.1","gsm":"samsung_galaxy_s9+-8507","bench":{"antutu":260000,"gb6s":660,"gb6m":2150}},{"id":35,"brand":"Samsung","brandKo":"삼성","name":"Galaxy S9","year":2018,"chip":"Exynos 9810 / Snapdragon 845","ram":"4GB","storage":"64GB/256GB","disp":{"inch":5.8,"w":1440,"h":2960,"type":"Super AMOLED","ppi":570,"hz":"60Hz"},"os":"Android 8.0","ux":"Samsung Experience 9.0","bat":"3000mAh","cam":"12MP","wt":"163g","net":"LTE","usb":"USB 3.1","gsm":"samsung_galaxy_s9-8500","bench":{"antutu":255000,"gb6s":650,"gb6m":2100}},{"id":36,"brand":"Apple","brandKo":"애플","name":"iPhone 16 Pro Max","year":2024,"chip":"Apple A18 Pro","ram":"8GB","storage":"256GB/512GB/1TB","disp":{"inch":6.9,"w":1320,"h":2868,"type":"Super Retina XDR OLED","ppi":460,"hz":"1-120Hz ProMotion"},"os":"iOS 18","ux":"iOS","bat":"4685mAh","cam":"48+12+48MP","wt":"227g","net":"5G","usb":"USB 3 (USB-C)","gsm":"apple_iphone_16_pro_max-12701","bench":{"antutu":1800000,"gb6s":3400,"gb6m":8500}},{"id":37,"brand":"Apple","brandKo":"애플","name":"iPhone 16 Pro","year":2024,"chip":"Apple A18 Pro","ram":"8GB","storage":"128GB~1TB","disp":{"inch":6.3,"w":1206,"h":2622,"type":"Super Retina XDR OLED","ppi":460,"hz":"1-120Hz ProMotion"},"os":"iOS 18","ux":"iOS","bat":"3582mAh","cam":"48+12+48MP","wt":"199g","net":"5G","usb":"USB 3 (USB-C)","gsm":"apple_iphone_16_pro-12702","bench":{"antutu":1750000,"gb6s":3350,"gb6m":8300}},{"id":38,"brand":"Apple","brandKo":"애플","name":"iPhone 16 Plus","year":2024,"chip":"Apple A18","ram":"8GB","storage":"128GB~512GB","disp":{"inch":6.7,"w":1290,"h":2796,"type":"Super Retina XDR OLED","ppi":460,"hz":"60Hz"},"os":"iOS 18","ux":"iOS","bat":"4674mAh","cam":"48+12MP","wt":"203g","net":"5G","usb":"USB 2 (USB-C)","gsm":"apple_iphone_16_plus-12703","bench":{"antutu":1700000,"gb6s":3200,"gb6m":7800}},{"id":39,"brand":"Apple","brandKo":"애플","name":"iPhone 16","year":2024,"chip":"Apple A18","ram":"8GB","storage":"128GB~512GB","disp":{"inch":6.1,"w":1179,"h":2556,"type":"Super Retina XDR OLED","ppi":460,"hz":"60Hz"},"os":"iOS 18","ux":"iOS","bat":"3561mAh","cam":"48+12MP","wt":"170g","net":"5G","usb":"USB 2 (USB-C)","gsm":"apple_iphone_16-12704","bench":{"antutu":1680000,"gb6s":3150,"gb6m":7700}},{"id":40,"brand":"Apple","brandKo":"애플","name":"iPhone 15 Pro Max","year":2023,"chip":"Apple A17 Pro","ram":"8GB","storage":"256GB~1TB","disp":{"inch":6.7,"w":1290,"h":2796,"type":"Super Retina XDR OLED","ppi":460,"hz":"1-120Hz ProMotion"},"os":"iOS 17","ux":"iOS","bat":"4422mAh","cam":"48+12+12MP","wt":"221g","net":"5G","usb":"USB 3 (USB-C)","gsm":"apple_iphone_15_pro_max-12082","bench":{"antutu":1450000,"gb6s":2900,"gb6m":7200}},{"id":41,"brand":"Apple","brandKo":"애플","name":"iPhone 15 Pro","year":2023,"chip":"Apple A17 Pro","ram":"8GB","storage":"128GB~1TB","disp":{"inch":6.1,"w":1179,"h":2556,"type":"Super Retina XDR OLED","ppi":460,"hz":"1-120Hz ProMotion"},"os":"iOS 17","ux":"iOS","bat":"3274mAh","cam":"48+12+12MP","wt":"187g","net":"5G","usb":"USB 3 (USB-C)","gsm":"apple_iphone_15_pro-12083","bench":{"antutu":1420000,"gb6s":2850,"gb6m":7100}},{"id":42,"brand":"Apple","brandKo":"애플","name":"iPhone 15 Plus","year":2023,"chip":"Apple A16 Bionic","ram":"6GB","storage":"128GB~512GB","disp":{"inch":6.7,"w":1284,"h":2778,"type":"Super Retina XDR OLED","ppi":460,"hz":"60Hz"},"os":"iOS 17","ux":"iOS","bat":"4383mAh","cam":"48+12MP","wt":"201g","net":"5G","usb":"USB 2 (USB-C)","gsm":"apple_iphone_15_plus-12091","bench":{"antutu":1250000,"gb6s":2500,"gb6m":6100}},{"id":43,"brand":"Apple","brandKo":"애플","name":"iPhone 15","year":2023,"chip":"Apple A16 Bionic","ram":"6GB","storage":"128GB~512GB","disp":{"inch":6.1,"w":1179,"h":2556,"type":"Super Retina XDR OLED","ppi":460,"hz":"60Hz"},"os":"iOS 17","ux":"iOS","bat":"3349mAh","cam":"48+12MP","wt":"171g","net":"5G","usb":"USB 2 (USB-C)","gsm":"apple_iphone_15-12092","bench":{"antutu":1230000,"gb6s":2480,"gb6m":6000}},{"id":44,"brand":"Apple","brandKo":"애플","name":"iPhone 14 Pro Max","year":2022,"chip":"Apple A16 Bionic","ram":"6GB","storage":"128GB~1TB","disp":{"inch":6.7,"w":1290,"h":2796,"type":"Super Retina XDR OLED","ppi":460,"hz":"1-120Hz ProMotion"},"os":"iOS 16","ux":"iOS","bat":"4323mAh","cam":"48+12+12MP","wt":"240g","net":"5G","usb":"Lightning","gsm":"apple_iphone_14_pro_max-11891","bench":{"antutu":1250000,"gb6s":2500,"gb6m":6100}},{"id":45,"brand":"Apple","brandKo":"애플","name":"iPhone 14 Pro","year":2022,"chip":"Apple A16 Bionic","ram":"6GB","storage":"128GB~1TB","disp":{"inch":6.1,"w":1179,"h":2556,"type":"Super Retina XDR OLED","ppi":460,"hz":"1-120Hz ProMotion"},"os":"iOS 16","ux":"iOS","bat":"3200mAh","cam":"48+12+12MP","wt":"206g","net":"5G","usb":"Lightning","gsm":"apple_iphone_14_pro-11892","bench":{"antutu":1230000,"gb6s":2480,"gb6m":6000}},{"id":46,"brand":"Apple","brandKo":"애플","name":"iPhone 14 Plus","year":2022,"chip":"Apple A15 Bionic","ram":"6GB","storage":"128GB~512GB","disp":{"inch":6.7,"w":1284,"h":2778,"type":"Super Retina XDR OLED","ppi":458,"hz":"60Hz"},"os":"iOS 16","ux":"iOS","bat":"4323mAh","cam":"12+12MP","wt":"203g","net":"5G","usb":"Lightning","gsm":"apple_iphone_14_plus-11897","bench":{"antutu":1100000,"gb6s":2280,"gb6m":5700}},{"id":47,"brand":"Apple","brandKo":"애플","name":"iPhone 14","year":2022,"chip":"Apple A15 Bionic","ram":"6GB","storage":"128GB~512GB","disp":{"inch":6.1,"w":1170,"h":2532,"type":"Super Retina XDR OLED","ppi":460,"hz":"60Hz"},"os":"iOS 16","ux":"iOS","bat":"3279mAh","cam":"12+12MP","wt":"172g","net":"5G","usb":"Lightning","gsm":"apple_iphone_14-11898","bench":{"antutu":1080000,"gb6s":2250,"gb6m":5650}},{"id":48,"brand":"Apple","brandKo":"애플","name":"iPhone 13 Pro Max","year":2021,"chip":"Apple A15 Bionic","ram":"6GB","storage":"128GB~1TB","disp":{"inch":6.7,"w":1284,"h":2778,"type":"Super Retina XDR OLED","ppi":458,"hz":"10-120Hz ProMotion"},"os":"iOS 15","ux":"iOS","bat":"4352mAh","cam":"12+12+12MP","wt":"238g","net":"5G","usb":"Lightning","gsm":"apple_iphone_13_pro_max-11125","bench":{"antutu":1100000,"gb6s":2280,"gb6m":5700}},{"id":49,"brand":"Apple","brandKo":"애플","name":"iPhone 13 Pro","year":2021,"chip":"Apple A15 Bionic","ram":"6GB","storage":"128GB~1TB","disp":{"inch":6.1,"w":1170,"h":2532,"type":"Super Retina XDR OLED","ppi":460,"hz":"10-120Hz ProMotion"},"os":"iOS 15","ux":"iOS","bat":"3095mAh","cam":"12+12+12MP","wt":"204g","net":"5G","usb":"Lightning","gsm":"apple_iphone_13_pro-11121","bench":{"antutu":1080000,"gb6s":2250,"gb6m":5650}},{"id":50,"brand":"Apple","brandKo":"애플","name":"iPhone 13","year":2021,"chip":"Apple A15 Bionic","ram":"4GB","storage":"128GB~512GB","disp":{"inch":6.1,"w":1170,"h":2532,"type":"Super Retina XDR OLED","ppi":460,"hz":"60Hz"},"os":"iOS 15","ux":"iOS","bat":"3227mAh","cam":"12+12MP","wt":"174g","net":"5G","usb":"Lightning","gsm":"apple_iphone_13-11127","bench":{"antutu":1050000,"gb6s":2200,"gb6m":5500}},{"id":51,"brand":"Apple","brandKo":"애플","name":"iPhone 13 mini","year":2021,"chip":"Apple A15 Bionic","ram":"4GB","storage":"128GB~512GB","disp":{"inch":5.4,"w":1080,"h":2340,"type":"Super Retina XDR OLED","ppi":476,"hz":"60Hz"},"os":"iOS 15","ux":"iOS","bat":"2406mAh","cam":"12+12MP","wt":"141g","net":"5G","usb":"Lightning","gsm":"apple_iphone_13_mini-11128","bench":{"antutu":1040000,"gb6s":2180,"gb6m":5450}},{"id":52,"brand":"Apple","brandKo":"애플","name":"iPhone 12 Pro Max","year":2020,"chip":"Apple A14 Bionic","ram":"6GB","storage":"128GB~512GB","disp":{"inch":6.7,"w":1284,"h":2778,"type":"Super Retina XDR OLED","ppi":458,"hz":"60Hz"},"os":"iOS 14","ux":"iOS","bat":"3687mAh","cam":"12+12+12MP","wt":"226g","net":"5G","usb":"Lightning","gsm":"apple_iphone_12_pro_max-10695","bench":{"antutu":980000,"gb6s":1750,"gb6m":4600}},{"id":53,"brand":"Apple","brandKo":"애플","name":"iPhone 12 Pro","year":2020,"chip":"Apple A14 Bionic","ram":"6GB","storage":"128GB~512GB","disp":{"inch":6.1,"w":1170,"h":2532,"type":"Super Retina XDR OLED","ppi":460,"hz":"60Hz"},"os":"iOS 14","ux":"iOS","bat":"2815mAh","cam":"12+12+12MP","wt":"187g","net":"5G","usb":"Lightning","gsm":"apple_iphone_12_pro-10693","bench":{"antutu":960000,"gb6s":1730,"gb6m":4550}},{"id":54,"brand":"Apple","brandKo":"애플","name":"iPhone 12","year":2020,"chip":"Apple A14 Bionic","ram":"4GB","storage":"64GB~256GB","disp":{"inch":6.1,"w":1170,"h":2532,"type":"Super Retina XDR OLED","ppi":460,"hz":"60Hz"},"os":"iOS 14","ux":"iOS","bat":"2815mAh","cam":"12+12MP","wt":"164g","net":"5G","usb":"Lightning","gsm":"apple_iphone_12-10694","bench":{"antutu":940000,"gb6s":1700,"gb6m":4480}},{"id":55,"brand":"Apple","brandKo":"애플","name":"iPhone 12 mini","year":2020,"chip":"Apple A14 Bionic","ram":"4GB","storage":"64GB~256GB","disp":{"inch":5.4,"w":1080,"h":2340,"type":"Super Retina XDR OLED","ppi":476,"hz":"60Hz"},"os":"iOS 14","ux":"iOS","bat":"2227mAh","cam":"12+12MP","wt":"133g","net":"5G","usb":"Lightning","gsm":"apple_iphone_12_mini-10693","bench":{"antutu":920000,"gb6s":1680,"gb6m":4420}},{"id":56,"brand":"Apple","brandKo":"애플","name":"iPhone SE (2022)","year":2022,"chip":"Apple A15 Bionic","ram":"4GB","storage":"64GB~256GB","disp":{"inch":4.7,"w":750,"h":1334,"type":"Retina IPS LCD","ppi":326,"hz":"60Hz"},"os":"iOS 15","ux":"iOS","bat":"2018mAh","cam":"12MP","wt":"144g","net":"5G","usb":"Lightning","gsm":"apple_iphone_se_(2022)-11100","bench":{"antutu":1000000,"gb6s":2100,"gb6m":5500}},{"id":57,"brand":"Apple","brandKo":"애플","name":"iPhone SE (2020)","year":2020,"chip":"Apple A13 Bionic","ram":"3GB","storage":"64GB~256GB","disp":{"inch":4.7,"w":750,"h":1334,"type":"Retina IPS LCD","ppi":326,"hz":"60Hz"},"os":"iOS 13","ux":"iOS","bat":"1821mAh","cam":"12MP","wt":"148g","net":"LTE","usb":"Lightning","gsm":"apple_iphone_se_(2020)-10151","bench":{"antutu":790000,"gb6s":1400,"gb6m":3700}},{"id":58,"brand":"Apple","brandKo":"애플","name":"iPhone 11 Pro Max","year":2019,"chip":"Apple A13 Bionic","ram":"4GB","storage":"64GB~512GB","disp":{"inch":6.5,"w":1242,"h":2688,"type":"Super Retina XDR OLED","ppi":458,"hz":"60Hz"},"os":"iOS 13","ux":"iOS","bat":"3969mAh","cam":"12+12+12MP","wt":"226g","net":"LTE","usb":"Lightning","gsm":"apple_iphone_11_pro_max-9793","bench":{"antutu":790000,"gb6s":1400,"gb6m":3700}},{"id":59,"brand":"Apple","brandKo":"애플","name":"iPhone 11 Pro","year":2019,"chip":"Apple A13 Bionic","ram":"4GB","storage":"64GB~512GB","disp":{"inch":5.8,"w":1125,"h":2436,"type":"Super Retina XDR OLED","ppi":458,"hz":"60Hz"},"os":"iOS 13","ux":"iOS","bat":"3046mAh","cam":"12+12+12MP","wt":"188g","net":"LTE","usb":"Lightning","gsm":"apple_iphone_11_pro-9794","bench":{"antutu":780000,"gb6s":1390,"gb6m":3680}},{"id":60,"brand":"Apple","brandKo":"애플","name":"iPhone 11","year":2019,"chip":"Apple A13 Bionic","ram":"4GB","storage":"64GB~256GB","disp":{"inch":6.1,"w":828,"h":1792,"type":"Liquid Retina IPS LCD","ppi":326,"hz":"60Hz"},"os":"iOS 13","ux":"iOS","bat":"3110mAh","cam":"12+12MP","wt":"194g","net":"LTE","usb":"Lightning","gsm":"apple_iphone_11-9801","bench":{"antutu":770000,"gb6s":1380,"gb6m":3650}},{"id":61,"brand":"Apple","brandKo":"애플","name":"iPhone XS Max","year":2018,"chip":"Apple A12 Bionic","ram":"4GB","storage":"64GB~512GB","disp":{"inch":6.5,"w":1242,"h":2688,"type":"Super Retina OLED","ppi":458,"hz":"60Hz"},"os":"iOS 12","ux":"iOS","bat":"3174mAh","cam":"12+12MP","wt":"208g","net":"LTE","usb":"Lightning","gsm":"apple_iphone_xs_max-9116","bench":{"antutu":620000,"gb6s":1100,"gb6m":2900}},{"id":62,"brand":"Apple","brandKo":"애플","name":"iPhone XR","year":2018,"chip":"Apple A12 Bionic","ram":"3GB","storage":"64GB~256GB","disp":{"inch":6.1,"w":828,"h":1792,"type":"Liquid Retina IPS LCD","ppi":326,"hz":"60Hz"},"os":"iOS 12","ux":"iOS","bat":"2942mAh","cam":"12MP","wt":"194g","net":"LTE","usb":"Lightning","gsm":"apple_iphone_xr-9140","bench":{"antutu":610000,"gb6s":1090,"gb6m":2850}},{"id":63,"brand":"Google","brandKo":"구글","name":"Pixel 9 Pro XL","year":2024,"chip":"Google Tensor G4","ram":"16GB","storage":"128GB~1TB","disp":{"inch":6.8,"w":1344,"h":2992,"type":"LTPO OLED","ppi":486,"hz":"1-120Hz"},"os":"Android 14","ux":"Stock Android","bat":"5060mAh","cam":"50+48+48MP","wt":"221g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"google_pixel_9_pro_xl-12505","bench":{"antutu":1050000,"gb6s":1600,"gb6m":4500}},{"id":64,"brand":"Google","brandKo":"구글","name":"Pixel 9 Pro","year":2024,"chip":"Google Tensor G4","ram":"16GB","storage":"128GB~1TB","disp":{"inch":6.3,"w":1280,"h":2856,"type":"LTPO OLED","ppi":495,"hz":"1-120Hz"},"os":"Android 14","ux":"Stock Android","bat":"4700mAh","cam":"50+48+48MP","wt":"199g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"google_pixel_9_pro-12504","bench":{"antutu":1040000,"gb6s":1590,"gb6m":4450}},{"id":65,"brand":"Google","brandKo":"구글","name":"Pixel 9","year":2024,"chip":"Google Tensor G4","ram":"12GB","storage":"128GB/256GB","disp":{"inch":6.3,"w":1080,"h":2424,"type":"OLED","ppi":422,"hz":"60-120Hz"},"os":"Android 14","ux":"Stock Android","bat":"4700mAh","cam":"50+10.5MP","wt":"198g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"google_pixel_9-12503","bench":{"antutu":1020000,"gb6s":1570,"gb6m":4380}},{"id":66,"brand":"Google","brandKo":"구글","name":"Pixel 9 Pro Fold","year":2024,"chip":"Google Tensor G4","ram":"16GB","storage":"256GB/512GB","disp":{"inch":8,"w":2076,"h":2152,"type":"LTPO OLED","ppi":380,"hz":"1-120Hz"},"os":"Android 14","ux":"Stock Android","bat":"4650mAh","cam":"48+10.5+10.8MP","wt":"257g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"google_pixel_9_pro_fold-12548","bench":{"antutu":1030000,"gb6s":1580,"gb6m":4400}},{"id":67,"brand":"Google","brandKo":"구글","name":"Pixel 8 Pro","year":2023,"chip":"Google Tensor G3","ram":"12GB","storage":"128GB~1TB","disp":{"inch":6.7,"w":1344,"h":2992,"type":"LTPO OLED","ppi":489,"hz":"1-120Hz"},"os":"Android 14","ux":"Stock Android","bat":"5050mAh","cam":"50+48+48MP","wt":"213g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"google_pixel_8_pro-12205","bench":{"antutu":950000,"gb6s":1350,"gb6m":3600}},{"id":68,"brand":"Google","brandKo":"구글","name":"Pixel 8","year":2023,"chip":"Google Tensor G3","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.2,"w":1080,"h":2400,"type":"OLED","ppi":428,"hz":"60-120Hz"},"os":"Android 14","ux":"Stock Android","bat":"4575mAh","cam":"50+12MP","wt":"187g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"google_pixel_8-12200","bench":{"antutu":920000,"gb6s":1330,"gb6m":3550}},{"id":69,"brand":"Google","brandKo":"구글","name":"Pixel Fold","year":2023,"chip":"Google Tensor G2","ram":"12GB","storage":"256GB/512GB","disp":{"inch":7.6,"w":1840,"h":2208,"type":"OLED","ppi":380,"hz":"120Hz"},"os":"Android 13","ux":"Stock Android","bat":"4821mAh","cam":"48+10.8+10.8MP","wt":"283g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"google_pixel_fold-11671","bench":{"antutu":800000,"gb6s":1050,"gb6m":3100}},{"id":70,"brand":"Google","brandKo":"구글","name":"Pixel 7 Pro","year":2022,"chip":"Google Tensor G2","ram":"12GB","storage":"128GB~512GB","disp":{"inch":6.7,"w":1440,"h":3120,"type":"LTPO OLED","ppi":512,"hz":"1-120Hz"},"os":"Android 13","ux":"Stock Android","bat":"5000mAh","cam":"50+48+12MP","wt":"212g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"google_pixel_7_pro-11908","bench":{"antutu":800000,"gb6s":1050,"gb6m":3100}},{"id":71,"brand":"Google","brandKo":"구글","name":"Pixel 7","year":2022,"chip":"Google Tensor G2","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.3,"w":1080,"h":2400,"type":"OLED","ppi":416,"hz":"90Hz"},"os":"Android 13","ux":"Stock Android","bat":"4355mAh","cam":"50+12MP","wt":"197g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"google_pixel_7-11910","bench":{"antutu":790000,"gb6s":1040,"gb6m":3050}},{"id":72,"brand":"Google","brandKo":"구글","name":"Pixel 6a","year":2022,"chip":"Google Tensor G1","ram":"6GB","storage":"128GB","disp":{"inch":6.1,"w":1080,"h":2400,"type":"OLED","ppi":429,"hz":"60Hz"},"os":"Android 12","ux":"Stock Android","bat":"4410mAh","cam":"12.2+12MP","wt":"178g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"google_pixel_6a-11229","bench":{"antutu":650000,"gb6s":900,"gb6m":2800}},{"id":73,"brand":"Google","brandKo":"구글","name":"Pixel 6 Pro","year":2021,"chip":"Google Tensor G1","ram":"12GB","storage":"128GB~512GB","disp":{"inch":6.7,"w":1440,"h":3120,"type":"LTPO OLED","ppi":512,"hz":"10-120Hz"},"os":"Android 12","ux":"Stock Android","bat":"5003mAh","cam":"50+48+12MP","wt":"210g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"google_pixel_6_pro-10765","bench":{"antutu":650000,"gb6s":900,"gb6m":2800}},{"id":74,"brand":"Google","brandKo":"구글","name":"Pixel 6","year":2021,"chip":"Google Tensor G1","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.4,"w":1080,"h":2400,"type":"OLED","ppi":411,"hz":"90Hz"},"os":"Android 12","ux":"Stock Android","bat":"4614mAh","cam":"50+12MP","wt":"207g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"google_pixel_6-10908","bench":{"antutu":640000,"gb6s":880,"gb6m":2750}},{"id":75,"brand":"Google","brandKo":"구글","name":"Pixel 5","year":2020,"chip":"Snapdragon 765G","ram":"8GB","storage":"128GB","disp":{"inch":6,"w":1080,"h":2340,"type":"OLED","ppi":432,"hz":"90Hz"},"os":"Android 11","ux":"Stock Android","bat":"4080mAh","cam":"12.2+16MP","wt":"151g","net":"5G","usb":"USB 3.1","gsm":"google_pixel_5-10386","bench":{"antutu":390000,"gb6s":710,"gb6m":2400}},{"id":76,"brand":"Google","brandKo":"구글","name":"Pixel 4 XL","year":2019,"chip":"Snapdragon 855","ram":"6GB","storage":"64GB/128GB","disp":{"inch":6.3,"w":1440,"h":3040,"type":"P-OLED","ppi":537,"hz":"90Hz"},"os":"Android 10","ux":"Stock Android","bat":"3700mAh","cam":"12.2+16MP","wt":"193g","net":"LTE","usb":"USB 3.1","gsm":"google_pixel_4_xl-9575","bench":{"antutu":510000,"gb6s":840,"gb6m":2750}},{"id":77,"brand":"Google","brandKo":"구글","name":"Pixel 3 XL","year":2018,"chip":"Snapdragon 845","ram":"4GB","storage":"64GB/128GB","disp":{"inch":6.3,"w":1440,"h":2960,"type":"P-OLED","ppi":523,"hz":"60Hz"},"os":"Android 9","ux":"Stock Android","bat":"3430mAh","cam":"12.2+8+8MP","wt":"184g","net":"LTE","usb":"USB 3.1","gsm":"google_pixel_3_xl-8811","bench":{"antutu":320000,"gb6s":680,"gb6m":2200}},{"id":78,"brand":"OnePlus","brandKo":"원플러스","name":"OnePlus 12","year":2024,"chip":"Snapdragon 8 Gen 3","ram":"12GB/16GB","storage":"256GB/512GB","disp":{"inch":6.82,"w":1440,"h":3168,"type":"LTPO AMOLED","ppi":510,"hz":"1-120Hz"},"os":"Android 14","ux":"OxygenOS 14","bat":"5400mAh","cam":"50+48+64MP","wt":"220g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"oneplus_12-12196","bench":{"antutu":2100000,"gb6s":2200,"gb6m":6900}},{"id":79,"brand":"OnePlus","brandKo":"원플러스","name":"OnePlus 12R","year":2024,"chip":"Snapdragon 8 Gen 1","ram":"8GB/16GB","storage":"128GB/256GB","disp":{"inch":6.78,"w":1264,"h":2780,"type":"AMOLED","ppi":450,"hz":"1-120Hz"},"os":"Android 14","ux":"OxygenOS 14","bat":"5500mAh","cam":"50+8+2MP","wt":"207g","net":"5G","usb":"USB 2.0","gsm":"oneplus_12r-12195","bench":{"antutu":1000000,"gb6s":1290,"gb6m":3800}},{"id":80,"brand":"OnePlus","brandKo":"원플러스","name":"OnePlus 11","year":2023,"chip":"Snapdragon 8 Gen 2","ram":"8GB/12GB/16GB","storage":"128GB/256GB","disp":{"inch":6.7,"w":1440,"h":3216,"type":"LTPO3 AMOLED","ppi":525,"hz":"1-120Hz"},"os":"Android 13","ux":"OxygenOS 13","bat":"5000mAh","cam":"50+48+32MP","wt":"205g","net":"5G","usb":"USB 3.1 Gen 1","gsm":"oneplus_11-11881","bench":{"antutu":1580000,"gb6s":2020,"gb6m":5600}},{"id":81,"brand":"OnePlus","brandKo":"원플러스","name":"OnePlus Open","year":2023,"chip":"Snapdragon 8 Gen 2","ram":"16GB","storage":"512GB","disp":{"inch":7.82,"w":2268,"h":2440,"type":"LTPO3 AMOLED","ppi":426,"hz":"1-120Hz"},"os":"Android 13","ux":"OxygenOS 13.2","bat":"4805mAh","cam":"48+48+64MP","wt":"245g","net":"5G","usb":"USB 3.1 Gen 1","gsm":"oneplus_open-12041","bench":{"antutu":1550000,"gb6s":2000,"gb6m":5500}},{"id":82,"brand":"OnePlus","brandKo":"원플러스","name":"OnePlus 10 Pro","year":2022,"chip":"Snapdragon 8 Gen 1","ram":"8GB/12GB","storage":"128GB/256GB","disp":{"inch":6.7,"w":1440,"h":3216,"type":"LTPO2 AMOLED","ppi":525,"hz":"1-120Hz"},"os":"Android 12","ux":"OxygenOS 12","bat":"5000mAh","cam":"48+50+8MP","wt":"200g","net":"5G","usb":"USB 3.1 Gen 1","gsm":"oneplus_10_pro-11326","bench":{"antutu":1000000,"gb6s":1290,"gb6m":3800}},{"id":83,"brand":"OnePlus","brandKo":"원플러스","name":"OnePlus 9 Pro","year":2021,"chip":"Snapdragon 888","ram":"8GB/12GB","storage":"128GB/256GB","disp":{"inch":6.7,"w":1440,"h":3216,"type":"LTPO AMOLED","ppi":525,"hz":"1-120Hz"},"os":"Android 11","ux":"OxygenOS 11","bat":"4500mAh","cam":"48+50+8+2MP","wt":"197g","net":"5G","usb":"USB 3.1 Gen 1","gsm":"oneplus_9_pro-10767","bench":{"antutu":840000,"gb6s":1050,"gb6m":3250}},{"id":84,"brand":"OnePlus","brandKo":"원플러스","name":"OnePlus 8 Pro","year":2020,"chip":"Snapdragon 865","ram":"8GB/12GB","storage":"128GB/256GB","disp":{"inch":6.78,"w":1440,"h":3168,"type":"Fluid AMOLED","ppi":513,"hz":"120Hz"},"os":"Android 10","ux":"OxygenOS 10","bat":"4510mAh","cam":"48+48+8+5MP","wt":"199g","net":"5G","usb":"USB 3.1","gsm":"oneplus_8_pro-10170","bench":{"antutu":600000,"gb6s":950,"gb6m":2950}},{"id":85,"brand":"OnePlus","brandKo":"원플러스","name":"OnePlus 7 Pro","year":2019,"chip":"Snapdragon 855","ram":"6GB/8GB/12GB","storage":"128GB/256GB","disp":{"inch":6.67,"w":1440,"h":3120,"type":"Fluid AMOLED","ppi":516,"hz":"90Hz"},"os":"Android 9","ux":"OxygenOS 9.5","bat":"4000mAh","cam":"48+16+8MP","wt":"236g","net":"LTE","usb":"USB 3.1","gsm":"oneplus_7_pro-9481","bench":{"antutu":510000,"gb6s":840,"gb6m":2750}},{"id":86,"brand":"OnePlus","brandKo":"원플러스","name":"OnePlus 6T","year":2018,"chip":"Snapdragon 845","ram":"6GB/8GB","storage":"128GB/256GB","disp":{"inch":6.41,"w":1080,"h":2340,"type":"AMOLED","ppi":402,"hz":"60Hz"},"os":"Android 9","ux":"OxygenOS 9.0","bat":"3700mAh","cam":"16+20MP","wt":"185g","net":"LTE","usb":"USB 2.0","gsm":"oneplus_6t-9120","bench":{"antutu":320000,"gb6s":680,"gb6m":2200}},{"id":87,"brand":"Xiaomi","brandKo":"샤오미","name":"Xiaomi 14 Ultra","year":2024,"chip":"Snapdragon 8 Gen 3","ram":"16GB","storage":"256GB~1TB","disp":{"inch":6.73,"w":1440,"h":3200,"type":"LTPO AMOLED","ppi":522,"hz":"1-120Hz"},"os":"Android 14","ux":"HyperOS","bat":"5000mAh","cam":"50+50+50MP+ToF","wt":"229g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"xiaomi_14_ultra-12360","bench":{"antutu":2100000,"gb6s":2200,"gb6m":6900}},{"id":88,"brand":"Xiaomi","brandKo":"샤오미","name":"Xiaomi 14","year":2024,"chip":"Snapdragon 8 Gen 3","ram":"12GB/16GB","storage":"256GB~1TB","disp":{"inch":6.36,"w":1200,"h":2670,"type":"LTPO AMOLED","ppi":460,"hz":"1-120Hz"},"os":"Android 14","ux":"HyperOS","bat":"4610mAh","cam":"50+50+50MP","wt":"193g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"xiaomi_14-12361","bench":{"antutu":2050000,"gb6s":2180,"gb6m":6800}},{"id":89,"brand":"Xiaomi","brandKo":"샤오미","name":"Xiaomi 13 Pro","year":2023,"chip":"Snapdragon 8 Gen 2","ram":"12GB","storage":"256GB","disp":{"inch":6.73,"w":1440,"h":3200,"type":"LTPO AMOLED","ppi":522,"hz":"1-120Hz"},"os":"Android 13","ux":"MIUI 14","bat":"4820mAh","cam":"50+50+50MP","wt":"210g","net":"5G","usb":"USB 2.0","gsm":"xiaomi_13_pro-11867","bench":{"antutu":1550000,"gb6s":1980,"gb6m":5500}},{"id":90,"brand":"Xiaomi","brandKo":"샤오미","name":"Xiaomi 13","year":2023,"chip":"Snapdragon 8 Gen 2","ram":"8GB/12GB","storage":"128GB/256GB","disp":{"inch":6.36,"w":1080,"h":2400,"type":"AMOLED","ppi":416,"hz":"120Hz"},"os":"Android 13","ux":"MIUI 14","bat":"4500mAh","cam":"54+12+10MP","wt":"189g","net":"5G","usb":"USB 2.0","gsm":"xiaomi_13-11814","bench":{"antutu":1530000,"gb6s":1960,"gb6m":5450}},{"id":91,"brand":"Xiaomi","brandKo":"샤오미","name":"Redmi Note 13 Pro+","year":2024,"chip":"Dimensity 7200-Ultra","ram":"8GB/12GB","storage":"256GB/512GB","disp":{"inch":6.67,"w":1220,"h":2712,"type":"AMOLED","ppi":446,"hz":"120Hz"},"os":"Android 13","ux":"MIUI 14","bat":"5000mAh","cam":"200+8+2MP","wt":"204g","net":"5G","usb":"USB 2.0","gsm":"xiaomi_redmi_note_13_pro+-12336","bench":{"antutu":680000,"gb6s":1000,"gb6m":3200}},{"id":92,"brand":"Xiaomi","brandKo":"샤오미","name":"POCO F5 Pro","year":2023,"chip":"Snapdragon 8 Gen 2","ram":"12GB","storage":"256GB/512GB","disp":{"inch":6.67,"w":1440,"h":3200,"type":"LTPO AMOLED","ppi":526,"hz":"1-120Hz"},"os":"Android 13","ux":"MIUI 14","bat":"5160mAh","cam":"64+8+2MP","wt":"204g","net":"5G","usb":"USB 2.0","gsm":"xiaomi_poco_f5_pro-12001","bench":{"antutu":1520000,"gb6s":1950,"gb6m":5400}},{"id":93,"brand":"Xiaomi","brandKo":"샤오미","name":"Xiaomi 12 Pro","year":2022,"chip":"Snapdragon 8 Gen 1","ram":"8GB/12GB","storage":"128GB/256GB","disp":{"inch":6.73,"w":1440,"h":3200,"type":"LTPO2 AMOLED","ppi":521,"hz":"1-120Hz"},"os":"Android 12","ux":"MIUI 13","bat":"4600mAh","cam":"50+50+50MP","wt":"204g","net":"5G","usb":"USB 2.0","gsm":"xiaomi_12_pro-11335","bench":{"antutu":1000000,"gb6s":1290,"gb6m":3800}},{"id":94,"brand":"Xiaomi","brandKo":"샤오미","name":"Xiaomi 11 Ultra","year":2021,"chip":"Snapdragon 888","ram":"8GB/12GB","storage":"256GB","disp":{"inch":6.81,"w":1440,"h":3200,"type":"LTPO AMOLED","ppi":515,"hz":"1-120Hz"},"os":"Android 11","ux":"MIUI 12.5","bat":"5000mAh","cam":"50+48+48MP","wt":"234g","net":"5G","usb":"USB 2.0","gsm":"xiaomi_mi_11_ultra-10737","bench":{"antutu":840000,"gb6s":1050,"gb6m":3250}},{"id":95,"brand":"Xiaomi","brandKo":"샤오미","name":"Mi 10 Pro","year":2020,"chip":"Snapdragon 865","ram":"8GB/12GB","storage":"256GB/512GB","disp":{"inch":6.67,"w":1080,"h":2340,"type":"AMOLED","ppi":386,"hz":"90Hz"},"os":"Android 10","ux":"MIUI 11","bat":"4500mAh","cam":"108+20+12+8MP","wt":"208g","net":"5G","usb":"USB 2.0","gsm":"xiaomi_mi_10_pro-10082","bench":{"antutu":590000,"gb6s":940,"gb6m":2930}},{"id":96,"brand":"Xiaomi","brandKo":"샤오미","name":"Mi 9","year":2019,"chip":"Snapdragon 855","ram":"6GB/8GB","storage":"64GB/128GB","disp":{"inch":6.39,"w":1080,"h":2340,"type":"AMOLED","ppi":403,"hz":"60Hz"},"os":"Android 9","ux":"MIUI 10","bat":"3300mAh","cam":"48+16+12MP","wt":"173g","net":"LTE","usb":"USB 2.0","gsm":"xiaomi_mi_9-9396","bench":{"antutu":510000,"gb6s":840,"gb6m":2750}},{"id":97,"brand":"Xiaomi","brandKo":"샤오미","name":"Mi 8","year":2018,"chip":"Snapdragon 845","ram":"6GB/8GB","storage":"64GB/128GB/256GB","disp":{"inch":6.21,"w":1080,"h":2248,"type":"AMOLED","ppi":402,"hz":"60Hz"},"os":"Android 8.1","ux":"MIUI 10","bat":"3400mAh","cam":"12+12MP","wt":"175g","net":"LTE","usb":"USB 2.0","gsm":"xiaomi_mi_8-9144","bench":{"antutu":320000,"gb6s":680,"gb6m":2200}},{"id":98,"brand":"Huawei","brandKo":"화웨이","name":"P50 Pro","year":2021,"chip":"Kirin 9000 / Snapdragon 888 4G","ram":"8GB","storage":"256GB","disp":{"inch":6.6,"w":1228,"h":2700,"type":"OLED","ppi":450,"hz":"120Hz"},"os":"Android 11 (EMUI 12, no GMS)","ux":"EMUI 12","bat":"4360mAh","cam":"50+64+13+ToF","wt":"195g","net":"LTE (Kirin) / 4G","usb":"USB 3.1","gsm":"huawei_p50_pro-10825","bench":{"antutu":730000,"gb6s":1000,"gb6m":3200}},{"id":99,"brand":"Huawei","brandKo":"화웨이","name":"P40 Pro","year":2020,"chip":"Kirin 990 5G","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.58,"w":1200,"h":2640,"type":"OLED","ppi":441,"hz":"90Hz"},"os":"Android 10 (EMUI 10.1, no GMS)","ux":"EMUI 10.1","bat":"4200mAh","cam":"50+12+40+ToF","wt":"209g","net":"5G","usb":"USB 3.1","gsm":"huawei_p40_pro-10096","bench":{"antutu":510000,"gb6s":830,"gb6m":2700}},{"id":100,"brand":"Huawei","brandKo":"화웨이","name":"Mate 40 Pro","year":2020,"chip":"Kirin 9000","ram":"8GB","storage":"256GB","disp":{"inch":6.76,"w":1344,"h":2772,"type":"OLED","ppi":456,"hz":"90Hz"},"os":"Android 10 (EMUI 11, no GMS)","ux":"EMUI 11","bat":"4400mAh","cam":"50+12+20+ToF","wt":"212g","net":"5G","usb":"USB 3.1","gsm":"huawei_mate_40_pro-10488","bench":{"antutu":760000,"gb6s":1030,"gb6m":3300}},{"id":101,"brand":"Huawei","brandKo":"화웨이","name":"P30 Pro","year":2019,"chip":"Kirin 980","ram":"6GB/8GB","storage":"128GB/256GB/512GB","disp":{"inch":6.47,"w":1080,"h":2340,"type":"OLED","ppi":398,"hz":"60Hz"},"os":"Android 9","ux":"EMUI 9.1","bat":"4200mAh","cam":"40+20+8+ToF","wt":"192g","net":"LTE","usb":"USB 3.1","gsm":"huawei_p30_pro-9517","bench":{"antutu":300000,"gb6s":640,"gb6m":2100}},{"id":102,"brand":"Huawei","brandKo":"화웨이","name":"Mate 20 Pro","year":2018,"chip":"Kirin 980","ram":"6GB","storage":"128GB/256GB","disp":{"inch":6.39,"w":1440,"h":3120,"type":"OLED","ppi":538,"hz":"60Hz"},"os":"Android 9","ux":"EMUI 9","bat":"4200mAh","cam":"40+20+8MP","wt":"189g","net":"LTE","usb":"USB 3.1","gsm":"huawei_mate_20_pro-9200","bench":{"antutu":300000,"gb6s":640,"gb6m":2100}},{"id":103,"brand":"Sony","brandKo":"소니","name":"Xperia 1 VI","year":2024,"chip":"Snapdragon 8 Gen 3","ram":"12GB","storage":"256GB/512GB","disp":{"inch":6.5,"w":1080,"h":2340,"type":"OLED","ppi":396,"hz":"1-120Hz"},"os":"Android 14","ux":"Stock Android","bat":"5000mAh","cam":"52+48+12MP","wt":"192g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"sony_xperia_1_vi-12327","bench":{"antutu":2050000,"gb6s":2150,"gb6m":6700}},{"id":104,"brand":"Sony","brandKo":"소니","name":"Xperia 1 V","year":2023,"chip":"Snapdragon 8 Gen 2","ram":"12GB","storage":"256GB/512GB","disp":{"inch":6.5,"w":1644,"h":3840,"type":"4K OLED","ppi":643,"hz":"120Hz"},"os":"Android 13","ux":"Stock Android","bat":"5000mAh","cam":"52+12+52MP","wt":"187g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"sony_xperia_1_v-11903","bench":{"antutu":1520000,"gb6s":1970,"gb6m":5480}},{"id":105,"brand":"Sony","brandKo":"소니","name":"Xperia 5 V","year":2023,"chip":"Snapdragon 8 Gen 2","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.1,"w":1080,"h":2520,"type":"OLED","ppi":449,"hz":"120Hz"},"os":"Android 13","ux":"Stock Android","bat":"5000mAh","cam":"48+12MP","wt":"182g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"sony_xperia_5_v-11902","bench":{"antutu":1510000,"gb6s":1960,"gb6m":5450}},{"id":106,"brand":"Sony","brandKo":"소니","name":"Xperia 1 IV","year":2022,"chip":"Snapdragon 8 Gen 1","ram":"12GB","storage":"256GB/512GB","disp":{"inch":6.5,"w":1644,"h":3840,"type":"4K OLED","ppi":643,"hz":"120Hz"},"os":"Android 12","ux":"Stock Android","bat":"5000mAh","cam":"12+12+12MP","wt":"185g","net":"5G","usb":"USB 3.1 Gen 2","gsm":"sony_xperia_1_iv-11311","bench":{"antutu":1000000,"gb6s":1290,"gb6m":3800}},{"id":107,"brand":"Sony","brandKo":"소니","name":"Xperia 1 III","year":2021,"chip":"Snapdragon 888","ram":"12GB","storage":"256GB","disp":{"inch":6.5,"w":1644,"h":3840,"type":"4K OLED","ppi":643,"hz":"120Hz"},"os":"Android 11","ux":"Stock Android","bat":"4500mAh","cam":"12+12+12MP","wt":"186g","net":"5G","usb":"USB 3.1 Gen 2","gsm":"sony_xperia_1_iii-10596","bench":{"antutu":840000,"gb6s":1050,"gb6m":3250}},{"id":108,"brand":"Sony","brandKo":"소니","name":"Xperia 1 II","year":2020,"chip":"Snapdragon 865","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.5,"w":1644,"h":3840,"type":"4K OLED","ppi":643,"hz":"60Hz"},"os":"Android 10","ux":"Stock Android","bat":"4000mAh","cam":"12+12+12MP","wt":"181g","net":"5G","usb":"USB 3.1","gsm":"sony_xperia_1_ii-10042","bench":{"antutu":590000,"gb6s":940,"gb6m":2930}},{"id":109,"brand":"Sony","brandKo":"소니","name":"Xperia 1","year":2019,"chip":"Snapdragon 855","ram":"6GB","storage":"128GB","disp":{"inch":6.5,"w":1644,"h":3840,"type":"4K CinemaWide OLED","ppi":643,"hz":"60Hz"},"os":"Android 9","ux":"Stock Android","bat":"3330mAh","cam":"12+12+12MP","wt":"180g","net":"LTE","usb":"USB 3.1","gsm":"sony_xperia_1-9458","bench":{"antutu":510000,"gb6s":840,"gb6m":2750}},{"id":110,"brand":"Motorola","brandKo":"모토로라","name":"Edge 50 Ultra","year":2024,"chip":"Snapdragon 8s Gen 3","ram":"12GB","storage":"512GB","disp":{"inch":6.7,"w":1220,"h":2712,"type":"pOLED","ppi":446,"hz":"144Hz"},"os":"Android 14","ux":"My UX","bat":"4500mAh","cam":"50+64+13MP","wt":"206g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"motorola_edge_50_ultra-12374","bench":{"antutu":1700000,"gb6s":2100,"gb6m":5600}},{"id":111,"brand":"Motorola","brandKo":"모토로라","name":"Edge 40 Pro","year":2023,"chip":"Snapdragon 8 Gen 2","ram":"12GB","storage":"256GB","disp":{"inch":6.67,"w":1080,"h":2400,"type":"pOLED","ppi":394,"hz":"165Hz"},"os":"Android 13","ux":"My UX","bat":"4600mAh","cam":"50+50+12MP","wt":"199g","net":"5G","usb":"USB 3.1 Gen 1","gsm":"motorola_edge_40_pro-11904","bench":{"antutu":1550000,"gb6s":1980,"gb6m":5500}},{"id":112,"brand":"Motorola","brandKo":"모토로라","name":"Edge 30 Ultra","year":2022,"chip":"Snapdragon 8+ Gen 1","ram":"8GB/12GB","storage":"128GB/256GB","disp":{"inch":6.67,"w":1080,"h":2400,"type":"pOLED","ppi":394,"hz":"144Hz"},"os":"Android 12","ux":"My UX","bat":"4610mAh","cam":"200+50+12MP","wt":"198g","net":"5G","usb":"USB 3.1 Gen 1","gsm":"motorola_edge_30_ultra-11700","bench":{"antutu":1080000,"gb6s":1320,"gb6m":3950}},{"id":113,"brand":"ASUS","brandKo":"에이수스","name":"ROG Phone 8 Pro","year":2024,"chip":"Snapdragon 8 Gen 3","ram":"24GB","storage":"1TB","disp":{"inch":6.78,"w":1080,"h":2400,"type":"AMOLED","ppi":388,"hz":"165Hz"},"os":"Android 14","ux":"ROG UI","bat":"5500mAh","cam":"50+13+32MP","wt":"225g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"asus_rog_phone_8_pro-12298","bench":{"antutu":2150000,"gb6s":2200,"gb6m":6900}},{"id":114,"brand":"ASUS","brandKo":"에이수스","name":"Zenfone 11 Ultra","year":2024,"chip":"Snapdragon 8 Gen 3","ram":"12GB/16GB","storage":"256GB/512GB","disp":{"inch":6.78,"w":1080,"h":2400,"type":"AMOLED","ppi":388,"hz":"144Hz"},"os":"Android 14","ux":"ZenUI","bat":"5800mAh","cam":"50+13+32MP","wt":"224g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"asus_zenfone_11_ultra-12297","bench":{"antutu":2050000,"gb6s":2160,"gb6m":6800}},{"id":115,"brand":"ASUS","brandKo":"에이수스","name":"ROG Phone 7 Pro","year":2023,"chip":"Snapdragon 8 Gen 2","ram":"16GB","storage":"512GB","disp":{"inch":6.78,"w":1080,"h":2448,"type":"AMOLED","ppi":395,"hz":"165Hz"},"os":"Android 13","ux":"ROG UI","bat":"6000mAh","cam":"50+13+32MP","wt":"239g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"asus_rog_phone_7_pro-11987","bench":{"antutu":1580000,"gb6s":2020,"gb6m":5600}},{"id":116,"brand":"OPPO","brandKo":"오포","name":"Find X7 Ultra","year":2024,"chip":"Snapdragon 8 Gen 3","ram":"12GB/16GB","storage":"256GB/512GB","disp":{"inch":6.82,"w":1440,"h":3168,"type":"LTPO AMOLED","ppi":510,"hz":"1-120Hz"},"os":"Android 14","ux":"ColorOS 14","bat":"5000mAh","cam":"50+50+50+50MP","wt":"221g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"oppo_find_x7_ultra-12363","bench":{"antutu":2100000,"gb6s":2200,"gb6m":6900}},{"id":117,"brand":"OPPO","brandKo":"오포","name":"Find X6 Pro","year":2023,"chip":"Snapdragon 8 Gen 2","ram":"12GB","storage":"256GB/512GB","disp":{"inch":6.82,"w":1440,"h":3168,"type":"LTPO2 AMOLED","ppi":510,"hz":"1-120Hz"},"os":"Android 13","ux":"ColorOS 13","bat":"5000mAh","cam":"50+50+48MP","wt":"218g","net":"5G","usb":"USB 3.1 Gen 1","gsm":"oppo_find_x6_pro-11907","bench":{"antutu":1560000,"gb6s":2000,"gb6m":5500}},{"id":118,"brand":"OPPO","brandKo":"오포","name":"Find X5 Pro","year":2022,"chip":"Snapdragon 8 Gen 1","ram":"12GB","storage":"256GB","disp":{"inch":6.7,"w":1440,"h":3216,"type":"LTPO2 AMOLED","ppi":525,"hz":"1-120Hz"},"os":"Android 12","ux":"ColorOS 12.1","bat":"5000mAh","cam":"50+50+13MP","wt":"218g","net":"5G","usb":"USB 3.1 Gen 1","gsm":"oppo_find_x5_pro-11315","bench":{"antutu":1000000,"gb6s":1290,"gb6m":3800}},{"id":119,"brand":"vivo","brandKo":"비보","name":"X100 Ultra","year":2024,"chip":"Snapdragon 8 Gen 3","ram":"16GB","storage":"256GB~1TB","disp":{"inch":6.78,"w":1260,"h":2800,"type":"LTPO AMOLED","ppi":452,"hz":"1-120Hz"},"os":"Android 14","ux":"OriginOS 4","bat":"5500mAh","cam":"50+200+50MP","wt":"225g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"vivo_x100_ultra-12426","bench":{"antutu":2100000,"gb6s":2200,"gb6m":6900}},{"id":120,"brand":"vivo","brandKo":"비보","name":"X90 Pro+","year":2023,"chip":"Snapdragon 8 Gen 2","ram":"12GB","storage":"256GB/512GB","disp":{"inch":6.78,"w":1260,"h":2800,"type":"LTPO3 AMOLED","ppi":452,"hz":"1-120Hz"},"os":"Android 13","ux":"OriginOS 3","bat":"4700mAh","cam":"50+64+50+ToF","wt":"225g","net":"5G","usb":"USB 3.1 Gen 2","gsm":"vivo_x90_pro+-12005","bench":{"antutu":1560000,"gb6s":2000,"gb6m":5500}},{"id":121,"brand":"LG","brandKo":"LG","name":"LG V60 ThinQ 5G","year":2020,"chip":"Snapdragon 865","ram":"8GB","storage":"128GB","disp":{"inch":6.8,"w":1080,"h":2460,"type":"OLED","ppi":395,"hz":"60Hz"},"os":"Android 10","ux":"LG UX 9.0","bat":"5000mAh","cam":"64+13+ToF","wt":"213g","net":"5G","usb":"USB 3.1","gsm":"lg_v60_thinq_5g-10061","bench":{"antutu":580000,"gb6s":920,"gb6m":2880}},{"id":122,"brand":"LG","brandKo":"LG","name":"LG Wing 5G","year":2020,"chip":"Snapdragon 765G","ram":"8GB","storage":"128GB/256GB","disp":{"inch":6.8,"w":1080,"h":2460,"type":"P-OLED (회전형)","ppi":395,"hz":"60Hz"},"os":"Android 10","ux":"LG UX 9.5","bat":"4000mAh","cam":"64+13+12MP","wt":"260g","net":"5G","usb":"USB 2.0","gsm":"lg_wing_5g-10427","bench":{"antutu":390000,"gb6s":710,"gb6m":2400}},{"id":123,"brand":"LG","brandKo":"LG","name":"LG Velvet 5G","year":2020,"chip":"Snapdragon 765G / Dimensity 1000C","ram":"6GB/8GB","storage":"128GB","disp":{"inch":6.8,"w":1080,"h":2460,"type":"P-OLED","ppi":395,"hz":"60Hz"},"os":"Android 10","ux":"LG UX 10.0","bat":"4300mAh","cam":"48+8+5MP","wt":"180g","net":"5G","usb":"USB 2.0","gsm":"lg_velvet_5g-10270","bench":{"antutu":390000,"gb6s":710,"gb6m":2400}},{"id":124,"brand":"LG","brandKo":"LG","name":"LG V50 ThinQ 5G","year":2019,"chip":"Snapdragon 855","ram":"6GB","storage":"128GB","disp":{"inch":6.4,"w":1440,"h":3120,"type":"P-OLED","ppi":538,"hz":"60Hz"},"os":"Android 9","ux":"LG UX 9.0","bat":"4000mAh","cam":"12+16+ToF","wt":"183g","net":"5G","usb":"USB 3.1","gsm":"lg_v50_thinq_5g-9526","bench":{"antutu":500000,"gb6s":830,"gb6m":2700}},{"id":125,"brand":"LG","brandKo":"LG","name":"LG G8 ThinQ","year":2019,"chip":"Snapdragon 855","ram":"6GB","storage":"128GB","disp":{"inch":6.1,"w":1440,"h":3120,"type":"P-OLED","ppi":564,"hz":"60Hz"},"os":"Android 9","ux":"LG UX 9.0","bat":"3500mAh","cam":"12+12+ToF","wt":"167g","net":"LTE","usb":"USB 3.1","gsm":"lg_g8_thinq-9571","bench":{"antutu":490000,"gb6s":820,"gb6m":2690}},{"id":126,"brand":"LG","brandKo":"LG","name":"LG V40 ThinQ","year":2018,"chip":"Snapdragon 845","ram":"6GB","storage":"64GB/128GB","disp":{"inch":6.4,"w":1440,"h":3120,"type":"P-OLED","ppi":537,"hz":"60Hz"},"os":"Android 8.1","ux":"LG UX 7.0","bat":"3300mAh","cam":"12+16+12+8+5MP","wt":"169g","net":"LTE","usb":"USB 3.1","gsm":"lg_v40_thinq-9210","bench":{"antutu":310000,"gb6s":660,"gb6m":2150}},{"id":127,"brand":"Nokia","brandKo":"노키아","name":"Nokia G60 5G","year":2022,"chip":"Snapdragon 695 5G","ram":"4GB/6GB","storage":"64GB/128GB","disp":{"inch":6.58,"w":1080,"h":2408,"type":"IPS LCD","ppi":401,"hz":"120Hz"},"os":"Android 12","ux":"Stock Android","bat":"4500mAh","cam":"50+5+2MP","wt":"189g","net":"5G","usb":"USB 2.0","gsm":"nokia_g60_5g-11671","bench":{"antutu":380000,"gb6s":680,"gb6m":2000}},{"id":128,"brand":"Nokia","brandKo":"노키아","name":"Nokia XR21","year":2023,"chip":"Snapdragon 695 5G","ram":"6GB","storage":"128GB","disp":{"inch":6.49,"w":1080,"h":2400,"type":"IPS LCD","ppi":405,"hz":"120Hz"},"os":"Android 13","ux":"Stock Android","bat":"4800mAh","cam":"64+8+2MP","wt":"248g","net":"5G","usb":"USB 2.0","gsm":"nokia_xr21-11853","bench":{"antutu":370000,"gb6s":670,"gb6m":1980}},{"id":129,"brand":"realme","brandKo":"리얼미","name":"realme GT 5 Pro","year":2024,"chip":"Snapdragon 8 Gen 3","ram":"12GB/16GB","storage":"256GB/512GB/1TB","disp":{"inch":6.78,"w":1264,"h":2780,"type":"LTPO AMOLED","ppi":450,"hz":"1-120Hz"},"os":"Android 14","ux":"realme UI 5.0","bat":"5400mAh","cam":"50+8+50MP","wt":"220g","net":"5G","usb":"USB 3.2 Gen 2","gsm":"realme_gt5_pro-12271","bench":{"antutu":2100000,"gb6s":2200,"gb6m":6900}},{"id":130,"brand":"realme","brandKo":"리얼미","name":"realme 12 Pro+","year":2024,"chip":"Snapdragon 7s Gen 2","ram":"8GB/12GB","storage":"256GB/512GB","disp":{"inch":6.7,"w":1080,"h":2412,"type":"AMOLED","ppi":394,"hz":"120Hz"},"os":"Android 14","ux":"realme UI 5.0","bat":"5000mAh","cam":"50+64+8MP","wt":"195g","net":"5G","usb":"USB 2.0","gsm":"realme_12_pro+-12285","bench":{"antutu":650000,"gb6s":980,"gb6m":3100}},{"id":131,"brand":"Fairphone","brandKo":"페어폰","name":"Fairphone 5","year":2023,"chip":"Qualcomm QCM6490","ram":"8GB","storage":"256GB","disp":{"inch":6.46,"w":1224,"h":2700,"type":"OLED","ppi":461,"hz":"90Hz"},"os":"Android 13","ux":"Stock Android","bat":"4200mAh (교체 가능)","cam":"50+50MP","wt":"214g","net":"5G","usb":"USB 2.0","gsm":"fairphone_5-12154","bench":{"antutu":380000,"gb6s":700,"gb6m":2000}}];
+const MS_DATA={"updated":"2025 Q1","source":"Counterpoint Research / Canalys / IDC (추정치)","regions":[{"id":"global","name":"전 세계 (Global)","flag":"🌍","data":[{"brand":"Samsung","brandKo":"삼성","share":19.5,"color":"#1428A0"},{"brand":"Apple","brandKo":"애플","share":18.2,"color":"#555555"},{"brand":"Xiaomi","brandKo":"샤오미","share":12.8,"color":"#FF6900"},{"brand":"OPPO","brandKo":"오포","share":9.1,"color":"#1A1A1A"},{"brand":"vivo","brandKo":"비보","share":8.7,"color":"#415FFF"},{"brand":"Transsion","brandKo":"트랜지션","share":8.2,"color":"#00B0FF"},{"brand":"Others","brandKo":"기타","share":23.5,"color":"#666666"}]},{"id":"korea","name":"대한민국 (South Korea)","flag":"🇰🇷","data":[{"brand":"Samsung","brandKo":"삼성","share":60.3,"color":"#1428A0"},{"brand":"Apple","brandKo":"애플","share":36.1,"color":"#555555"},{"brand":"Others","brandKo":"기타","share":3.6,"color":"#666666"}]},{"id":"usa","name":"미국 (USA)","flag":"🇺🇸","data":[{"brand":"Apple","brandKo":"애플","share":55.1,"color":"#555555"},{"brand":"Samsung","brandKo":"삼성","share":25.4,"color":"#1428A0"},{"brand":"Motorola","brandKo":"모토로라","share":8.2,"color":"#E1001A"},{"brand":"Google","brandKo":"구글","share":4.1,"color":"#34A853"},{"brand":"Others","brandKo":"기타","share":7.2,"color":"#666666"}]},{"id":"china","name":"중국 (China)","flag":"🇨🇳","data":[{"brand":"vivo","brandKo":"비보","share":19.2,"color":"#415FFF"},{"brand":"OPPO","brandKo":"오포","share":17.8,"color":"#1A1A1A"},{"brand":"Huawei","brandKo":"화웨이","share":16.5,"color":"#CF0A2C"},{"brand":"Apple","brandKo":"애플","share":14.9,"color":"#555555"},{"brand":"Xiaomi","brandKo":"샤오미","share":13.8,"color":"#FF6900"},{"brand":"Others","brandKo":"기타","share":17.8,"color":"#666666"}]},{"id":"india","name":"인도 (India)","flag":"🇮🇳","data":[{"brand":"Samsung","brandKo":"삼성","share":18.4,"color":"#1428A0"},{"brand":"vivo","brandKo":"비보","share":17.2,"color":"#415FFF"},{"brand":"Xiaomi","brandKo":"샤오미","share":15.9,"color":"#FF6900"},{"brand":"OPPO","brandKo":"오포","share":13.8,"color":"#1A1A1A"},{"brand":"realme","brandKo":"리얼미","share":12.1,"color":"#FFA500"},{"brand":"Others","brandKo":"기타","share":22.6,"color":"#666666"}]},{"id":"europe","name":"유럽 (Europe)","flag":"🇪🇺","data":[{"brand":"Samsung","brandKo":"삼성","share":33.8,"color":"#1428A0"},{"brand":"Apple","brandKo":"애플","share":27.5,"color":"#555555"},{"brand":"Xiaomi","brandKo":"샤오미","share":12.2,"color":"#FF6900"},{"brand":"OPPO","brandKo":"오포","share":6.4,"color":"#1A1A1A"},{"brand":"Others","brandKo":"기타","share":20.1,"color":"#666666"}]},{"id":"japan","name":"일본 (Japan)","flag":"🇯🇵","data":[{"brand":"Apple","brandKo":"애플","share":47.8,"color":"#555555"},{"brand":"Samsung","brandKo":"삼성","share":20.1,"color":"#1428A0"},{"brand":"Sharp","brandKo":"샤프","share":8.4,"color":"#E60012"},{"brand":"Fujitsu","brandKo":"후지쯔","share":6.2,"color":"#E50012"},{"brand":"Sony","brandKo":"소니","share":5.1,"color":"#000000"},{"brand":"Others","brandKo":"기타","share":12.4,"color":"#666666"}]},{"id":"brazil","name":"브라질 (Brazil)","flag":"🇧🇷","data":[{"brand":"Samsung","brandKo":"삼성","share":36.8,"color":"#1428A0"},{"brand":"Motorola","brandKo":"모토로라","share":30.5,"color":"#E1001A"},{"brand":"Apple","brandKo":"애플","share":14.2,"color":"#555555"},{"brand":"Xiaomi","brandKo":"샤오미","share":8.1,"color":"#FF6900"},{"brand":"Others","brandKo":"기타","share":10.4,"color":"#666666"}]},{"id":"uk","name":"영국 (UK)","flag":"🇬🇧","data":[{"brand":"Apple","brandKo":"애플","share":52.3,"color":"#555555"},{"brand":"Samsung","brandKo":"삼성","share":28.1,"color":"#1428A0"},{"brand":"Xiaomi","brandKo":"샤오미","share":5.8,"color":"#FF6900"},{"brand":"Others","brandKo":"기타","share":13.8,"color":"#666666"}]},{"id":"germany","name":"독일 (Germany)","flag":"🇩🇪","data":[{"brand":"Apple","brandKo":"애플","share":33.2,"color":"#555555"},{"brand":"Samsung","brandKo":"삼성","share":29.5,"color":"#1428A0"},{"brand":"Xiaomi","brandKo":"샤오미","share":14.8,"color":"#FF6900"},{"brand":"Others","brandKo":"기타","share":22.5,"color":"#666666"}]},{"id":"australia","name":"호주 (Australia)","flag":"🇦🇺","data":[{"brand":"Apple","brandKo":"애플","share":56.2,"color":"#555555"},{"brand":"Samsung","brandKo":"삼성","share":26.8,"color":"#1428A0"},{"brand":"Oppo","brandKo":"오포","share":6.4,"color":"#1A1A1A"},{"brand":"Others","brandKo":"기타","share":10.6,"color":"#666666"}]}]};
+// ── constants ──────────────────────────────────────────────────────────────────
 const MAX_AT=2200000;
 const UXC={'One UI':'#1428A0','iOS':'#555','Stock Android':'#34A853','OxygenOS':'#F05100',
   'HyperOS':'#FF6900','MIUI':'#FF4A00','My UX':'#EA3735','ROG UI':'#9C1AFF',
   'ZenUI':'#00BBFF','LG UX':'#A50034','ColorOS':'#1A7FFF','OriginOS':'#4B6BFF',
   'EMUI':'#CF0A2C','realme UI':'#FFA500'};
-function uxC(ux){for(const[k,v]of Object.entries(UXC))if(ux.includes(k))return v;return'#7c83fd'}
+const BKO={Samsung:'삼성',Apple:'애플',Google:'구글',Xiaomi:'샤오미',OnePlus:'원플러스',
+  Huawei:'화웨이',Sony:'소니',Motorola:'모토로라',ASUS:'에이수스',LG:'LG',Nokia:'노키아',
+  OPPO:'오포',vivo:'비보',realme:'리얼미',Fairphone:'페어폰'};
+const KO_EN={'삼성':'samsung','애플':'apple','구글':'google','화웨이':'huawei','샤오미':'xiaomi',
+  '원플러스':'oneplus','소니':'sony','모토로라':'motorola','에이수스':'asus','노키아':'nokia',
+  '오포':'oppo','비보':'vivo','리얼미':'realme','갤럭시':'galaxy','아이폰':'iphone',
+  '픽셀':'pixel','노트':'note','울트라':'ultra','프로':'pro','맥스':'max','플러스':'plus',
+  '미니':'mini','폴드':'fold','플립':'flip','엣지':'edge','스냅드래곤':'snapdragon',
+  '엑시노스':'exynos','텐서':'tensor','다이멘시티':'dimensity','키린':'kirin',
+  '안드로이드':'android','아이오에스':'ios','원유아이':'one ui','폴더블':'foldable'};
+function uxC(u){for(const[k,v]of Object.entries(UXC))if(u.includes(k))return v;return'#7c83fd'}
+function koEn(s){let r=s.toLowerCase();for(const[k,v]of Object.entries(KO_EN))r=r.replaceAll(k,v);return r}
 
-// TABS
+// ── state ──────────────────────────────────────────────────────────────────────
+let fitMode='fit', upImg=null, stTimer=null;
+
+// ── tabs ───────────────────────────────────────────────────────────────────────
 function goTab(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
   document.getElementById('pg-'+id).classList.add('on');
   btn.classList.add('on');
-  if(id==='ms'&&!msData)loadMS();
 }
 
-// SEARCH
-async function loadBrands(){
-  const BKO={Samsung:'삼성',Apple:'애플',Google:'구글',Xiaomi:'샤오미',OnePlus:'원플러스',
-    Huawei:'화웨이',Sony:'소니',Motorola:'모토로라',ASUS:'에이수스',LG:'LG',Nokia:'노키아',
-    OPPO:'오포',vivo:'비보',realme:'리얼미',Fairphone:'페어폰'};
-  try{
-    const b=await(await fetch('/api/brands')).json();
-    const sel=document.getElementById('fBrand');
-    b.forEach(br=>{const o=new Option((BKO[br]?BKO[br]+' ':'')+`(${br})`,br);sel.appendChild(o)});
-  }catch(e){}
+// ── search (pure client-side) ─────────────────────────────────────────────────
+function initBrands(){
+  const brands=[...new Set(DEVICES.map(d=>d.brand))].sort();
+  const sel=document.getElementById('fBrand');
+  brands.forEach(b=>{sel.appendChild(new Option((BKO[b]?BKO[b]+' ':'')+`(${b})`,b))});
 }
 
-function debSearch(){clearTimeout(stTimer);stTimer=setTimeout(doSearch,320)}
+function debSearch(){clearTimeout(stTimer);stTimer=setTimeout(doSearch,220)}
 
-async function doSearch(){
-  const p=new URLSearchParams({
-    q:document.getElementById('q').value.trim(),
-    brand:document.getElementById('fBrand').value,
-    os:document.getElementById('fOS').value,
-    year:document.getElementById('fYear').value,
-    sort:document.getElementById('fSort').value,
-    limit:120
+function doSearch(){
+  const raw=document.getElementById('q').value.trim();
+  const q=koEn(raw);
+  const brand=document.getElementById('fBrand').value;
+  const os=document.getElementById('fOS').value;
+  const year=document.getElementById('fYear').value;
+  const sort=document.getElementById('fSort').value;
+
+  let list=DEVICES.filter(d=>{
+    if(brand&&d.brand!==brand)return false;
+    if(year&&d.year!==+year)return false;
+    if(os&&!d.os.toLowerCase().includes(os.toLowerCase()))return false;
+    if(raw){
+      const hay=koEn(`${d.brand} ${d.brandKo||''} ${d.name} ${d.chip} ${d.ux} ${d.os}`);
+      if(!hay.includes(q))return false;
+    }
+    return true;
   });
-  try{
-    const data=await(await fetch('/api/search?'+p)).json();
-    cache=data.devices;
-    document.getElementById('stats').textContent=`총 ${data.total}개 단말기 검색됨`;
-    renderGrid(data.devices);
-  }catch(e){document.getElementById('stats').textContent='서버 연결 오류'}
+
+  if(sort==='year')     list.sort((a,b)=>b.year-a.year||a.name.localeCompare(b.name));
+  else if(sort==='name')    list.sort((a,b)=>a.name.localeCompare(b.name));
+  else if(sort==='display') list.sort((a,b)=>b.disp.inch-a.disp.inch);
+  else if(sort==='ppi')     list.sort((a,b)=>b.disp.ppi-a.disp.ppi);
+  else if(sort==='antutu')  list.sort((a,b)=>(b.bench?.antutu||0)-(a.bench?.antutu||0));
+
+  document.getElementById('stats').textContent=`총 ${list.length}개 단말기 (전체 ${DEVICES.length}개)`;
+  renderGrid(list);
 }
 
 function renderGrid(devs){
@@ -336,18 +302,16 @@ function renderGrid(devs){
         <li><span class="k">UX</span><span class="v"><span class="ux-badge" style="background:${uxC(d.ux)}">${d.ux}</span></span></li>
       </ul>
       ${d.bench?.antutu?`<div class="brow">
-        <div class="bl">AnTuTu · <strong style="color:var(--text)">${(d.bench.antutu/1000).toFixed(0)}K</strong>
-        ${d.bench.gb6s?` · GB6 단일 <strong style="color:var(--text)">${d.bench.gb6s}</strong>`:''}</div>
+        <div class="bl">AnTuTu · <strong style="color:var(--text)">${(d.bench.antutu/1000).toFixed(0)}K</strong>${d.bench.gb6s?` · GB6 단일 <strong style="color:var(--text)">${d.bench.gb6s}</strong>`:''}</div>
         <div class="bbar"><div class="bf" style="width:${pct}%"></div></div>
       </div>`:''}
     </div>`;
   }).join('');
 }
 
-// MODAL
-async function openModal(id){
-  let d=cache.find(x=>x.id===id);
-  if(!d){try{d=await(await fetch('/api/device/'+id)).json()}catch(e){return}}
+// ── device modal ───────────────────────────────────────────────────────────────
+function openModal(id){
+  const d=DEVICES.find(x=>x.id===id);if(!d)return;
   document.getElementById('mName').textContent=`${d.brandKo?d.brandKo+' ('+d.brand+')':d.brand} ${d.name}`;
   document.getElementById('mSub2').textContent=`${d.year}년 출시 · ${d.net}`;
   const at=d.bench?.antutu,gs=d.bench?.gb6s,gm=d.bench?.gb6m;
@@ -388,32 +352,27 @@ async function openModal(id){
         <tr><td>네트워크</td><td>${d.net}</td></tr>
         <tr><td>연결 단자</td><td>${d.usb}</td></tr>
       </table></div>
-    ${d.gsm?`<button class="gsm-btn" onclick="openGsm('${d.gsm}','${d.name.replace(/'/g,"\\'")}')">
-      📊 GSMArena 상세 정보 불러오기 →</button>`:''}
-    <a class="gsm-btn" href="https://www.gsmarena.com/search.php3?sQuickSearch=${encodeURIComponent(d.brand+' '+d.name)}" target="_blank" rel="noopener" style="margin-top:6px">
-      🔗 GSMArena 검색 (새 탭) →</a>
+    ${d.gsm?`<button class="gsm-btn" onclick="openGsm('${d.gsm}','${d.name.replace(/'/g,"\\'")}')">📊 GSMArena 상세 정보 불러오기 →</button>`:''}
+    <a class="gsm-btn" href="https://www.gsmarena.com/search.php3?sQuickSearch=${encodeURIComponent(d.brand+' '+d.name)}" target="_blank" rel="noopener" style="margin-top:6px">🔗 GSMArena 검색 (새 탭) →</a>
   `;
   document.getElementById('overlay').classList.add('on');
 }
 function closeModal(){document.getElementById('overlay').classList.remove('on')}
 function maybeClose(e){if(e.target===document.getElementById('overlay'))closeModal()}
 
-// GSMArena live detail
+// ── GSMArena proxy (server optional) ──────────────────────────────────────────
 async function openGsm(slug,name){
   document.getElementById('gsmTitle').textContent=name+' — GSMArena 상세';
   document.getElementById('gsmBody').innerHTML='<div style="text-align:center;padding:40px"><div class="spin"></div><p style="margin-top:12px;color:var(--muted)">GSMArena에서 데이터 불러오는 중...</p></div>';
   document.getElementById('gsmWrap').classList.add('on');
+  const fallback=`<div style="text-align:center;color:var(--muted);padding:30px">
+    <p style="font-size:2rem;margin-bottom:8px">⚠️</p>
+    <p>서버를 통한 GSMArena 연동을 사용하려면<br><code>npm start</code>로 서버를 실행하세요.</p>
+    <a href="https://www.gsmarena.com/${slug}.php" target="_blank" rel="noopener" class="gsm-btn" style="display:inline-block;margin-top:14px">🌐 GSMArena 페이지 직접 열기 →</a></div>`;
   try{
-    const data=await(await fetch('/api/gsmarena/'+slug)).json();
-    if(!data.ok||!data.sections?.length){
-      document.getElementById('gsmBody').innerHTML=`
-        <div style="text-align:center;color:var(--muted);padding:30px">
-          <p style="font-size:2rem;margin-bottom:8px">⚠️</p>
-          <p>GSMArena에서 직접 불러올 수 없습니다<br>(Cloudflare 보호 또는 네트워크 제한).</p>
-          <a href="https://www.gsmarena.com/${slug}.php" target="_blank" rel="noopener" class="gsm-btn" style="display:inline-block;margin-top:14px">
-            🌐 GSMArena 페이지 직접 열기 →</a></div>`;
-      return;
-    }
+    const r=await fetch('/api/gsmarena/'+slug,{signal:AbortSignal.timeout(12000)});
+    const data=await r.json();
+    if(!data.ok||!data.sections?.length){document.getElementById('gsmBody').innerHTML=fallback;return}
     let html='';
     if(data.img)html+=`<img src="${data.img}" style="max-width:100px;display:block;margin:0 auto 12px;border-radius:8px" onerror="this.style.display='none'">`;
     data.sections.forEach(s=>{
@@ -424,65 +383,42 @@ async function openGsm(slug,name){
     html+=`<a href="https://www.gsmarena.com/${slug}.php" target="_blank" rel="noopener" class="gsm-btn" style="margin-top:10px">🌐 GSMArena 원본 페이지 →</a>`;
     document.getElementById('gsmBody').innerHTML=html;
   }catch(e){
-    document.getElementById('gsmBody').innerHTML=`<div style="text-align:center;color:var(--muted);padding:30px">오류: ${e.message}</div>`;
+    document.getElementById('gsmBody').innerHTML=fallback;
   }
 }
 function closeGsm(){document.getElementById('gsmWrap').classList.remove('on')}
 function maybeCloseGsm(e){if(e.target===document.getElementById('gsmWrap'))closeGsm()}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeGsm()}});
 
-// CONVERTER
-function setFit(m,btn){
-  fitMode=m;
-  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-}
+// ── converter ─────────────────────────────────────────────────────────────────
+function setFit(m,btn){fitMode=m;document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
 function onUp(e){
   const f=e.target.files[0];if(!f)return;
-  new Promise(res=>{const r=new FileReader();r.onload=ev=>res(ev.target.result);r.readAsDataURL(f)})
-  .then(src=>{
+  const rdr=new FileReader();
+  rdr.onload=ev=>{
     const img=new Image();
     img.onload=()=>{
       upImg=img;
-      document.getElementById('upzone').innerHTML=`
-        <div style="color:var(--ok);font-size:1.2rem;margin-bottom:5px">✓ 업로드 완료</div>
-        <div style="color:var(--text);font-size:.85rem">${f.name}</div>
-        <div style="color:var(--muted);font-size:.75rem;margin-top:3px">${img.width}×${img.height}px · ${(f.size/1024).toFixed(0)}KB</div>`;
-      document.getElementById('sw').value=img.width;
-      document.getElementById('sh').value=img.height;
+      document.getElementById('upzone').innerHTML=`<div style="color:var(--ok);font-size:1.2rem;margin-bottom:5px">✓ 업로드 완료</div><div style="color:var(--text);font-size:.85rem">${f.name}</div><div style="color:var(--muted);font-size:.75rem;margin-top:3px">${img.width}×${img.height}px</div>`;
+      document.getElementById('sw').value=img.width;document.getElementById('sh').value=img.height;
       document.getElementById('cSrc').value='manual';
-    };
-    img.src=src;
-  });
+    };img.src=ev.target.result;
+  };rdr.readAsDataURL(f);
 }
 const uz=document.getElementById('upzone');
 uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('drag')});
 uz.addEventListener('dragleave',()=>uz.classList.remove('drag'));
-uz.addEventListener('drop',e=>{
-  e.preventDefault();uz.classList.remove('drag');
-  const f=e.dataTransfer.files[0];
-  if(f&&f.type.startsWith('image/')){const dt=new DataTransfer();dt.items.add(f);document.getElementById('fimg').files=dt.files;onUp({target:{files:[f]}})}
-});
-function onSrcCh(){
-  const v=document.getElementById('cSrc').value;if(v==='manual')return;
-  const d=cache.find(x=>x.id===+v);
-  if(d){document.getElementById('sw').value=d.disp.w;document.getElementById('sh').value=d.disp.h}
-}
-function onDstCh(){
-  const d=cache.find(x=>x.id===+document.getElementById('cDst').value);
-  if(d){document.getElementById('dw').value=d.disp.w;document.getElementById('dh').value=d.disp.h}
-}
+uz.addEventListener('drop',e=>{e.preventDefault();uz.classList.remove('drag');const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/')){const dt=new DataTransfer();dt.items.add(f);document.getElementById('fimg').files=dt.files;onUp({target:{files:[f]}})}});
+function onSrcCh(){const v=document.getElementById('cSrc').value;if(v==='manual')return;const d=DEVICES.find(x=>x.id===+v);if(d){document.getElementById('sw').value=d.disp.w;document.getElementById('sh').value=d.disp.h}}
+function onDstCh(){const d=DEVICES.find(x=>x.id===+document.getElementById('cDst').value);if(d){document.getElementById('dw').value=d.disp.w;document.getElementById('dh').value=d.disp.h}}
 function doConv(){
   if(!upImg){alert('먼저 스크린샷 이미지를 업로드하세요!');return}
-  const sw=+document.getElementById('sw').value||upImg.width;
-  const sh=+document.getElementById('sh').value||upImg.height;
-  const dw=+document.getElementById('dw').value;
-  const dh=+document.getElementById('dh').value;
+  const sw=+document.getElementById('sw').value||upImg.width,sh=+document.getElementById('sh').value||upImg.height;
+  const dw=+document.getElementById('dw').value,dh=+document.getElementById('dh').value;
   if(!dw||!dh){alert('대상 해상도를 입력하세요!');return}
   const M=360;
   const sc=document.getElementById('cSrcC'),sCtx=sc.getContext('2d');
-  const ss=Math.min(M/sw,M*2/sh);sc.width=Math.round(sw*ss);sc.height=Math.round(sh*ss);
-  sCtx.drawImage(upImg,0,0,sc.width,sc.height);
+  const ss=Math.min(M/sw,M*2/sh);sc.width=Math.round(sw*ss);sc.height=Math.round(sh*ss);sCtx.drawImage(upImg,0,0,sc.width,sc.height);
   const dc=document.getElementById('cDstC'),dCtx=dc.getContext('2d');
   const ds=Math.min(M/dw,M*2/dh);dc.width=Math.round(dw*ds);dc.height=Math.round(dh*ds);
   dCtx.fillStyle='#000';dCtx.fillRect(0,0,dc.width,dc.height);
@@ -490,53 +426,38 @@ function doConv(){
   if(fitMode==='fit'){if(iA>dA){pw=dc.width;ph=pw/iA;px=0;py=(dc.height-ph)/2}else{ph=dc.height;pw=ph*iA;px=(dc.width-pw)/2;py=0}}
   else{if(iA>dA){ph=dc.height;pw=ph*iA;px=(dc.width-pw)/2;py=0}else{pw=dc.width;ph=pw/iA;px=0;py=(dc.height-ph)/2}}
   dCtx.drawImage(upImg,px,py,pw,ph);
-  const srcD=cache.find(x=>x.id===+document.getElementById('cSrc').value);
-  const dstD=cache.find(x=>x.id===+document.getElementById('cDst').value);
+  const srcD=DEVICES.find(x=>x.id===+document.getElementById('cSrc').value);
+  const dstD=DEVICES.find(x=>x.id===+document.getElementById('cDst').value);
   document.getElementById('fnSrc').textContent=srcD?srcD.name:'원본';
   document.getElementById('fnDst').textContent=dstD?dstD.name:'변환 결과';
   document.getElementById('riSrc').textContent=`${sw}×${sh}px`;
   document.getElementById('riDst').textContent=`${dw}×${dh}px`;
-  document.getElementById('cvinf').innerHTML=`<strong>변환 정보</strong><br>
-    · 가로 배율 ${(dw/sw*100).toFixed(1)}% / 세로 배율 ${(dh/sh*100).toFixed(1)}%<br>
-    · 픽셀 수: ${(sw*sh).toLocaleString()} → ${(dw*dh).toLocaleString()} (×${(dw*dh/(sw*sh)).toFixed(2)})<br>
-    ${srcD?.disp?.ppi&&dstD?.disp?.ppi?`· PPI: ${srcD.disp.ppi} → ${dstD.disp.ppi}<br>`:''}
-    · 방식: <strong>${fitMode==='fit'?'맞춤 (비율 유지)':'채움 (화면 가득)'}</strong>`;
+  document.getElementById('cvinf').innerHTML=`<strong>변환 정보</strong><br>· 가로 배율 ${(dw/sw*100).toFixed(1)}% / 세로 배율 ${(dh/sh*100).toFixed(1)}%<br>· 픽셀 수: ${(sw*sh).toLocaleString()} → ${(dw*dh).toLocaleString()} (×${(dw*dh/(sw*sh)).toFixed(2)})<br>${srcD?.disp?.ppi&&dstD?.disp?.ppi?`· PPI: ${srcD.disp.ppi} → ${dstD.disp.ppi}<br>`:''}<strong>방식: ${fitMode==='fit'?'맞춤 (비율 유지)':'채움 (화면 가득)'}</strong>`;
   document.getElementById('rswrap').style.display='block';
   document.getElementById('rswrap').scrollIntoView({behavior:'smooth'});
 }
-function dlConv(){
-  const a=document.createElement('a');
-  a.download=`conv_${document.getElementById('dw').value}x${document.getElementById('dh').value}.png`;
-  a.href=document.getElementById('cDstC').toDataURL();a.click();
-}
+function dlConv(){const a=document.createElement('a');a.download=`conv_${document.getElementById('dw').value}x${document.getElementById('dh').value}.png`;a.href=document.getElementById('cDstC').toDataURL();a.click()}
 
-// MARKET SHARE
-async function loadMS(){
-  try{
-    msData=await(await fetch('/api/market-share')).json();
-    document.getElementById('ms-meta').textContent=`최신 분기: ${msData.updated} · 출처: ${msData.source}`;
-    const tabs=document.getElementById('rtabs');
-    msData.regions.forEach((rg,i)=>{
-      const b=document.createElement('button');
-      b.className='rtab'+(i===0?' on':'');
-      b.textContent=`${rg.flag} ${rg.name}`;
-      b.onclick=()=>{document.querySelectorAll('.rtab').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderMS(rg)};
-      tabs.appendChild(b);
-    });
-    renderMS(msData.regions[0]);
-  }catch(e){document.getElementById('ms-meta').textContent='시장 점유율 데이터 로딩 오류'}
+// ── market share ───────────────────────────────────────────────────────────────
+function initMS(){
+  document.getElementById('ms-meta').textContent=`최신 분기: ${MS_DATA.updated} · 출처: ${MS_DATA.source}`;
+  const tabs=document.getElementById('rtabs');
+  MS_DATA.regions.forEach((rg,i)=>{
+    const b=document.createElement('button');
+    b.className='rtab'+(i===0?' on':'');
+    b.textContent=`${rg.flag} ${rg.name}`;
+    b.onclick=()=>{document.querySelectorAll('.rtab').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderMS(rg)};
+    tabs.appendChild(b);
+  });
+  renderMS(MS_DATA.regions[0]);
 }
 function renderMS(rg){
   document.getElementById('msTitle').textContent=`${rg.flag} ${rg.name}`;
-  document.getElementById('msSub').textContent=`${msData.updated} 기준 · 출처: ${msData.source}`;
+  document.getElementById('msSub').textContent=`${MS_DATA.updated} 기준 · 출처: ${MS_DATA.source}`;
   document.getElementById('msBars').innerHTML=rg.data.map(item=>`
     <div class="ms-bar-row">
       <div class="ms-brand">${item.brandKo||item.brand}</div>
-      <div class="ms-bar-wrap">
-        <div class="ms-bar-fill" style="width:${item.share}%;background:${item.color}">
-          ${item.share>=8?`<span class="ms-bar-pct">${item.share}%</span>`:''}
-        </div>
-      </div>
+      <div class="ms-bar-wrap"><div class="ms-bar-fill" style="width:${item.share}%;background:${item.color}">${item.share>=8?`<span class="ms-bar-pct">${item.share}%</span>`:''}</div></div>
       <div class="ms-pct-out">${item.share<8?item.share+'%':''}</div>
     </div>`).join('');
   drawPie(rg.data);
@@ -547,34 +468,25 @@ function drawPie(data){
   ctx.clearRect(0,0,260,260);
   const tot=data.reduce((s,d)=>s+d.share,0);
   let ang=-Math.PI/2;
-  data.forEach(item=>{
-    const sl=item.share/tot*Math.PI*2;
-    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,ang,ang+sl);
-    ctx.closePath();ctx.fillStyle=item.color;ctx.fill();
-    ang+=sl;
-  });
+  data.forEach(item=>{const sl=item.share/tot*Math.PI*2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,ang,ang+sl);ctx.closePath();ctx.fillStyle=item.color;ctx.fill();ang+=sl});
   ctx.beginPath();ctx.arc(cx,cy,52,0,Math.PI*2);ctx.fillStyle='#161630';ctx.fill();
-  document.getElementById('pieLeg').innerHTML=data.map(item=>`
-    <div class="pl-i"><div class="pl-d" style="background:${item.color}"></div>
-    <span>${item.brandKo||item.brand} ${item.share}%</span></div>`).join('');
+  document.getElementById('pieLeg').innerHTML=data.map(item=>`<div class="pl-i"><div class="pl-d" style="background:${item.color}"></div><span>${item.brandKo||item.brand} ${item.share}%</span></div>`).join('');
 }
 
-// INIT
-function populateConv(devs){
+// ── init ───────────────────────────────────────────────────────────────────────
+function populateConv(){
   ['cSrc','cDst'].forEach((id,i)=>{
     const sel=document.getElementById(id);
-    if(i===0)sel.innerHTML='<option value="manual">직접 입력</option>';
-    else sel.innerHTML='';
-    devs.forEach(d=>sel.appendChild(new Option(`${d.brandKo||d.brand} ${d.name} (${d.disp.w}×${d.disp.h})`,d.id)));
+    if(i===0)sel.innerHTML='<option value="manual">직접 입력</option>';else sel.innerHTML='';
+    DEVICES.forEach(d=>sel.appendChild(new Option(`${d.brandKo||d.brand} ${d.name} (${d.disp.w}×${d.disp.h})`,d.id)));
   });
-}
-(async()=>{
-  await loadBrands();
-  await doSearch();
-  populateConv(cache);
-  const s24u=cache.find(d=>d.name.includes('S24 Ultra'));
+  const s24u=DEVICES.find(d=>d.name.includes('S24 Ultra'));
   if(s24u){document.getElementById('dw').value=s24u.disp.w;document.getElementById('dh').value=s24u.disp.h}
-})();
+}
+initBrands();
+doSearch();
+populateConv();
+initMS();
 </script>
 </body>
 </html>
