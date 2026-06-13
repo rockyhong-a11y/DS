@@ -79,32 +79,60 @@ app.get('/api/gsmarena/:slug', async (req, res) => {
   const url  = `https://www.gsmarena.com/${slug}.php`;
   try {
     const { data: html } = await axios.get(url, {
-      timeout: 12000,
+      timeout: 14000,
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Cache-Control': 'no-cache',
         'Referer': 'https://www.gsmarena.com/',
       },
     });
     const $ = cheerio.load(html);
-    const title = $('h1.specs-phone-name-title').text().trim();
-    const img   = $('div.specs-photo-main img').attr('src') || '';
-    const rating = $('span.pricing-line').first().text().trim();
+
+    // title: try multiple selectors
+    const title = $('h1.specs-phone-name-title').text().trim()
+      || $('h1[itemprop="name"]').text().trim()
+      || $('h1').first().text().trim();
+
+    // product image
+    const img = $('div.specs-photo-main img').attr('src')
+      || $('img.specs-photo-main').attr('src')
+      || '';
 
     const sections = [];
-    $('#specs-list section').each((_,sec) => {
-      const secTitle = $(sec).find('table td.head-td').first().text().trim();
+    // primary selector
+    $('#specs-list section').each((_, sec) => {
+      const secTitle = $(sec).find('table td.head-td').first().text().trim()
+        || $(sec).find('th').first().text().trim();
       const rows = [];
-      $(sec).find('tr').each((_,tr) => {
-        const key = $(tr).find('td.ttl').text().trim().replace(/\s+/g,' ');
-        const val = $(tr).find('td.nfo').text().trim().replace(/\s+/g,' ');
+      $(sec).find('tr').each((_, tr) => {
+        const key = $(tr).find('td.ttl').text().trim().replace(/\s+/g, ' ');
+        const val = $(tr).find('td.nfo').text().trim().replace(/\s+/g, ' ');
         if (key && val) rows.push({ key, val });
       });
       if (rows.length) sections.push({ title: secTitle, rows });
     });
 
-    res.json({ ok: true, title, img, rating, url, sections });
+    // fallback: try table-based layout if no sections found
+    if (!sections.length) {
+      $('table.specstype-column').each((_, tbl) => {
+        const rows = [];
+        $(tbl).find('tr').each((_, tr) => {
+          const key = $(tr).find('td:first-child').text().trim().replace(/\s+/g, ' ');
+          const val = $(tr).find('td:last-child').text().trim().replace(/\s+/g, ' ');
+          if (key && val && key !== val) rows.push({ key, val });
+        });
+        if (rows.length) sections.push({ title: '', rows });
+      });
+    }
+
+    if (!title && !sections.length) {
+      return res.status(404).json({ ok: false, error: 'Could not parse GSMArena page', url });
+    }
+
+    res.json({ ok: true, title, img, url, sections });
   } catch (err) {
     res.status(502).json({ ok: false, error: err.message, url });
   }

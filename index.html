@@ -62,6 +62,12 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
 .mt td:first-child{color:var(--muted);width:40%}
 .gsm-btn{display:block;text-align:center;margin-top:10px;padding:10px;background:rgba(124,131,253,.1);border:1px solid rgba(124,131,253,.3);border-radius:8px;color:var(--acc);font-size:.82rem;cursor:pointer;transition:.2s;text-decoration:none}
 .gsm-btn:hover{background:rgba(124,131,253,.22);text-decoration:none}
+.spin{display:inline-block;width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gsec-hd{color:var(--acc);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.gsec-tbl{width:100%;font-size:.82rem;margin-bottom:10px}
+.gsec-tbl td{padding:5px 3px;border-bottom:1px solid rgba(255,255,255,.03)}
+.gsec-tbl td:first-child{color:var(--muted);width:42%}
 .conv-wrap{padding:16px;max-width:960px;margin:0 auto}
 .ccard{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:22px;margin-bottom:16px}
 .ccard h2{font-size:1.1rem;color:var(--acc);margin-bottom:3px}
@@ -333,13 +339,46 @@ function openModal(id){
         <tr><td>네트워크</td><td>${d.net}</td></tr>
         <tr><td>연결 단자</td><td>${d.usb}</td></tr>
       </table></div>
-    ${d.gsm?`<a class="gsm-btn" href="https://www.gsmarena.com/${d.gsm}.php" target="_blank" rel="noopener">📊 GSMArena 상세 스펙 보기 →</a>`:''}
-    <a class="gsm-btn" href="https://www.gsmarena.com/search.php3?sQuickSearch=${encodeURIComponent(d.brand+' '+d.name)}" target="_blank" rel="noopener" style="margin-top:6px">🔍 GSMArena에서 검색하기 →</a>
+    <div id="gsmSec" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border)">
+      ${d.gsm
+        ? `<div class="gsm-loading" style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.82rem;padding:6px 0"><div class="spin"></div><span>GSMArena에서 전체 스펙 불러오는 중...</span></div>`
+        : `<a class="gsm-btn" href="https://www.gsmarena.com/search.php3?sQuickSearch=${encodeURIComponent(d.brand+' '+d.name)}" target="_blank" rel="noopener">🔍 GSMArena에서 검색하기 →</a>`}
+    </div>
   `;
   document.getElementById('overlay').classList.add('on');
+  if(d.gsm) loadGsmInline(d.gsm);
 }
 function closeModal(){document.getElementById('overlay').classList.remove('on')}
 function maybeClose(e){if(e.target===document.getElementById('overlay'))closeModal()}
+
+async function loadGsmInline(slug){
+  const sec=document.getElementById('gsmSec');
+  if(!sec)return;
+  try{
+    const r=await fetch('/api/gsmarena/'+slug,{signal:AbortSignal.timeout(14000)});
+    const data=await r.json();
+    if(!data.ok||!data.sections?.length){sec.innerHTML=gsmFallback(slug);return}
+    let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <strong style="color:var(--acc);font-size:.88rem">📋 GSMArena 전체 스펙</strong>
+      <a href="https://www.gsmarena.com/${slug}.php" target="_blank" rel="noopener" style="font-size:.75rem;color:var(--muted);text-decoration:none">원본 페이지 →</a>
+    </div>`;
+    if(data.img)html+=`<img src="${data.img}" style="max-width:80px;display:block;margin:0 auto 14px;border-radius:8px" onerror="this.style.display='none'">`;
+    data.sections.forEach(s=>{
+      html+=`<div><div class="gsec-hd">${s.title||'스펙'}</div><table class="gsec-tbl">`;
+      s.rows.forEach(row=>html+=`<tr><td>${row.key}</td><td>${row.val}</td></tr>`);
+      html+='</table></div>';
+    });
+    sec.innerHTML=html;
+  }catch(e){
+    sec.innerHTML=gsmFallback(slug);
+  }
+}
+function gsmFallback(slug){
+  return `<div style="text-align:center;color:var(--muted);padding:12px 0;font-size:.82rem">
+    <p style="margin-bottom:10px">GSMArena 연동을 사용하려면 <code style="background:rgba(255,255,255,.07);padding:2px 6px;border-radius:4px">npm start</code>로 서버를 실행하세요.</p>
+    <a class="gsm-btn" href="https://www.gsmarena.com/${slug}.php" target="_blank" rel="noopener">🌐 GSMArena에서 직접 보기 →</a>
+  </div>`;
+}
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 
