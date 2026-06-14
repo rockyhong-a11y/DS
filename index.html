@@ -291,7 +291,7 @@ function doSearch(){
   document.getElementById('stats').textContent=`총 ${list.length}개 단말기 (전체 ${DEVICES.length}개)`;
   renderGrid(list);
   const gsmR=document.getElementById('gsmRes');
-  if(raw.length>=2){
+  if(list.length===0 && raw.length>=2){
     gsmR.innerHTML='';
     searchNamu(raw);
   } else {
