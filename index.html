@@ -130,7 +130,7 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
 <body>
 <header>
   <h1>📱 단말기 정보 검색</h1>
-  <p>2018년 이후 주요 스마트폰 · 벤치마크 · 시장 점유율 · GSMArena 연동</p>
+  <p>2018년 이후 주요 스마트폰 · 벤치마크 · 시장 점유율 · 나무위키 연동</p>
 </header>
 <nav>
   <button class="tb on" onclick="goTab('search',this)">🔍 단말기 검색</button>
@@ -250,6 +250,17 @@ function initBrands(){
   brands.forEach(b=>{sel.appendChild(new Option((BKO[b]?BKO[b]+' ':'')+`(${b})`,b))});
 }
 
+const EN_KO_MODEL={'ultra':'울트라','pro':'프로','max':'맥스','plus':'플러스','mini':'미니','fold':'폴드','flip':'플립','edge':'엣지','fe':'FE','note':'노트','lite':'라이트'};
+function namuTitle(d){
+  let n=d.name;
+  if(d.brand==='Samsung')n=n.replace(/^Galaxy\s*/i,'갤럭시 ');
+  else if(d.brand==='Apple')n=n.replace(/^iPhone\s*/i,'아이폰 ');
+  else if(d.brand==='Google')n='구글 '+n.replace(/^Google\s*/i,'');
+  else n=(d.brandKo||d.brand)+' '+n;
+  Object.entries(EN_KO_MODEL).forEach(([en,ko])=>{n=n.replace(new RegExp('(?<![\\w가-힣])'+en+'(?![\\w가-힣])','gi'),ko);});
+  return n.replace(/\s+/g,' ').trim();
+}
+
 function debSearch(){clearTimeout(stTimer);stTimer=setTimeout(doSearch,220)}
 
 function doSearch(){
@@ -282,7 +293,7 @@ function doSearch(){
   const gsmR=document.getElementById('gsmRes');
   if(raw.length>=2){
     gsmR.innerHTML='';
-    searchGsm(raw);
+    searchNamu(raw);
   } else {
     gsmR.innerHTML='';
   }
@@ -312,103 +323,74 @@ function renderGrid(devs){
   }).join('');
 }
 
-// ── GSMArena live search ────────────────────────────────────────────────────────
-let gsmSearchTimer=null;
+// ── 나무위키 live search ────────────────────────────────────────────────────────
+let namuSearchTimer=null;
 
 // ── CORS 프록시 공통 헬퍼 ──────────────────────────────────────────────────────
-async function fetchProxy(url, signal) {
-  // 1순위: corsproxy.io (raw HTML 반환)
-  try {
-    const r = await fetch('https://corsproxy.io/?'+encodeURIComponent(url), {signal: signal||AbortSignal.timeout(14000)});
-    if (r.ok) { const t=await r.text(); if(t.length>500) return t; }
-  } catch(e) { if(signal?.aborted) return null; }
-  // 2순위: allorigins.win (JSON 래퍼)
-  try {
-    const r = await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url), {signal: signal||AbortSignal.timeout(14000)});
-    if (r.ok) { const j=await r.json(); if(j.contents?.length>500) return j.contents; }
-  } catch(e) {}
+async function fetchProxy(url,signal){
+  try{const r=await fetch('https://corsproxy.io/?'+encodeURIComponent(url),{signal:signal||AbortSignal.timeout(14000)});if(r.ok){const t=await r.text();if(t.length>500)return t;}}catch(e){if(signal?.aborted)return null;}
+  try{const r=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url),{signal:signal||AbortSignal.timeout(14000)});if(r.ok){const j=await r.json();if(j.contents?.length>500)return j.contents;}}catch(e){}
   return null;
 }
 
-function parseGsmSections(html) {
+function parseNamuContent(html){
   const doc=new DOMParser().parseFromString(html,'text/html');
-  const title=doc.querySelector('h1.specs-phone-name-title')?.textContent?.trim()||'';
-  const img=doc.querySelector('div.specs-photo-main img, .specs-photo-main img')?.getAttribute('src')||'';
+  const title=doc.querySelector('h1')?.textContent?.trim()||doc.querySelector('meta[property="og:title"]')?.getAttribute('content')||'';
+  const img=doc.querySelector('.wiki-image img,figure img,.infobox img')?.getAttribute('src')||'';
   const sections=[];
-  doc.querySelectorAll('#specs-list section').forEach(s=>{
-    const st=s.querySelector('td.head-td')?.textContent?.trim()||'';
+  doc.querySelectorAll('table').forEach((tbl,i)=>{
     const rows=[];
-    s.querySelectorAll('tr').forEach(tr=>{
-      const k=tr.querySelector('td.ttl')?.textContent?.trim().replace(/\s+/g,' ')||'';
-      const v=tr.querySelector('td.nfo')?.textContent?.trim().replace(/\s+/g,' ')||'';
-      if(k&&v)rows.push({key:k,val:v});
+    tbl.querySelectorAll('tr').forEach(tr=>{
+      const tds=tr.querySelectorAll('td');
+      if(tds.length>=2){const k=tds[0].textContent.trim().replace(/\s+/g,' ');const v=tds[1].textContent.trim().replace(/\s+/g,' ');if(k&&v&&k.length<60)rows.push({key:k,val:v});}
     });
-    if(rows.length)sections.push({title:st,rows});
+    if(rows.length>2)sections.push({title:'',rows});
   });
-  return {title,img,sections};
+  return{title,img,sections};
 }
 
-function parseGsmSearch(html) {
+function parseNamuSearch(html){
   const doc=new DOMParser().parseFromString(html,'text/html');
-  const items=[];
-  // div.makers 구조 (목록 페이지)
-  doc.querySelectorAll('div.makers li, .search-results li').forEach(li=>{
-    const a=li.querySelector('a');if(!a)return;
+  const items=[];const seen=new Set();
+  doc.querySelectorAll('a[href^="/w/"]').forEach(a=>{
     const href=a.getAttribute('href')||'';
-    const slug=href.replace(/\.php.*$/,'');
-    const name=a.querySelector('.head')?.textContent?.trim()||a.querySelector('span')?.textContent?.trim()||'';
-    const sub=(a.querySelector('.sub')?.textContent?.trim()||'').replace(/\s+/g,' ').split(',')[0];
-    const img=a.querySelector('img')?.getAttribute('src')||a.querySelector('img')?.getAttribute('data-src')||'';
-    if(name&&slug&&!slug.startsWith('#'))items.push({name,slug,sub,img});
+    const name=a.textContent.trim();
+    if(name&&href&&!seen.has(href)){seen.add(href);items.push({name,slug:href,sub:decodeURIComponent(href.replace('/w/',''))});}
   });
-  return items;
+  return items.slice(0,20);
 }
 
-async function searchGsm(q){
+async function searchNamu(q){
   const sec=document.getElementById('gsmRes');
   if(!sec||!q)return;
-  sec.innerHTML=`<div class="gsr-hd"><div class="spin"></div><span>GSMArena에서 "<strong>${q}</strong>" 검색 중...</span></div>`;
-
+  sec.innerHTML=`<div class="gsr-hd"><div class="spin"></div><span>나무위키에서 "<strong>${q}</strong>" 검색 중...</span></div>`;
   let items=null;
-
-  // 서버 프록시 시도
-  try{
-    const r=await fetch('/api/gsmarena-search?q='+encodeURIComponent(q),{signal:AbortSignal.timeout(2000)});
-    if(r.ok){const d=await r.json();if(d.items?.length)items=d.items;}
-  }catch(e){}
-
-  // 클라이언트 CORS 프록시
-  if(!items){
-    const gsmUrl='https://www.gsmarena.com/search.php3?sQuickSearch='+encodeURIComponent(q);
-    const html=await fetchProxy(gsmUrl);
-    if(html) items=parseGsmSearch(html);
-  }
-
+  try{const r=await fetch('/api/namu-search?q='+encodeURIComponent(q),{signal:AbortSignal.timeout(2000)});if(r.ok){const d=await r.json();if(d.items?.length)items=d.items;}}catch(e){}
+  if(!items){const html=await fetchProxy('https://namu.wiki/Search?q='+encodeURIComponent(q));if(html)items=parseNamuSearch(html);}
   if(!items?.length){
-    sec.innerHTML=`<div class="gsr-hd" style="color:var(--muted)">GSMArena 검색 결과를 가져올 수 없습니다.
-      <a href="https://www.gsmarena.com/search.php3?sQuickSearch=${encodeURIComponent(q)}" target="_blank" rel="noopener" style="margin-left:8px;color:var(--acc)">GSMArena에서 직접 검색 →</a></div>`;
+    sec.innerHTML=`<div class="gsr-hd" style="color:var(--muted)">나무위키 검색 결과를 가져올 수 없습니다.
+      <a href="https://namu.wiki/Search?q=${encodeURIComponent(q)}" target="_blank" rel="noopener" style="margin-left:8px;color:var(--acc)">나무위키에서 직접 검색 →</a></div>`;
     return;
   }
-
-  sec.innerHTML=`<div class="gsr-hd">🌐 GSMArena 검색 결과 · ${items.length}개</div>
+  sec.innerHTML=`<div class="gsr-hd">📖 나무위키 검색 결과 · ${items.length}개</div>
   <div class="gsr-grid">${items.map(it=>`
-    <div class="gsr-card" onclick="openGsmModal('${it.slug}','${it.name.replace(/'/g,"\\'")}')">
-      ${it.img?`<img class="gsr-thumb" src="${it.img}" onerror="this.style.display='none'">`:'<div class="gsr-thumb"></div>'}
+    <div class="gsr-card" onclick="openNamuModal('${it.slug.replace(/'/g,"\\'")}','${it.name.replace(/'/g,"\\'")}')">
+      <div class="gsr-thumb" style="background:rgba(0,200,100,.08);display:flex;align-items:center;justify-content:center;font-size:1.2rem">📖</div>
       <div><div class="gsr-name">${it.name}</div><div class="gsr-sub">${it.sub}</div></div>
     </div>`).join('')}
   </div>`;
 }
 
-let _gsmCtrl=null;
-function openGsmModal(slug,name){
+let _namuCtrl=null;
+function openNamuModal(slug,name){
   document.getElementById('mName').textContent=name;
-  document.getElementById('mSub2').textContent='GSMArena 단말 정보';
+  document.getElementById('mSub2').textContent='나무위키 정보';
   document.getElementById('mBody').innerHTML=`
-    <div id="gsmSec" style="padding:4px 0">
-      <div style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.82rem;padding:6px 0"><div class="spin"></div><span>GSMArena에서 전체 스펙 불러오는 중...</span></div>
+    <div id="namuSec" style="padding:4px 0">
+      <div style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.82rem;padding:6px 0"><div class="spin"></div><span>나무위키에서 불러오는 중...</span></div>
     </div>`;
   document.getElementById('overlay').classList.add('on');
-  loadGsmInline(slug);
+  loadNamuInline(slug);
 }
 
 // ── device modal ───────────────────────────────────────────────────────────────
@@ -454,73 +436,59 @@ function openModal(id){
         <tr><td>네트워크</td><td>${d.net}</td></tr>
         <tr><td>연결 단자</td><td>${d.usb}</td></tr>
       </table></div>
-    <div id="gsmSec" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border)">
-      ${d.gsm
-        ? `<div class="gsm-loading" style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.82rem;padding:6px 0"><div class="spin"></div><span>GSMArena에서 전체 스펙 불러오는 중...</span></div>`
-        : `<a class="gsm-btn" href="https://www.gsmarena.com/search.php3?sQuickSearch=${encodeURIComponent(d.brand+' '+d.name)}" target="_blank" rel="noopener">🔍 GSMArena에서 검색하기 →</a>`}
+    <div id="namuSec" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border)">
+      ${d.gsm||d.name
+        ? `<div style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.82rem;padding:6px 0"><div class="spin"></div><span>나무위키에서 정보 불러오는 중...</span></div>`
+        : `<a class="gsm-btn" href="https://namu.wiki/Search?q=${encodeURIComponent(namuTitle(d))}" target="_blank" rel="noopener">🔍 나무위키에서 검색하기 →</a>`}
     </div>
   `;
   document.getElementById('overlay').classList.add('on');
-  if(d.gsm) loadGsmInline(d.gsm);
+  loadNamuInline(namuTitle(d));
 }
 function closeModal(){document.getElementById('overlay').classList.remove('on')}
 function maybeClose(e){if(e.target===document.getElementById('overlay'))closeModal()}
 
-async function loadGsmInline(slug){
-  // AbortController로 이전 요청 취소 → "다른 단말 표시" 버그 방지
-  if(_gsmCtrl)_gsmCtrl.abort();
-  _gsmCtrl=new AbortController();
-  const ctrl=_gsmCtrl;
-  const signal=ctrl.signal;
-
-  const sec=document.getElementById('gsmSec');
+async function loadNamuInline(titleOrPath){
+  if(_namuCtrl)_namuCtrl.abort();
+  _namuCtrl=new AbortController();
+  const ctrl=_namuCtrl;const signal=ctrl.signal;
+  const sec=document.getElementById('namuSec');
   if(!sec)return;
-
   let sections=null,title='',img='';
-
-  // 1차: 로컬 서버 프록시
+  const namuUrl= titleOrPath.startsWith('/w/')
+    ? 'https://namu.wiki'+titleOrPath
+    : 'https://namu.wiki/w/'+encodeURIComponent(titleOrPath);
   try{
-    const r=await fetch('/api/gsmarena/'+slug,{signal:AbortSignal.timeout(2000)});
+    const slug=titleOrPath.startsWith('/w/')?titleOrPath.slice(3):encodeURIComponent(titleOrPath);
+    const r=await fetch('/api/namu?title='+slug,{signal:AbortSignal.timeout(2000)});
     if(r.ok){const d=await r.json();if(d.ok&&d.sections?.length){sections=d.sections;title=d.title||'';img=d.img||'';}}
   }catch(e){}
-
-  // 요청이 취소됐으면 중단
   if(signal.aborted)return;
-
-  // 2차: CORS 프록시 + 클라이언트 파싱
   if(!sections){
     const sp=sec.querySelector('span');if(sp)sp.textContent='외부 프록시로 불러오는 중...';
-    const html=await fetchProxy('https://www.gsmarena.com/'+slug+'.php', signal);
+    const html=await fetchProxy(namuUrl,signal);
     if(signal.aborted)return;
-    if(html){
-      const parsed=parseGsmSections(html);
-      sections=parsed.sections; title=parsed.title; img=parsed.img;
-    }
+    if(html){const p=parseNamuContent(html);sections=p.sections;title=p.title;img=p.img;}
   }
-
   if(signal.aborted)return;
-
-  const sec2=document.getElementById('gsmSec');
-  if(!sec2)return;
-
-  if(!sections?.length){sec2.innerHTML=gsmFallback(slug);return}
-
+  const sec2=document.getElementById('namuSec');if(!sec2)return;
+  if(!sections?.length){sec2.innerHTML=namuFallback(namuUrl);return}
   let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-    <strong style="color:var(--acc);font-size:.88rem">📋 GSMArena 전체 스펙</strong>
-    <a href="https://www.gsmarena.com/${slug}.php" target="_blank" rel="noopener" style="font-size:.75rem;color:var(--muted);text-decoration:none">원본 페이지 →</a>
+    <strong style="color:var(--acc);font-size:.88rem">📖 나무위키 정보</strong>
+    <a href="${namuUrl}" target="_blank" rel="noopener" style="font-size:.75rem;color:var(--muted);text-decoration:none">나무위키에서 보기 →</a>
   </div>`;
   if(img)html+=`<img src="${img}" style="max-width:80px;display:block;margin:0 auto 14px;border-radius:8px" onerror="this.style.display='none'">`;
   sections.forEach(s=>{
-    html+=`<div><div class="gsec-hd">${s.title||'스펙'}</div><table class="gsec-tbl">`;
+    html+=`<div><div class="gsec-hd">${s.title||'정보'}</div><table class="gsec-tbl">`;
     s.rows.forEach(row=>html+=`<tr><td>${row.key}</td><td>${row.val}</td></tr>`);
     html+='</table></div>';
   });
   sec2.innerHTML=html;
 }
-function gsmFallback(slug){
+function namuFallback(url){
   return `<div style="text-align:center;color:var(--muted);padding:12px 0;font-size:.82rem">
-    <p style="margin-bottom:10px">GSMArena 스펙을 불러올 수 없습니다.</p>
-    <a class="gsm-btn" href="https://www.gsmarena.com/${slug}.php" target="_blank" rel="noopener">🌐 GSMArena에서 직접 보기 →</a>
+    <p style="margin-bottom:10px">나무위키 정보를 불러올 수 없습니다.</p>
+    <a class="gsm-btn" href="${url}" target="_blank" rel="noopener">📖 나무위키에서 직접 보기 →</a>
   </div>`;
 }
 

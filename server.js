@@ -73,64 +73,43 @@ app.get('/api/device/:id', (req, res) => {
   res.json(d);
 });
 
-// GSMArena proxy – scrape specs for a device slug
-app.get('/api/gsmarena/:slug', async (req, res) => {
-  const slug = req.params.slug;
-  const url  = `https://www.gsmarena.com/${slug}.php`;
+// namu.wiki proxy – scrape info for a device title
+app.get('/api/namu', async (req, res) => {
+  const encodedTitle = encodeURIComponent(req.query.title || '');
+  const url = `https://namu.wiki/w/${encodedTitle}`;
   try {
     const { data: html } = await axios.get(url, {
       timeout: 14000,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Language': 'ko-KR,ko;q=0.9',
         'Accept-Encoding': 'gzip, deflate, br',
         'Cache-Control': 'no-cache',
-        'Referer': 'https://www.gsmarena.com/',
+        'Referer': 'https://namu.wiki/',
       },
     });
     const $ = cheerio.load(html);
 
-    // title: try multiple selectors
-    const title = $('h1.specs-phone-name-title').text().trim()
-      || $('h1[itemprop="name"]').text().trim()
-      || $('h1').first().text().trim();
-
-    // product image
-    const img = $('div.specs-photo-main img').attr('src')
-      || $('img.specs-photo-main').attr('src')
+    const title = $('h1').first().text().trim()
+      || $('meta[property="og:title"]').attr('content')
       || '';
 
+    const img = $('.wiki-image img, figure img').first().attr('src') || '';
+
     const sections = [];
-    // primary selector
-    $('#specs-list section').each((_, sec) => {
-      const secTitle = $(sec).find('table td.head-td').first().text().trim()
-        || $(sec).find('th').first().text().trim();
+    $('table').each((_, tbl) => {
       const rows = [];
-      $(sec).find('tr').each((_, tr) => {
-        const key = $(tr).find('td.ttl').text().trim().replace(/\s+/g, ' ');
-        const val = $(tr).find('td.nfo').text().trim().replace(/\s+/g, ' ');
-        if (key && val) rows.push({ key, val });
+      $(tbl).find('tr').each((_, tr) => {
+        const tds = $(tr).find('td');
+        if (tds.length >= 2) {
+          const key = $(tds[0]).text().trim().replace(/\s+/g, ' ');
+          const val = $(tds[1]).text().trim().replace(/\s+/g, ' ');
+          if (key && val && key.length < 60) rows.push({ key, val });
+        }
       });
-      if (rows.length) sections.push({ title: secTitle, rows });
+      if (rows.length >= 3) sections.push({ title: '', rows });
     });
-
-    // fallback: try table-based layout if no sections found
-    if (!sections.length) {
-      $('table.specstype-column').each((_, tbl) => {
-        const rows = [];
-        $(tbl).find('tr').each((_, tr) => {
-          const key = $(tr).find('td:first-child').text().trim().replace(/\s+/g, ' ');
-          const val = $(tr).find('td:last-child').text().trim().replace(/\s+/g, ' ');
-          if (key && val && key !== val) rows.push({ key, val });
-        });
-        if (rows.length) sections.push({ title: '', rows });
-      });
-    }
-
-    if (!title && !sections.length) {
-      return res.status(404).json({ ok: false, error: 'Could not parse GSMArena page', url });
-    }
 
     res.json({ ok: true, title, img, url, sections });
   } catch (err) {
@@ -138,31 +117,31 @@ app.get('/api/gsmarena/:slug', async (req, res) => {
   }
 });
 
-// GSMArena search proxy
-app.get('/api/gsmarena-search', async (req, res) => {
+// namu.wiki search proxy
+app.get('/api/namu-search', async (req, res) => {
   const q = (req.query.q || '').trim();
   if (!q) return res.json({ ok: true, items: [] });
-  const url = `https://www.gsmarena.com/search.php3?sQuickSearch=${encodeURIComponent(q)}`;
+  const url = `https://namu.wiki/Search?q=${encodeURIComponent(q)}`;
   try {
     const { data: html } = await axios.get(url, {
       timeout: 10000,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Referer': 'https://www.gsmarena.com/',
+        'Accept-Language': 'ko-KR,ko;q=0.9',
+        'Referer': 'https://namu.wiki/',
       },
     });
     const $ = cheerio.load(html);
     const items = [];
-    $('div.makers li').each((_, li) => {
-      const a = $(li).find('a');
-      const href = a.attr('href') || '';
-      const slug = href.replace(/\.php.*$/, '');
-      const name = a.find('.head').text().trim();
-      const sub  = a.find('.sub').text().trim().split('\n')[0];
-      const img  = a.find('img').attr('src') || a.find('img').attr('data-src') || '';
-      if (name && slug) items.push({ name, slug, sub, img });
+    const seen = new Set();
+    $('a[href^="/w/"]').each((_, a) => {
+      const href = $(a).attr('href') || '';
+      const name = $(a).text().trim();
+      if (name && href && !seen.has(href)) {
+        seen.add(href);
+        items.push({ name, slug: href, sub: decodeURIComponent(href.replace('/w/', '')) });
+      }
     });
     res.json({ ok: true, items });
   } catch (err) {
