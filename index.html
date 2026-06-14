@@ -314,42 +314,81 @@ function renderGrid(devs){
 
 // ── GSMArena live search ────────────────────────────────────────────────────────
 let gsmSearchTimer=null;
+
+// ── CORS 프록시 공통 헬퍼 ──────────────────────────────────────────────────────
+async function fetchProxy(url, signal) {
+  // 1순위: corsproxy.io (raw HTML 반환)
+  try {
+    const r = await fetch('https://corsproxy.io/?'+encodeURIComponent(url), {signal: signal||AbortSignal.timeout(14000)});
+    if (r.ok) { const t=await r.text(); if(t.length>500) return t; }
+  } catch(e) { if(signal?.aborted) return null; }
+  // 2순위: allorigins.win (JSON 래퍼)
+  try {
+    const r = await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url), {signal: signal||AbortSignal.timeout(14000)});
+    if (r.ok) { const j=await r.json(); if(j.contents?.length>500) return j.contents; }
+  } catch(e) {}
+  return null;
+}
+
+function parseGsmSections(html) {
+  const doc=new DOMParser().parseFromString(html,'text/html');
+  const title=doc.querySelector('h1.specs-phone-name-title')?.textContent?.trim()||'';
+  const img=doc.querySelector('div.specs-photo-main img, .specs-photo-main img')?.getAttribute('src')||'';
+  const sections=[];
+  doc.querySelectorAll('#specs-list section').forEach(s=>{
+    const st=s.querySelector('td.head-td')?.textContent?.trim()||'';
+    const rows=[];
+    s.querySelectorAll('tr').forEach(tr=>{
+      const k=tr.querySelector('td.ttl')?.textContent?.trim().replace(/\s+/g,' ')||'';
+      const v=tr.querySelector('td.nfo')?.textContent?.trim().replace(/\s+/g,' ')||'';
+      if(k&&v)rows.push({key:k,val:v});
+    });
+    if(rows.length)sections.push({title:st,rows});
+  });
+  return {title,img,sections};
+}
+
+function parseGsmSearch(html) {
+  const doc=new DOMParser().parseFromString(html,'text/html');
+  const items=[];
+  // div.makers 구조 (목록 페이지)
+  doc.querySelectorAll('div.makers li, .search-results li').forEach(li=>{
+    const a=li.querySelector('a');if(!a)return;
+    const href=a.getAttribute('href')||'';
+    const slug=href.replace(/\.php.*$/,'');
+    const name=a.querySelector('.head')?.textContent?.trim()||a.querySelector('span')?.textContent?.trim()||'';
+    const sub=(a.querySelector('.sub')?.textContent?.trim()||'').replace(/\s+/g,' ').split(',')[0];
+    const img=a.querySelector('img')?.getAttribute('src')||a.querySelector('img')?.getAttribute('data-src')||'';
+    if(name&&slug&&!slug.startsWith('#'))items.push({name,slug,sub,img});
+  });
+  return items;
+}
+
 async function searchGsm(q){
   const sec=document.getElementById('gsmRes');
   if(!sec||!q)return;
-  sec.innerHTML=`<div class="gsr-hd"><div class="spin"></div><span>GSMArena에서 "${q}" 검색 중...</span></div>`;
+  sec.innerHTML=`<div class="gsr-hd"><div class="spin"></div><span>GSMArena에서 "<strong>${q}</strong>" 검색 중...</span></div>`;
 
   let items=null;
 
-  // 1차: 로컬 서버 프록시
+  // 서버 프록시 시도
   try{
     const r=await fetch('/api/gsmarena-search?q='+encodeURIComponent(q),{signal:AbortSignal.timeout(2000)});
     if(r.ok){const d=await r.json();if(d.items?.length)items=d.items;}
   }catch(e){}
 
-  // 2차: CORS 프록시 + 클라이언트 파싱
+  // 클라이언트 CORS 프록시
   if(!items){
-    try{
-      const px='https://api.allorigins.win/get?url='+encodeURIComponent('https://www.gsmarena.com/search.php3?sQuickSearch='+encodeURIComponent(q));
-      const r=await fetch(px,{signal:AbortSignal.timeout(16000)});
-      const j=await r.json();
-      if(j.contents){
-        const doc=new DOMParser().parseFromString(j.contents,'text/html');
-        items=[];
-        doc.querySelectorAll('div.makers li').forEach(li=>{
-          const a=li.querySelector('a');if(!a)return;
-          const href=a.getAttribute('href')||'';
-          const slug=href.replace(/\.php.*$/,'');
-          const name=a.querySelector('.head')?.textContent?.trim()||'';
-          const sub=(a.querySelector('.sub')?.textContent?.trim()||'').split('\n')[0];
-          const img=a.querySelector('img')?.getAttribute('src')||a.querySelector('img')?.getAttribute('data-src')||'';
-          if(name&&slug)items.push({name,slug,sub,img});
-        });
-      }
-    }catch(e){}
+    const gsmUrl='https://www.gsmarena.com/search.php3?sQuickSearch='+encodeURIComponent(q);
+    const html=await fetchProxy(gsmUrl);
+    if(html) items=parseGsmSearch(html);
   }
 
-  if(!items?.length){sec.innerHTML='';return}
+  if(!items?.length){
+    sec.innerHTML=`<div class="gsr-hd" style="color:var(--muted)">GSMArena 검색 결과를 가져올 수 없습니다.
+      <a href="https://www.gsmarena.com/search.php3?sQuickSearch=${encodeURIComponent(q)}" target="_blank" rel="noopener" style="margin-left:8px;color:var(--acc)">GSMArena에서 직접 검색 →</a></div>`;
+    return;
+  }
 
   sec.innerHTML=`<div class="gsr-hd">🌐 GSMArena 검색 결과 · ${items.length}개</div>
   <div class="gsr-grid">${items.map(it=>`
@@ -360,12 +399,13 @@ async function searchGsm(q){
   </div>`;
 }
 
+let _gsmCtrl=null;
 function openGsmModal(slug,name){
   document.getElementById('mName').textContent=name;
   document.getElementById('mSub2').textContent='GSMArena 단말 정보';
   document.getElementById('mBody').innerHTML=`
     <div id="gsmSec" style="padding:4px 0">
-      <div class="gsm-loading" style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.82rem;padding:6px 0"><div class="spin"></div><span>GSMArena에서 전체 스펙 불러오는 중...</span></div>
+      <div style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.82rem;padding:6px 0"><div class="spin"></div><span>GSMArena에서 전체 스펙 불러오는 중...</span></div>
     </div>`;
   document.getElementById('overlay').classList.add('on');
   loadGsmInline(slug);
@@ -427,6 +467,12 @@ function closeModal(){document.getElementById('overlay').classList.remove('on')}
 function maybeClose(e){if(e.target===document.getElementById('overlay'))closeModal()}
 
 async function loadGsmInline(slug){
+  // AbortController로 이전 요청 취소 → "다른 단말 표시" 버그 방지
+  if(_gsmCtrl)_gsmCtrl.abort();
+  _gsmCtrl=new AbortController();
+  const ctrl=_gsmCtrl;
+  const signal=ctrl.signal;
+
   const sec=document.getElementById('gsmSec');
   if(!sec)return;
 
@@ -438,33 +484,26 @@ async function loadGsmInline(slug){
     if(r.ok){const d=await r.json();if(d.ok&&d.sections?.length){sections=d.sections;title=d.title||'';img=d.img||'';}}
   }catch(e){}
 
+  // 요청이 취소됐으면 중단
+  if(signal.aborted)return;
+
   // 2차: CORS 프록시 + 클라이언트 파싱
   if(!sections){
-    try{
-      sec.querySelector('span')&&(sec.querySelector('span').textContent='GSMArena 데이터 가져오는 중 (외부 프록시)...');
-      const px='https://api.allorigins.win/get?url='+encodeURIComponent('https://www.gsmarena.com/'+slug+'.php');
-      const r=await fetch(px,{signal:AbortSignal.timeout(16000)});
-      const j=await r.json();
-      if(j.contents){
-        const doc=new DOMParser().parseFromString(j.contents,'text/html');
-        title=doc.querySelector('h1.specs-phone-name-title')?.textContent?.trim()||'';
-        img=doc.querySelector('div.specs-photo-main img')?.getAttribute('src')||'';
-        sections=[];
-        doc.querySelectorAll('#specs-list section').forEach(s=>{
-          const st=s.querySelector('table td.head-td')?.textContent?.trim()||'';
-          const rows=[];
-          s.querySelectorAll('tr').forEach(tr=>{
-            const k=tr.querySelector('td.ttl')?.textContent?.trim().replace(/\s+/g,' ')||'';
-            const v=tr.querySelector('td.nfo')?.textContent?.trim().replace(/\s+/g,' ')||'';
-            if(k&&v)rows.push({key:k,val:v});
-          });
-          if(rows.length)sections.push({title:st,rows});
-        });
-      }
-    }catch(e){}
+    const sp=sec.querySelector('span');if(sp)sp.textContent='외부 프록시로 불러오는 중...';
+    const html=await fetchProxy('https://www.gsmarena.com/'+slug+'.php', signal);
+    if(signal.aborted)return;
+    if(html){
+      const parsed=parseGsmSections(html);
+      sections=parsed.sections; title=parsed.title; img=parsed.img;
+    }
   }
 
-  if(!sections?.length){sec.innerHTML=gsmFallback(slug);return}
+  if(signal.aborted)return;
+
+  const sec2=document.getElementById('gsmSec');
+  if(!sec2)return;
+
+  if(!sections?.length){sec2.innerHTML=gsmFallback(slug);return}
 
   let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
     <strong style="color:var(--acc);font-size:.88rem">📋 GSMArena 전체 스펙</strong>
@@ -476,7 +515,7 @@ async function loadGsmInline(slug){
     s.rows.forEach(row=>html+=`<tr><td>${row.key}</td><td>${row.val}</td></tr>`);
     html+='</table></div>';
   });
-  sec.innerHTML=html;
+  sec2.innerHTML=html;
 }
 function gsmFallback(slug){
   return `<div style="text-align:center;color:var(--muted);padding:12px 0;font-size:.82rem">
