@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>📱 단말기 정보 검색</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -135,8 +135,8 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
 <div id="pg-search" class="page on">
   <div class="sbar">
     <div class="sr">
-      <input type="text" id="q" placeholder="브랜드·모델명·칩셋·UX 검색 (한글/영문 가능)" oninput="debSearch()">
-      <button onclick="doSearch()">검색</button>
+      <input type="text" id="q" placeholder="브랜드·모델명·칩셋·UX 검색 (한글/영문 가능)" oninput="debSearch()" onkeydown="if(event.key==='Enter')doSearch(true)">
+      <button onclick="doSearch(true)">검색</button>
     </div>
     <div class="frow">
       <select id="fBrand" onchange="doSearch()"><option value="">모든 브랜드</option></select>
@@ -263,9 +263,9 @@ function namuTitle(d){
   return n.replace(/\s+/g,' ').trim();
 }
 
-function debSearch(){clearTimeout(stTimer);stTimer=setTimeout(doSearch,220)}
+function debSearch(){clearTimeout(stTimer);stTimer=setTimeout(()=>doSearch(false),220)}
 
-function doSearch(){
+function doSearch(autoNav=false){
   const scrollY=window.scrollY;
   const raw=document.getElementById('q').value.trim();
   const q=koEn(raw);
@@ -302,11 +302,10 @@ function doSearch(){
   if(list.length===0 && raw.length>=2){
     const namuUrl='https://namu.wiki/Search?q='+encodeURIComponent(raw);
     gsmR.innerHTML=`<div style="text-align:center;padding:28px 0">
-      <div style="color:var(--muted);font-size:.88rem;margin-bottom:14px">로컬 DB에 <strong style="color:var(--text)">"${raw}"</strong> 검색 결과가 없습니다. 나무위키에서 자동 검색합니다...</div>
+      <div style="color:var(--muted);font-size:.88rem;margin-bottom:14px">로컬 DB에 <strong style="color:var(--text)">"${raw}"</strong> 검색 결과가 없습니다.</div>
       <a id="namuAutoLink" href="${namuUrl}" target="_blank" rel="noopener" class="namu-goto-btn">📖 나무위키에서 검색하기 →</a>
     </div>`;
-    const a=document.getElementById('namuAutoLink');
-    if(a)a.click();
+    if(autoNav){const a=document.getElementById('namuAutoLink');if(a)a.click();}
   } else {
     gsmR.innerHTML='';
   }
@@ -400,7 +399,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
   modal.addEventListener('touchend',e=>{
     const dx=e.changedTouches[0].clientX-_tx;
     const dy=e.changedTouches[0].clientY-_ty;
-    if(dx<-60&&Math.abs(dx)>Math.abs(dy)*1.5)closeModal();
+    if(dx>60&&Math.abs(dx)>Math.abs(dy)*1.5)closeModal();
   },{passive:true});
 })();
 
