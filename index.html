@@ -354,28 +354,58 @@ function maybeClose(e){if(e.target===document.getElementById('overlay'))closeMod
 async function loadGsmInline(slug){
   const sec=document.getElementById('gsmSec');
   if(!sec)return;
+
+  let sections=null,title='',img='';
+
+  // 1차: 로컬 서버 프록시
   try{
-    const r=await fetch('/api/gsmarena/'+slug,{signal:AbortSignal.timeout(14000)});
-    const data=await r.json();
-    if(!data.ok||!data.sections?.length){sec.innerHTML=gsmFallback(slug);return}
-    let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <strong style="color:var(--acc);font-size:.88rem">📋 GSMArena 전체 스펙</strong>
-      <a href="https://www.gsmarena.com/${slug}.php" target="_blank" rel="noopener" style="font-size:.75rem;color:var(--muted);text-decoration:none">원본 페이지 →</a>
-    </div>`;
-    if(data.img)html+=`<img src="${data.img}" style="max-width:80px;display:block;margin:0 auto 14px;border-radius:8px" onerror="this.style.display='none'">`;
-    data.sections.forEach(s=>{
-      html+=`<div><div class="gsec-hd">${s.title||'스펙'}</div><table class="gsec-tbl">`;
-      s.rows.forEach(row=>html+=`<tr><td>${row.key}</td><td>${row.val}</td></tr>`);
-      html+='</table></div>';
-    });
-    sec.innerHTML=html;
-  }catch(e){
-    sec.innerHTML=gsmFallback(slug);
+    const r=await fetch('/api/gsmarena/'+slug,{signal:AbortSignal.timeout(7000)});
+    if(r.ok){const d=await r.json();if(d.ok&&d.sections?.length){sections=d.sections;title=d.title||'';img=d.img||'';}}
+  }catch(e){}
+
+  // 2차: CORS 프록시 + 클라이언트 파싱
+  if(!sections){
+    try{
+      sec.querySelector('span')&&(sec.querySelector('span').textContent='GSMArena 데이터 가져오는 중 (외부 프록시)...');
+      const px='https://api.allorigins.win/get?url='+encodeURIComponent('https://www.gsmarena.com/'+slug+'.php');
+      const r=await fetch(px,{signal:AbortSignal.timeout(16000)});
+      const j=await r.json();
+      if(j.contents){
+        const doc=new DOMParser().parseFromString(j.contents,'text/html');
+        title=doc.querySelector('h1.specs-phone-name-title')?.textContent?.trim()||'';
+        img=doc.querySelector('div.specs-photo-main img')?.getAttribute('src')||'';
+        sections=[];
+        doc.querySelectorAll('#specs-list section').forEach(s=>{
+          const st=s.querySelector('table td.head-td')?.textContent?.trim()||'';
+          const rows=[];
+          s.querySelectorAll('tr').forEach(tr=>{
+            const k=tr.querySelector('td.ttl')?.textContent?.trim().replace(/\s+/g,' ')||'';
+            const v=tr.querySelector('td.nfo')?.textContent?.trim().replace(/\s+/g,' ')||'';
+            if(k&&v)rows.push({key:k,val:v});
+          });
+          if(rows.length)sections.push({title:st,rows});
+        });
+      }
+    }catch(e){}
   }
+
+  if(!sections?.length){sec.innerHTML=gsmFallback(slug);return}
+
+  let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <strong style="color:var(--acc);font-size:.88rem">📋 GSMArena 전체 스펙</strong>
+    <a href="https://www.gsmarena.com/${slug}.php" target="_blank" rel="noopener" style="font-size:.75rem;color:var(--muted);text-decoration:none">원본 페이지 →</a>
+  </div>`;
+  if(img)html+=`<img src="${img}" style="max-width:80px;display:block;margin:0 auto 14px;border-radius:8px" onerror="this.style.display='none'">`;
+  sections.forEach(s=>{
+    html+=`<div><div class="gsec-hd">${s.title||'스펙'}</div><table class="gsec-tbl">`;
+    s.rows.forEach(row=>html+=`<tr><td>${row.key}</td><td>${row.val}</td></tr>`);
+    html+='</table></div>';
+  });
+  sec.innerHTML=html;
 }
 function gsmFallback(slug){
   return `<div style="text-align:center;color:var(--muted);padding:12px 0;font-size:.82rem">
-    <p style="margin-bottom:10px">GSMArena 연동을 사용하려면 <code style="background:rgba(255,255,255,.07);padding:2px 6px;border-radius:4px">npm start</code>로 서버를 실행하세요.</p>
+    <p style="margin-bottom:10px">GSMArena 스펙을 불러올 수 없습니다.</p>
     <a class="gsm-btn" href="https://www.gsmarena.com/${slug}.php" target="_blank" rel="noopener">🌐 GSMArena에서 직접 보기 →</a>
   </div>`;
 }
