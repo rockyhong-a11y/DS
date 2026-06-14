@@ -323,7 +323,7 @@ async function searchGsm(q){
 
   // 1차: 로컬 서버 프록시
   try{
-    const r=await fetch('/api/gsmarena-search?q='+encodeURIComponent(q),{signal:AbortSignal.timeout(7000)});
+    const r=await fetch('/api/gsmarena-search?q='+encodeURIComponent(q),{signal:AbortSignal.timeout(2000)});
     if(r.ok){const d=await r.json();if(d.items?.length)items=d.items;}
   }catch(e){}
 
@@ -434,7 +434,7 @@ async function loadGsmInline(slug){
 
   // 1차: 로컬 서버 프록시
   try{
-    const r=await fetch('/api/gsmarena/'+slug,{signal:AbortSignal.timeout(7000)});
+    const r=await fetch('/api/gsmarena/'+slug,{signal:AbortSignal.timeout(2000)});
     if(r.ok){const d=await r.json();if(d.ok&&d.sections?.length){sections=d.sections;title=d.title||'';img=d.img||'';}}
   }catch(e){}
 
