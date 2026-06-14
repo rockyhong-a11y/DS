@@ -121,31 +121,76 @@ app.get('/api/namu', async (req, res) => {
 app.get('/api/namu-search', async (req, res) => {
   const q = (req.query.q || '').trim();
   if (!q) return res.json({ ok: true, items: [] });
-  const url = `https://namu.wiki/Search?q=${encodeURIComponent(q)}`;
+
+  const HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,*/*;q=0.8',
+    'Accept-Language': 'ko-KR,ko;q=0.9,en;q=0.8',
+    'Referer': 'https://namu.wiki/',
+  };
+
+  // 1순위: 나무위키 자동완성 API (JSON 직접 반환)
   try {
-    const { data: html } = await axios.get(url, {
-      timeout: 10000,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml',
-        'Accept-Language': 'ko-KR,ko;q=0.9',
-        'Referer': 'https://namu.wiki/',
-      },
+    const r = await axios.get(`https://namu.wiki/api/autocomplete?query=${encodeURIComponent(q)}`, {
+      timeout: 8000, headers: { ...HEADERS, 'Accept': 'application/json' }
     });
+    if (r.data && Array.isArray(r.data)) {
+      const items = r.data.slice(0, 20).map(t => ({
+        name: String(t), slug: '/w/' + encodeURIComponent(String(t)), sub: ''
+      })).filter(i => i.name);
+      if (items.length) return res.json({ ok: true, items });
+    }
+  } catch(e) {}
+
+  // 2순위: 검색 페이지 HTML → __NEXT_DATA__ JSON 파싱
+  try {
+    const { data: html } = await axios.get(
+      `https://namu.wiki/Search?q=${encodeURIComponent(q)}`,
+      { timeout: 12000, headers: HEADERS }
+    );
+    // Next.js 방식: __NEXT_DATA__ script 태그
+    const m = html.match(/<script[^>]+id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+    if (m) {
+      const data = JSON.parse(m[1]);
+      const raw = data?.props?.pageProps?.searchResult
+        || data?.props?.pageProps?.searchResults
+        || data?.props?.pageProps?.result
+        || data?.props?.pageProps?.items
+        || data?.props?.pageProps?.data;
+      if (Array.isArray(raw) && raw.length) {
+        const items = raw.slice(0, 20).map(item => {
+          const t = item.title || item.name || item.key || String(item);
+          return { name: t, slug: '/w/' + encodeURIComponent(t), sub: item.snippet || '' };
+        }).filter(i => i.name.length > 1);
+        if (items.length) return res.json({ ok: true, items });
+      }
+    }
+    // 폴백: a[href^="/w/"] 링크 수집 (검색결과 영역만)
     const $ = cheerio.load(html);
     const items = [];
     const seen = new Set();
-    $('a[href^="/w/"]').each((_, a) => {
+    // 검색결과 컨테이너 우선 탐색
+    $('[class*="search"] a[href^="/w/"], [class*="result"] a[href^="/w/"]').each((_, a) => {
       const href = $(a).attr('href') || '';
-      const name = $(a).text().trim();
-      if (name && href && !seen.has(href)) {
+      const name = $(a).text().trim().replace(/\s+/g, ' ');
+      if (name && name.length > 1 && href && !seen.has(href)) {
         seen.add(href);
-        items.push({ name, slug: href, sub: decodeURIComponent(href.replace('/w/', '')) });
+        items.push({ name, slug: href, sub: '' });
       }
     });
-    res.json({ ok: true, items });
+    if (items.length) return res.json({ ok: true, items });
+    // 최후 폴백: 모든 /w/ 링크
+    $('a[href^="/w/"]').each((_, a) => {
+      const href = $(a).attr('href') || '';
+      const name = $(a).text().trim().replace(/\s+/g, ' ');
+      if (name && name.length > 1 && href && !seen.has(href)) {
+        seen.add(href);
+        items.push({ name, slug: href, sub: '' });
+      }
+    });
+    return res.json({ ok: true, items: items.slice(0, 20) });
   } catch (err) {
-    res.status(502).json({ ok: false, error: err.message, items: [] });
+    return res.status(502).json({ ok: false, error: err.message, items: [] });
   }
 });
 
