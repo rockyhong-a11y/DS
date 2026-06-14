@@ -266,6 +266,7 @@ function namuTitle(d){
 function debSearch(){clearTimeout(stTimer);stTimer=setTimeout(doSearch,220)}
 
 function doSearch(){
+  const scrollY=window.scrollY;
   const raw=document.getElementById('q').value.trim();
   const q=koEn(raw);
   const brand=document.getElementById('fBrand').value;
@@ -292,12 +293,20 @@ function doSearch(){
 
   document.getElementById('stats').textContent=`총 ${list.length}개 단말기 (전체 ${DEVICES.length}개)`;
   renderGrid(list);
+  requestAnimationFrame(()=>{
+    const max=document.documentElement.scrollHeight-window.innerHeight;
+    window.scrollTo(0,Math.min(scrollY,Math.max(0,max)));
+  });
+
   const gsmR=document.getElementById('gsmRes');
   if(list.length===0 && raw.length>=2){
+    const namuUrl='https://namu.wiki/Search?q='+encodeURIComponent(raw);
     gsmR.innerHTML=`<div style="text-align:center;padding:28px 0">
-      <div style="color:var(--muted);font-size:.88rem;margin-bottom:14px">로컬 DB에 <strong style="color:var(--text)">"${raw}"</strong> 검색 결과가 없습니다.</div>
-      <a href="https://namu.wiki/Search?q=${encodeURIComponent(raw)}" target="_blank" rel="noopener" class="namu-goto-btn">📖 나무위키에서 검색하기 →</a>
+      <div style="color:var(--muted);font-size:.88rem;margin-bottom:14px">로컬 DB에 <strong style="color:var(--text)">"${raw}"</strong> 검색 결과가 없습니다. 나무위키에서 자동 검색합니다...</div>
+      <a id="namuAutoLink" href="${namuUrl}" target="_blank" rel="noopener" class="namu-goto-btn">📖 나무위키에서 검색하기 →</a>
     </div>`;
+    const a=document.getElementById('namuAutoLink');
+    if(a)a.click();
   } else {
     gsmR.innerHTML='';
   }
@@ -382,6 +391,18 @@ function maybeClose(e){if(e.target===document.getElementById('overlay'))closeMod
 
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+// swipe-left to close modal
+(()=>{
+  let _tx=0,_ty=0;
+  const modal=document.querySelector('.modal');
+  modal.addEventListener('touchstart',e=>{_tx=e.changedTouches[0].clientX;_ty=e.changedTouches[0].clientY;},{passive:true});
+  modal.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-_tx;
+    const dy=e.changedTouches[0].clientY-_ty;
+    if(dx<-60&&Math.abs(dx)>Math.abs(dy)*1.5)closeModal();
+  },{passive:true});
+})();
 
 // ── converter ─────────────────────────────────────────────────────────────────
 function setFit(m,btn){fitMode=m;document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
