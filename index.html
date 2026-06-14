@@ -62,6 +62,14 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
 .mt td:first-child{color:var(--muted);width:40%}
 .gsm-btn{display:block;text-align:center;margin-top:10px;padding:10px;background:rgba(124,131,253,.1);border:1px solid rgba(124,131,253,.3);border-radius:8px;color:var(--acc);font-size:.82rem;cursor:pointer;transition:.2s;text-decoration:none}
 .gsm-btn:hover{background:rgba(124,131,253,.22);text-decoration:none}
+#gsmRes{max-width:1440px;margin:0 auto;padding:0 16px 24px}
+.gsr-hd{display:flex;align-items:center;gap:8px;color:var(--acc);font-size:.82rem;font-weight:700;padding:12px 0 8px;border-top:1px solid var(--border);margin-top:4px}
+.gsr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.gsr-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:10px}
+.gsr-card:hover{border-color:var(--acc);background:rgba(124,131,253,.07)}
+.gsr-thumb{width:40px;height:44px;object-fit:contain;border-radius:4px;flex-shrink:0;background:rgba(255,255,255,.04)}
+.gsr-name{font-size:.82rem;font-weight:600;line-height:1.3;margin-bottom:2px}
+.gsr-sub{font-size:.7rem;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .spin{display:inline-block;width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 .gsec-hd{color:var(--acc);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;padding-bottom:4px;border-bottom:1px solid var(--border)}
@@ -138,12 +146,13 @@ nav{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--bg
     <div class="frow">
       <select id="fBrand" onchange="doSearch()"><option value="">모든 브랜드</option></select>
       <select id="fOS" onchange="doSearch()"><option value="">모든 OS</option><option value="Android">Android</option><option value="iOS">iOS</option></select>
-      <select id="fYear" onchange="doSearch()"><option value="">모든 연도</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option></select>
+      <select id="fYear" onchange="doSearch()"><option value="">모든 연도</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option></select>
       <select id="fSort" onchange="doSearch()"><option value="year">최신순</option><option value="name">이름순</option><option value="display">화면크기순</option><option value="ppi">픽셀밀도순</option><option value="antutu">AnTuTu순</option></select>
     </div>
   </div>
   <div class="stats" id="stats"></div>
   <div class="grid" id="grid"></div>
+  <div id="gsmRes"></div>
 </div>
 <div id="pg-conv" class="page">
 <div class="conv-wrap"><div class="ccard">
@@ -270,6 +279,13 @@ function doSearch(){
 
   document.getElementById('stats').textContent=`총 ${list.length}개 단말기 (전체 ${DEVICES.length}개)`;
   renderGrid(list);
+  const gsmR=document.getElementById('gsmRes');
+  if(raw.length>=2){
+    gsmR.innerHTML='';
+    searchGsm(raw);
+  } else {
+    gsmR.innerHTML='';
+  }
 }
 
 function renderGrid(devs){
@@ -294,6 +310,65 @@ function renderGrid(devs){
       </div>`:''}
     </div>`;
   }).join('');
+}
+
+// ── GSMArena live search ────────────────────────────────────────────────────────
+let gsmSearchTimer=null;
+async function searchGsm(q){
+  const sec=document.getElementById('gsmRes');
+  if(!sec||!q)return;
+  sec.innerHTML=`<div class="gsr-hd"><div class="spin"></div><span>GSMArena에서 "${q}" 검색 중...</span></div>`;
+
+  let items=null;
+
+  // 1차: 로컬 서버 프록시
+  try{
+    const r=await fetch('/api/gsmarena-search?q='+encodeURIComponent(q),{signal:AbortSignal.timeout(7000)});
+    if(r.ok){const d=await r.json();if(d.items?.length)items=d.items;}
+  }catch(e){}
+
+  // 2차: CORS 프록시 + 클라이언트 파싱
+  if(!items){
+    try{
+      const px='https://api.allorigins.win/get?url='+encodeURIComponent('https://www.gsmarena.com/search.php3?sQuickSearch='+encodeURIComponent(q));
+      const r=await fetch(px,{signal:AbortSignal.timeout(16000)});
+      const j=await r.json();
+      if(j.contents){
+        const doc=new DOMParser().parseFromString(j.contents,'text/html');
+        items=[];
+        doc.querySelectorAll('div.makers li').forEach(li=>{
+          const a=li.querySelector('a');if(!a)return;
+          const href=a.getAttribute('href')||'';
+          const slug=href.replace(/\.php.*$/,'');
+          const name=a.querySelector('.head')?.textContent?.trim()||'';
+          const sub=(a.querySelector('.sub')?.textContent?.trim()||'').split('\n')[0];
+          const img=a.querySelector('img')?.getAttribute('src')||a.querySelector('img')?.getAttribute('data-src')||'';
+          if(name&&slug)items.push({name,slug,sub,img});
+        });
+      }
+    }catch(e){}
+  }
+
+  if(!items?.length){sec.innerHTML='';return}
+
+  sec.innerHTML=`<div class="gsr-hd">🌐 GSMArena 검색 결과 · ${items.length}개</div>
+  <div class="gsr-grid">${items.map(it=>`
+    <div class="gsr-card" onclick="openGsmModal('${it.slug}','${it.name.replace(/'/g,"\\'")}')">
+      ${it.img?`<img class="gsr-thumb" src="${it.img}" onerror="this.style.display='none'">`:'<div class="gsr-thumb"></div>'}
+      <div><div class="gsr-name">${it.name}</div><div class="gsr-sub">${it.sub}</div></div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function openGsmModal(slug,name){
+  document.getElementById('mName').textContent=name;
+  document.getElementById('mSub2').textContent='GSMArena 단말 정보';
+  document.getElementById('mBody').innerHTML=`
+    <div id="gsmSec" style="padding:4px 0">
+      <div class="gsm-loading" style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.82rem;padding:6px 0"><div class="spin"></div><span>GSMArena에서 전체 스펙 불러오는 중...</span></div>
+    </div>`;
+  document.getElementById('overlay').classList.add('on');
+  loadGsmInline(slug);
 }
 
 // ── device modal ───────────────────────────────────────────────────────────────

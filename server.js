@@ -138,6 +138,38 @@ app.get('/api/gsmarena/:slug', async (req, res) => {
   }
 });
 
+// GSMArena search proxy
+app.get('/api/gsmarena-search', async (req, res) => {
+  const q = (req.query.q || '').trim();
+  if (!q) return res.json({ ok: true, items: [] });
+  const url = `https://www.gsmarena.com/search.php3?sQuickSearch=${encodeURIComponent(q)}`;
+  try {
+    const { data: html } = await axios.get(url, {
+      timeout: 10000,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Referer': 'https://www.gsmarena.com/',
+      },
+    });
+    const $ = cheerio.load(html);
+    const items = [];
+    $('div.makers li').each((_, li) => {
+      const a = $(li).find('a');
+      const href = a.attr('href') || '';
+      const slug = href.replace(/\.php.*$/, '');
+      const name = a.find('.head').text().trim();
+      const sub  = a.find('.sub').text().trim().split('\n')[0];
+      const img  = a.find('img').attr('src') || a.find('img').attr('data-src') || '';
+      if (name && slug) items.push({ name, slug, sub, img });
+    });
+    res.json({ ok: true, items });
+  } catch (err) {
+    res.status(502).json({ ok: false, error: err.message, items: [] });
+  }
+});
+
 app.get('/api/market-share', (_req, res) => res.json(marketShare));
 
 // serve static frontend
