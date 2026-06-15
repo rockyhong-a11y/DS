@@ -384,6 +384,7 @@ function openModal(id){
     </div>
   `;
   document.getElementById('overlay').classList.add('on');
+  document.querySelector('.modal').scrollTop=0;
 }
 function closeModal(){document.getElementById('overlay').classList.remove('on')}
 function maybeClose(e){if(e.target===document.getElementById('overlay'))closeModal()}
