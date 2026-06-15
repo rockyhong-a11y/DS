@@ -383,8 +383,10 @@ function openModal(id){
       <a class="gsm-btn" href="https://namu.wiki/w/${encodeURIComponent(namuTitle(d))}" target="_blank" rel="noopener">📖 나무위키에서 상세 정보 보기 →</a>
     </div>
   `;
+  const _m=document.querySelector('.modal');
+  _m.scrollTop=0;
   document.getElementById('overlay').classList.add('on');
-  document.querySelector('.modal').scrollTop=0;
+  requestAnimationFrame(()=>{_m.scrollTop=0;});
 }
 function closeModal(){document.getElementById('overlay').classList.remove('on')}
 function maybeClose(e){if(e.target===document.getElementById('overlay'))closeModal()}
